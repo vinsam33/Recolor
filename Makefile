@@ -3,6 +3,7 @@ CFLAGS = -g -std=c99 -Wall
 LDFLAGS = -lgame -L.
 CPPFLAGS = -I.
 
+
 all: recolor_text
 
 libgame.a : game_io.o game.o game_io.h game.h
