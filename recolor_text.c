@@ -5,6 +5,8 @@
 
 
 
+
+
 void affichage_grille(game g){
     for (unsigned int y=0; y<SIZE; y++){
         for (unsigned int x=0; x<SIZE; x++){
