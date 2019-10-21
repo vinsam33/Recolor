@@ -30,7 +30,7 @@ test_game_emolere.o : test_game_emolere.c game.h
 .PHONY: clean
 
 clean:
-	rm -f libgame.a recolor_text.o recolor_text test_elhdiallo test_emolere test_slascostes test_vsamson test_elhdiallo.o test_emolere.o test_slascostes.o test_vsamson.o
+	rm -f libgame.a recolor_text.o recolor_text test_elhdiallo test_emolere test_slascostes test_vsamson test_game_elhdiallo.o test_game_emolere.o test_geame_slascostes.o test_game_vsamson.o
 
 test: test_game_slascostes test_game_elhdiallo test_game_vsamson test_game_emolere
 	./test_game_slascostes
