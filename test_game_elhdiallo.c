@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "game.h"
 typedef unsigned int uint;
 
@@ -34,8 +35,8 @@ bool test_nb_moves_cur(uint x){
 }
 
 // 2eme fonction 
-bool test_game_set_cell_init(gmae g, uint x, uint y){
-    game g=game_new_empty();
+bool test_game_set_cell_init(game g, uint x, uint y){
+    //game g=game_new_empty();
      if(g == NULL){
         return false;
     }
@@ -60,7 +61,7 @@ bool test_game_is_over(){
 bool is_grid_red(game g){
     for(uint x=0; x<SIZE; x++){
         for (uint y=0; y<SIZE; y++){
-            if( game_cell_current_color(g1,  x, y)!=RED){
+            if( game_cell_current_color(g,  x, y)!=RED){
                 return false;
             }
         }
@@ -89,8 +90,6 @@ bool is_grid_red(game g){
 
     return test_reussi;
 
-    int x
-    game = game_new
 }
 
 
@@ -100,18 +99,28 @@ void usage(int argc, char *argv[]) {
 }
 int main(int argc, char *argv[]) {
   if (argc == 1) usage(argc, argv);
+    game g=game_new_empty();
 
   //  start test
     fprintf(stderr, "=> Start test \"%s\"\n", argv[1]);
     bool ok = false;
 
     if (strcmp("nb_moves_cur", argv[1]) == 0){
-        ok = test_nb_moves_cur();
+        ok = test_nb_moves_cur(3);
 
     }else if ((strcmp("game_set_cell_init", argv[1]) == 0)){
-        ok = test_game_set_cell_init();
+        ok = test_game_set_cell_init(g, 5, 6);
+    }else if (((strcmp("game_is_over", argv[1]) == 0))){
+        ok=test_game_is_over();
     }
-
+    if (ok) {
+    fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
+    return EXIT_SUCCESS;
+  } else {
+    fprintf(stderr, "Test \"%s\" finished: FAILURE\n", argv[1]);
+    return EXIT_FAILURE;
+  }
+}
 
 
 
