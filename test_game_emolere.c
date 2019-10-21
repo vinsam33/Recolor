@@ -29,6 +29,11 @@ bool test_game_play_one_move (color c){
     return false;
   }
   game_play_one_move(g,c);
+  if (c>=NB_COLORS || c<=NB_COLORS){
+    fprintf(stderr,"Error : invalid game");
+    return false;
+  }
+  return true; 
 }
 
 bool test_game_restart (game g){
@@ -41,10 +46,8 @@ bool test_game_restart (game g){
       if (game_cell_current_color(g,x,y) != RED){
         fprintf(stderr,"Error : Bad color, game_restart failed");
         return false;
-        y++; 
-        x++;
-      }
-    }
+      }y++; 
+    }x++; 
   }
   if (game_nb_moves_cur(g) != 0){
     fprintf(stderr,"Error : Number of moves different from 0");
@@ -53,6 +56,7 @@ bool test_game_restart (game g){
     fprintf(stderr,"Error : too much number of moves");
     return false;
   }
+  return true; 
 }
 
 int main(void){
