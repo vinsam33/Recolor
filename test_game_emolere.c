@@ -29,7 +29,7 @@ bool test_game_play_one_move (color c){
     return false;
   }
   game_play_one_move(g,c);
-  if (c>=NB_COLORS || c<=NB_COLORS){
+  if (c>=NB_COLORS || c<=0){
     fprintf(stderr,"Error : invalid game");
     return false;
   }
@@ -38,22 +38,12 @@ bool test_game_play_one_move (color c){
 
 bool test_game_restart (game g){
   game_restart(g);
-  unsigned int x=0, y=0;
-  color c= RED; 
-  while (x<SIZE){
-    while (y<SIZE){
-      game_set_cell_init(g,x,y,c);
-      if (game_cell_current_color(g,x,y) != RED){
-        fprintf(stderr,"Error : Bad color, game_restart failed");
-        return false;
-      }y++; 
-    }x++; 
+  if (!game_new_empty()){
+    fprintf(stderr,"Error : Bad color, game_restart failed");
+    return false; 
   }
   if (game_nb_moves_cur(g) != 0){
     fprintf(stderr,"Error : Number of moves different from 0");
-    return false;
-  }else{
-    fprintf(stderr,"Error : too much number of moves");
     return false;
   }
   return true; 
@@ -66,25 +56,26 @@ int main(void){
     printf(" Game_set_max_moves\n");
     bool daccord= test_game_set_max_moves(max);
     if (daccord){
-      fprintf(stderr,"Execution of game_set_max_moves : Success");
+      fprintf(stderr,"Execution of game_set_max_moves : Success\n");
     }else{
-      fprintf(stderr,"Execution of game_set_max_moves : Denied");
+      fprintf(stderr,"Execution of game_set_max_moves : Denied\n");
       return EXIT_FAILURE; 
     }
 
-    bool ok= test_game_play_one_move(RED);
+    printf("start test of game_play_one_move\n");
+    bool ok= test_game_play_one_move(BLUE);
     if (ok){
-      fprintf(stderr,"Execution of test_game_play_one_move : Success");
+      fprintf(stderr,"Execution of test_game_play_one_move : Success\n");
     }else{
-      fprintf(stderr,"Execution of test_game_play_one_move : Denied");
+      fprintf(stderr,"Execution of test_game_play_one_move : Denied\n");
       return EXIT_FAILURE; 
     }
-
+    printf("start test of game_restart\n");
     bool okay= test_game_restart(g);
     if(okay){
-      fprintf(stderr,"Execution of game_restart : Success");
+      fprintf(stderr,"Execution of game_restart : Success\n");
     }else{
-      fprintf(stderr,"Execution of game_restart : Denied");
+      fprintf(stderr,"Execution of game_restart : Denied\n");
       return EXIT_FAILURE; 
     }
 
