@@ -9,7 +9,8 @@ bool test_game_new(color *cells, unsigned int nb_moves_max){
     if (g == NULL){
         return false;
     }
-    if (nb_moves_max <= 0){
+    unsigned int nb_max = game_nb_moves_max(g);
+    if (nb_moves_max != nb_max){
         return false;
     }
     for(unsigned int x=0 ; x<nb_moves_max ; x++){
@@ -58,5 +59,28 @@ bool test_game_copy(cgame g){
     }
 }
 int main (){
+    color cells [144] = {0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
+    game g = game_new(cells, 12);
+    if(test_game_new(cells,12)){
+        fprintf(stderr, "The execution of test_game_new is a SUCCESS\n");
+    }else{
+        fprintf(stderr, "The execution of test_game_new is a FAILURE\n");
+        return EXIT_FAILURE;
+    }
+    
+    if(test_game_nb_moves_max()){
+        fprintf(stderr, "The execution of test_game_nb_moves_max is a SUCCESS\n");
+    }else{
+        fprintf(stderr, "The execution of test_game_nb_moves_max is a FAILURE\n");
+        return EXIT_FAILURE;
+    }
+
+    if(test_game_copy(g)){
+        fprintf(stderr, "The execution of test_game_copy is a SUCCESS\n");
+    }else{
+        fprintf(stderr, "The execution of test_game_copy is a FAILURE\n");
+        return EXIT_FAILURE;
+    }
+
     return EXIT_SUCCESS;
  }
