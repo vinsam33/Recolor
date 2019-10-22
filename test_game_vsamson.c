@@ -35,11 +35,12 @@ bool test_game_cell_current_color(){
     return true;
 }
 bool test_game_delete(game g){
-    game_delete(g);
+    game g = game_new_empty();
     if(!g){
         return false;
     }
-    game g = game_new_empty();
+    
+    game_delete(g);
     return true;
 }
 
