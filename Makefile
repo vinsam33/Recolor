@@ -34,7 +34,9 @@ clean:
 
 test: test_game_slascostes test_game_elhdiallo test_game_vsamson test_game_emolere
 	./test_game_slascostes
-	./test_game_elhdiallo
+	./test_game_elhdiallo nb_moves_cur
+	./test_game_elhdiallo game_set_cell_init
+	./test_game_elhdiallo game_is_over
 	./test_game_vsamson
 	./test_game_emolere
 
@@ -42,7 +44,9 @@ test_slascostes: test_game_slascostes
 	./test_game_slascostes
 
 test_elhdiallo: test_game_elhdiallo
-	./test_game_elhdiallo 
+	./test_game_elhdiallo nb_moves_cur
+	./test_game_elhdiallo game_set_cell_init
+	./test_game_elhdiallo game_is_over
 
 test_vsamson: test_game_vsamson
 	./test_game_vsamson

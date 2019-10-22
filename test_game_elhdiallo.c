@@ -12,7 +12,6 @@ typedef unsigned int uint;
 
 // 1ere fonction 
 bool test_nb_moves_cur(uint x){
-
     game g=game_new_empty();
     if(g == NULL){
         return false;
@@ -24,17 +23,14 @@ bool test_nb_moves_cur(uint x){
     }
     for(uint i=0; i<x; i++){
         game_play_one_move(g, 3);
-
     }
     if(game_nb_moves_cur(g)!=x){
         return false;
     }
     return true;
-
-    game_delete(g);
 }
 
-// 2eme fonction 
+// 2eme fonction
 bool test_game_set_cell_init(game g, uint x, uint y){
     //game g=game_new_empty();
      if(g == NULL){
@@ -43,25 +39,20 @@ bool test_game_set_cell_init(game g, uint x, uint y){
     game_set_cell_init(g, 4, 2, 3);
     game_set_cell_init(g, 4, 6, 2 );
 
-    if(game_cell_current_color(g, 4, 2) != 3 || game_cell_current_color(g, 4, 2) != 2){
+    if(game_cell_current_color(g, 4, 2) != 3 || game_cell_current_color(g, 4, 6) != 2){
         fprintf(stderr, "Voir game_set_cell_init ");
         return false;
     }
     return true;
-   
-    game_delete(g);
 }
 
 // 3eme fonction
-bool test_game_is_over(){
-    bool test_reussi=true;
-
 
 // test grille uniforme
 bool is_grid_red(game g){
     for(uint x=0; x<SIZE; x++){
         for (uint y=0; y<SIZE; y++){
-            if( game_cell_current_color(g,  x, y)!=RED){
+            if( game_cell_current_color(g, x, y)!=RED){
                 return false;
             }
         }
@@ -69,27 +60,33 @@ bool is_grid_red(game g){
     return true;
 }
 
+bool test_game_is_over(){
     // premier test , cas toutes les cellules de même coul et nbCoupJoué < nbMax
     game t1=game_new_empty();
-     if(t1 == NULL){
+    if(t1 == NULL){
         return false;
     }
-    game_set_max_moves( t1, 3);
+    game_set_max_moves(t1, 3);
+    game_set_cell_init(t1, 0, 0, BLUE);
+    if (game_is_over(t1)) {
+        fprintf(stderr, "echec game_is_over: censé returner jeux non terminé \n");
+        return false;
+    }
+    game_play_one_move(t1, RED);
+    if (!game_is_over(t1)) {
+        fprintf(stderr, "echec game_is_over: censé returner jeux terminé \n");
+        return false;
+    }
+
     if (game_nb_moves_cur(t1)>= 3){
-        fprintf(stderr, " echec du premier test_game_is_over: nbCoupjoués>=nbMax \n");
+        fprintf(stderr, "echec game_is_over: nbCoupjoués>=nbMax \n");
     }
-    if( is_grid_red(t1)==false){
-        fprintf(stderr, "echec du premier test de test_game_is_over: grille non uniforment rouge");
-    }
-    if (game_is_over(t1)!=true){
-        test_reussi=false;
-        printf(" game_is_over renvoie false alors qu'il doit renvoyer true: grille uniforme et nbCoupJoué<nbMax \n");
+    if(game_is_over(t1) && is_grid_red(t1)==false){
+        fprintf(stderr, "echec test de game_is_over: grille non uniforment rouge");
     }
     //liberer la mémoire
     game_delete(t1);
-
-    return test_reussi;
-
+    return true;
 }
 
 
@@ -107,18 +104,17 @@ int main(int argc, char *argv[]) {
 
     if (strcmp("nb_moves_cur", argv[1]) == 0){
         ok = test_nb_moves_cur(3);
-
     }else if ((strcmp("game_set_cell_init", argv[1]) == 0)){
         ok = test_game_set_cell_init(g, 5, 6);
     }else if (((strcmp("game_is_over", argv[1]) == 0))){
-        ok=test_game_is_over();
+        ok = test_game_is_over();
     }
     if (ok) {
-    fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
-    return EXIT_SUCCESS;
-  } else {
-    fprintf(stderr, "Test \"%s\" finished: FAILURE\n", argv[1]);
-    return EXIT_FAILURE;
-  }
+        fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
+        return EXIT_SUCCESS;
+    }else {
+        fprintf(stderr, "Test \"%s\" finished: FAILURE\n", argv[1]);
+        return EXIT_FAILURE;
+    }
 }
 
