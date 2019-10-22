@@ -34,12 +34,12 @@ bool test_game_cell_current_color(){
     }
     return true;
 }
-bool test_game_delete(game g){
-    game_delete(g);
+bool test_game_delete(){   
+    game g = game_new_empty();
     if(!g){
         return false;
     }
-    game g = game_new_empty();
+    game_delete(g);
     return true;
 }
 
@@ -61,7 +61,7 @@ int main(void){
         fprintf(stderr,"EXECUTING OF game_cell_current_color IS : FAILURE\n ");
         return EXIT_FAILURE;
     }
-    bool supr = test_game_delete(g);
+    bool supr = test_game_delete();
     if(supr==true){
         fprintf(stderr,"EXECUTING OF game_delete IS : REUSITE\n ");
 
