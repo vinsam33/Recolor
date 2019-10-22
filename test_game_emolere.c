@@ -42,7 +42,7 @@ bool test_game_restart (game g){
     fprintf(stderr,"Error : Bad color, game_restart failed");
     return false; 
   }
-  if (game_nb_moves_cur(g) != 0){
+  if (game_nb_moves_cur(g) != 0 || game_cell_current_color(g,0,0) != 0 ){
     fprintf(stderr,"Error : Number of moves different from 0");
     return false;
   }
