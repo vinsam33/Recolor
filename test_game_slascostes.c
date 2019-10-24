@@ -38,12 +38,15 @@ bool test_game_nb_moves_max(){
     return true;
 }
 
-bool test_game_copy(cgame g){
-    if (g == NULL){
+bool test_game_copy(game g){
+    if(g == NULL){
         return false;
     }
-    cgame g2 = game_copy(g);
-    if (g2 == NULL){
+    game g2 = game_copy(g);
+    if(g2 == NULL){
+        return false;
+    }
+    if(game_is_over(g) != game_is_over(g2)){
         return false;
     }
     if (game_nb_moves_max(g) != game_nb_moves_max(g2)){
@@ -52,10 +55,10 @@ bool test_game_copy(cgame g){
     if(game_nb_moves_cur(g) != game_nb_moves_cur(g2)){
         return false;
     }
-    unsigned int nb_max =  game_nb_moves_max(g);
-    for(unsigned int x=0 ; x<nb_max ; x++){
-        for(unsigned int y=0 ; y<nb_max ; y++){
-            if (game_cell_current_color(g2, x, y) != game_cell_current_color(g, x, y) ){
+    //unsigned int nb_max =  game_nb_moves_max(g);
+    for(unsigned int x=0 ; x<SIZE ; x++){
+        for(unsigned int y=0 ; y<SIZE ; y++){
+            if (game_cell_current_color(g2, y, x) != game_cell_current_color(g, y, x)){
                 return false;
             }
         }
