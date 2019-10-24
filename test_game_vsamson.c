@@ -50,24 +50,24 @@ int main(void){
     game g = game_new(cells, 10);
     bool nouveaux = test_game_new_empty();
     if(nouveaux==true){
-        fprintf(stderr,"EXECUTING OF game_new_empty IS : REUSITE\n ");
+        fprintf(stderr,"EXECUTING OF game_new_empty IS : REUSITE\n\n ");
     }else{
-        fprintf(stderr,"EXECUTING OF game_new_empty IS : FAILURE\n ");
+        fprintf(stderr,"EXECUTING OF game_new_empty IS : FAILURE\n\n ");
         return EXIT_FAILURE;
     }
     bool color = test_game_cell_current_color(g,2,SIZE-1);
     if (color ==true){
-        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : REUSITE\n ");
+        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : REUSITE\n\n");
     }else{
-        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : FAILURE\n ");
+        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : FAILURE\n\n ");
         return EXIT_FAILURE;
     }
     bool supr = test_game_delete();
     if(supr==true){
-        fprintf(stderr,"EXECUTING OF game_delete IS : REUSITE\n ");
+        fprintf(stderr,"EXECUTING OF game_delete IS : REUSITE\n\n ");
 
     }else{
-        fprintf(stderr,"EXECUTING OF game_delete IS : FAILURE\n ");
+        fprintf(stderr,"EXECUTING OF game_delete IS : FAILURE\n\n ");
         return EXIT_FAILURE;
 
     }
