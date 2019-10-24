@@ -13,9 +13,9 @@ bool test_game_new(color *cells, unsigned int nb_moves_max){
     if (nb_moves_max != nb_max){
         return false;
     }
-    for(unsigned int y=0 ; y<SIZE ; y++){
-        for(unsigned int x=0 ; x<SIZE ; x++){
-            if (game_cell_current_color(g, x, y) != cells[y*SIZE + x]){
+    for(unsigned int x=0 ; x<SIZE ; x++){
+        for(unsigned int y=0 ; y<SIZE ; y++){
+            if (game_cell_current_color(g, x, y) != cells[x*SIZE + y]){
                 return false;
             }
         }
@@ -46,21 +46,23 @@ bool test_game_copy(cgame g){
     if (g2 == NULL){
         return false;
     }
-    unsigned int nb_max = game_nb_moves_max(g);
-    if (test_game_nb_moves_max() == true){
-        for(unsigned int x=0 ; x<nb_max ; x++){
-            for(unsigned int y=0 ; y<nb_max ; y++){
-                if (game_cell_current_color(g2, x, y) != game_cell_current_color(g, x, y) ){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    else{
+    if (game_nb_moves_max(g) != game_nb_moves_max(g2)){
         return false;
     }
+    if(game_nb_moves_cur(g) != game_nb_moves_cur(g2)){
+        return false;
+    }
+    unsigned int nb_max =  game_nb_moves_max(g);
+    for(unsigned int x=0 ; x<nb_max ; x++){
+        for(unsigned int y=0 ; y<nb_max ; y++){
+            if (game_cell_current_color(g2, x, y) != game_cell_current_color(g, x, y) ){
+                return false;
+            }
+        }
+    }
+    return true;
 }
+
 
 int main (){
     color cells [144] = {0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
