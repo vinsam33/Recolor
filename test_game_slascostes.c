@@ -13,9 +13,9 @@ bool test_game_new(color *cells, unsigned int nb_moves_max){
     if (nb_moves_max != nb_max){
         return false;
     }
-    for(unsigned int x=0 ; x<SIZE ; x++){
-        for(unsigned int y=0 ; y<SIZE ; y++){
-            if (game_cell_current_color(g, x, y) != cells[x*SIZE + y]){
+    for(unsigned int y=0 ; y<SIZE ; y++){
+        for(unsigned int x=0 ; x<SIZE ; x++){
+            if (game_cell_current_color(g, x, y) != cells[y*SIZE + x]){
                 return false;
             }
         }
