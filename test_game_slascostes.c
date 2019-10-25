@@ -27,7 +27,7 @@ bool test_game_new(color *cells, unsigned int nb_moves_max){
 }
 
 bool test_game_nb_moves_max(){
-    game g = game_new_empty();
+    /*game g = game_new_empty();
     if (g == NULL){
         return false;
     }
@@ -38,6 +38,23 @@ bool test_game_nb_moves_max(){
     if (game_nb_moves_max(g) != 10){
         return false;
     }
+    return true;*/
+    color cells [144] = {0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
+    game g = game_new(cells, 11);
+    if(g == NULL){
+        game_delete(g);
+        return false;
+    }
+    if(game_nb_moves_max(g) != 11){
+        game_delete(g);
+        return false;
+    }
+    game_set_max_moves(g, 10);
+    if (game_nb_moves_max(g) != 10){
+        game_delete(g);
+        return false;
+    }
+    game_delete(g);
     return true;
 }
 
