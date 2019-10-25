@@ -17,7 +17,7 @@ test_game_elhdiallo : test_game_elhdiallo.o libgame.a
 test_game_emolere : test_game_emolere.o libgame.a
 	$(CC) $(CFLAGS) $(CPPFLAGS)  -o $@ $< $(LDFLAGS)
 
-libgame.a: game_io.o game05.o game_io.h game.h
+libgame.a: game_io.o game.o game_io.h game.h
 	ar rcs  $@ $^
 
 recolor_text.o: recolor_text.c game_io.h game.h
