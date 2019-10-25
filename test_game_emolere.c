@@ -48,7 +48,7 @@ bool test_game_play_one_move (color c){
     }
   }
   if (c>=NB_COLORS || c<=0){
-    fprintf(stderr,"Error : invalid game\n\n");
+    fprintf(stderr,"Error : invalid game\n\n"); //commentaire
     return false;
   }
   return true; 
