@@ -12,7 +12,7 @@ bool test_game_new_empty(){
     if(g==NULL){
         return false;
     }
-    
+    game_new_empty();
     return true;
 }
 bool test_game_cell_current_color(){
