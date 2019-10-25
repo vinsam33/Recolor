@@ -9,11 +9,22 @@
 typedef unsigned int uint;
 
 bool test_game_set_max_moves(uint max){
-  game g = game_new_empty();
+  color cells [144] = {0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
+  game(g)=game_new(cells,max); 
   if (!g){
     fprintf(stderr,"Error : invalid game\n\n");
     return false;
   }
+  
+  /*unsigned int j=0; 
+  for(unsigned int i=0; i<max+2; i++){
+    game_play_one_move(g,2);
+    j=j+1;
+    if (j>max){
+      return false; 
+    }
+  }*/
+  
   game_set_max_moves(g, max);
   if (game_nb_moves_max(g) != max){
     fprintf(stderr,"Error : too much number of moves\n\n" );
@@ -29,6 +40,13 @@ bool test_game_play_one_move (color c){
     return false;
   }
   game_play_one_move(g,c);
+  for (unsigned int x=0; x<SIZE*SIZE; x++){
+    for (unsigned int y=0; y<SIZE*SIZE; y++){
+      if (game_cell_current_color(g,x,y)!=c){
+        return false;
+      }
+    }
+  }
   if (c>=NB_COLORS || c<=0){
     fprintf(stderr,"Error : invalid game\n\n");
     return false;
@@ -37,6 +55,7 @@ bool test_game_play_one_move (color c){
 }
 
 bool test_game_restart (){
+  
   color cells [144] = {0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
   game(g)=game_new(cells,12); 
   game_play_one_move(g,2);
