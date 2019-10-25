@@ -33,7 +33,9 @@ clean:
 	rm -f libgame.a recolor_text.o recolor_text test_game_elhdiallo test_game_emolere test_game_slascostes test_game_vsamson test_game_elhdiallo.o test_game_emolere.o test_game_slascostes.o test_game_vsamson.o
 
 test: test_game_slascostes test_game_elhdiallo test_game_vsamson test_game_emolere
-	./test_game_slascostes
+	./test_game_slascostes game_new
+	./test_game_slascostes game_nb_moves_max
+	./test_game_slascostes game_copy
 	./test_game_elhdiallo nb_moves_cur
 	./test_game_elhdiallo game_set_cell_init
 	./test_game_elhdiallo game_is_over
@@ -41,7 +43,9 @@ test: test_game_slascostes test_game_elhdiallo test_game_vsamson test_game_emole
 	./test_game_emolere
 
 test_slascostes: test_game_slascostes
-	./test_game_slascostes
+	./test_game_slascostes game_new
+	./test_game_slascostes game_nb_moves_max
+	./test_game_slascostes game_copy
 
 test_elhdiallo: test_game_elhdiallo
 	./test_game_elhdiallo nb_moves_cur

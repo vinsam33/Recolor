@@ -8,12 +8,16 @@ typedef unsigned int uint;
 
 bool test_game_new_empty(){
     game g = game_new_empty();
-    if(!g){
+    if(g==NULL){
+        return false;
+    }
+    unsigned int nb_max = game_nb_moves_max(g);
+    if(nb_max != 0){
         return false;
     }
     for (unsigned int y=0;y<SIZE;y++){
         for (unsigned int x=0 ;x<SIZE;x++){
-            if (game_cell_current_color(g,x,y) != RED){
+            if (game_cell_current_color(g,y,x) != RED){
                 return false;
             }
         }
