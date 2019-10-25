@@ -11,17 +11,6 @@ bool test_game_new_empty(){
     if(g==NULL){
         return false;
     }
-    unsigned int nb_max = game_nb_moves_max(g);
-    if(nb_max != 0){
-        return false;
-    }
-    for (unsigned int y=0;y<SIZE;y++){
-        for (unsigned int x=0 ;x<SIZE;x++){
-            if (game_cell_current_color(g,y,x) != RED){
-                return false;
-            }
-        }
-    }
     return true;
 }
 bool test_game_cell_current_color(){
@@ -55,21 +44,21 @@ int main(void){
     game g = game_new(cells, 10);
     bool nouveaux = test_game_new_empty();
     if(nouveaux==true){
-        fprintf(stderr,"EXECUTING OF game_new_empty IS : REUSITE\n\n ");
+        fprintf(stderr,"EXECUTING OF game_new_empty IS : REUSSITE\n\n ");
     }else{
         fprintf(stderr,"EXECUTING OF game_new_empty IS : FAILURE\n\n ");
         return EXIT_FAILURE;
     }
     bool color = test_game_cell_current_color(g,2,SIZE-1);
     if (color ==true){
-        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : REUSITE\n\n");
+        fprintf(stderr,"EXECUTING OF game_cell_current_color IS : REUSSITE\n\n");
     }else{
         fprintf(stderr,"EXECUTING OF game_cell_current_color IS : FAILURE\n\n ");
         return EXIT_FAILURE;
     }
     bool supr = test_game_delete();
     if(supr==true){
-        fprintf(stderr,"EXECUTING OF game_delete IS : REUSITE\n\n ");
+        fprintf(stderr,"EXECUTING OF game_delete IS : REUSSITE\n\n ");
 
     }else{
         fprintf(stderr,"EXECUTING OF game_delete IS : FAILURE\n\n ");
