@@ -54,6 +54,11 @@ bool test_game_nb_moves_max(){
         game_delete(g);
         return false;
     }
+    game_play_one_move(g, RED);
+    if (game_nb_moves_max(g) != 11){
+        game_delete(g);
+        return false;
+    }
     game_delete(g);
     return true;
 }
