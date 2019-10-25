@@ -39,16 +39,17 @@ bool test_game_play_one_move (color c){
     fprintf(stderr,"Error : invalid game\n\n");
     return false;
   }
+
   game_play_one_move(g,c);
-  for (unsigned int x=0; x<SIZE*SIZE; x++){
-    for (unsigned int y=0; y<SIZE*SIZE; y++){
+  for (unsigned int y=0; y<SIZE; y++){
+    for (unsigned int x=0; x<SIZE; x++){
       if (game_cell_current_color(g,x,y)!=c){
         return false;
       }
     }
   }
   if (c>=NB_COLORS || c<=0){
-    fprintf(stderr,"Error : invalid game\n\n"); //commentaire
+    fprintf(stderr,"Error : invalid game\n\n");
     return false;
   }
   return true; 
