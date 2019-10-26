@@ -7,21 +7,21 @@ typedef unsigned int uint;
 
 
 bool test_game_new_empty(){
-    game g = game_new_empty();
+    color cells [144] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    game g = game_new(cells, 10);
     if(g==NULL){
         return false;
     }
-    if (game_nb_moves_max(g)!=0){
-        return false;
-    }
+
     for (unsigned int y=0;y<SIZE;y++){
         for (unsigned int x=0 ;x<SIZE;x++){
-            if (game_cell_current_color(g,x,y) != RED){
+            if (game_cell_current_color(g,x,y) != RED||game_nb_moves_max(g)!=0){
                 return false;
             }
         }
     }
     return true;
+
 }
 bool test_game_cell_current_color(){
     game g = game_new_empty();
