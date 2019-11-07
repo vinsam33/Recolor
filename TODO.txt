@@ -1,0 +1,35 @@
+Vincent SAMSON :
+
+    test : test_game_new_empty
+           test_game_cell_current_color
+           test_game_delete
+
+    fonction game.c :
+
+Elhadj Mamadou DIALLO :
+
+    test : test_nb_moves_cur
+           test_game_set_cell_init
+           test_game_is_over
+
+    fonction game.c :
+
+Emeric MOLERE :
+
+    test : test_game_set_max_moves
+           test_game_play_one_move
+           test_game_restart
+
+    fonction game.c :
+
+Sylavin LASCOSTES :
+
+    test : test_game_new
+           test_game_nb_moves_max
+           test_game_copy
+
+    fonction game.c :
+
+Commun au groupe :
+
+    Makefile
