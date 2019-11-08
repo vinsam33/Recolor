@@ -3,8 +3,13 @@
 
 #include "game.h"
 
+typedef unsigned int uint; 
+
 struct game_s{
-    int x;
+    color *tab; 
+    uint nb_max;
+    uint nb_curr; 
+    game newgame; 
 };
 
 #define SIZE 12
