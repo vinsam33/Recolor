@@ -11,7 +11,8 @@ struct game_s{
 
 typedef unsigned int uint;
 typedef const struct game_s *cgame;
-typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
+//typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
+
 
 
 typedef struct game_s *game;
