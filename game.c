@@ -32,7 +32,12 @@ game game_new(color *cells, uint nb_moves_max){
 
 
 game game_new_empty(){
-     return NULL;
+    for (uint y=0;y<SIZE;y++){
+        for (uint x=0; x<SIZE;x++){
+            game_set_cell_init(g->tab[y*SIZE+x], x,y, RED);
+            game_nb_moves_max(g)=0;
+        }
+    }
 
 }
 
@@ -53,7 +58,10 @@ uint game_nb_moves_max(cgame g){
 
 
 color game_cell_current_color(cgame g, uint x, uint y){
-     return RED;
+    if (g==NULL){
+        return ;
+    }
+    return g->tab[y*SIZE+x];
 
 }
 
@@ -75,6 +83,11 @@ game game_copy(cgame g){
 
 
 void game_delete(game g){
+    if (g==NULL){
+        return;
+    }
+    free(g->tab);
+    free(g);
 
 }
 
