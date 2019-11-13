@@ -3,24 +3,28 @@
 
 #include "game.h"
 
-typedef unsigned int uint; 
+
+
+typedef unsigned int uint;
+typedef const struct game_s *cgame;
 
 struct game_s{
     color *tab; 
     uint nb_max;
     uint nb_curr; 
-    game newgame; 
+    game initgame; 
 };
+
+typedef struct game_s *game;
 
 #define SIZE 12
 
-typedef unsigned int uint;
-typedef const struct game_s *cgame;
+
 //typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
 
 
 
-typedef struct game_s *game;
+
 
 
 
@@ -47,8 +51,13 @@ void game_set_cell_init(game g, uint x, uint y, color c){
 
 
 void game_set_max_moves(game g, uint nb_max_moves){
-
-}
+    if (g==NULL){
+        fprintf(stderr,"g can't be NULL");
+        exit(EXIT_FAILURE); 
+    }
+    g->initgame->nb_max=nb_max_moves; 
+    g->nb_max=nb_max_moves; 
+    }
 
 
 uint game_nb_moves_max(cgame g){
@@ -73,7 +82,26 @@ uint game_nb_moves_cur(cgame g){
 
 
 void game_play_one_move(game g, color c){
+    if (g==NULL){
+        fprintf(stderr, "g can't be null");
+        exit(EXIT_FAILURE); 
+    }
+    
+    firt_case=game_cell_current_color(g, 0, 0); 
+    uint y=1, x=1; 
+    cell_y=game_cell_current_color(g,0,y); 
+    cell_x=game_cell_current_color(g,x,0); 
 
+    while (first_case==cell_y && y<SIZE-1){
+       cell_y=game_cell_current_color(g,0,y+1); 
+       g->tab[0][y]=c;  
+    }
+
+    while (first_case==cell_x && x<SIZE-1){
+        cell_x=game_cell_current_color(g,x+1,0); 
+        g->tab[x][0]=c;
+    }
+    g->tab[0][0]=c; 
 }
 
 game game_copy(cgame g){
