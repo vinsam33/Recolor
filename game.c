@@ -85,9 +85,16 @@ game game_new_empty(){
 }
 
 void game_set_cell_init(game g, uint x, uint y, color c){
-
+    if(g==NULL){
+        fprintf(stderr, "Error: do not game null");
+        exit(EXIT_FAILURE);
+    }
+    if((x<SIZE)&& (y<SIZE) && (0<= c)&& (c <  NB_COLORS)){
+        g->tab[x][y]=c;
+        g->initgame[x][y]=c;
+    }
+        return ;
 }
-
 
 void game_set_max_moves(game g, uint nb_max_moves){
     if (g==NULL){
@@ -118,7 +125,11 @@ color game_cell_current_color(cgame g, uint x, uint y){
 
 
 uint game_nb_moves_cur(cgame g){
-     return 0;
+    if(g==NULL){
+        fprintf(stderr, "Error: do not game null");
+        exit(EXIT_FAILURE);
+    }
+    return g->nb_curr;
 
 }
 
@@ -186,7 +197,22 @@ void game_delete(game g){
 
 
 bool game_is_over(cgame g){
-     return true;
+    if(g==NULL){
+        fprintf(stderr, "Error: do not game null");
+        exit(EXIT_FAILURE);
+    }
+     c= game_cell_current_color(g,0,0);
+     if( g->nbmax==g->nb_curr){
+        for (int x=0; i<size; x++){
+            for( int y=0; y<size; y++){
+                if(c != game_cell_current_color(g,x,y) ){
+                    return false;
+                }
+             }
+
+        }
+	return true;
+     }
 
 }
 
