@@ -32,12 +32,21 @@ game game_new(color *cells, uint nb_moves_max){
 
 
 game game_new_empty(){
+    game g = malloc (sizeof(game));
+    if (g==NULL){
+        return;
+    }
+    g->tab=malloc(sizeof(color));
+    if(g->tab==NULL){
+        return;
+    }
     for (uint y=0;y<SIZE;y++){
         for (uint x=0; x<SIZE;x++){
-            game_set_cell_init(g->tab[y*SIZE+x], x,y, RED);
-            game_nb_moves_max(g)=0;
+            game_set_cell_init(g, x,y, RED);
+            game_set_max_moves(g,0);
         }
     }
+    return g;
 
 }
 
