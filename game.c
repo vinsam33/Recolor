@@ -6,7 +6,7 @@
 typedef unsigned int uint; 
 
 struct game_s{
-    color *tab; 
+    color **tab; 
     uint nb_max;
     uint nb_curr; 
     game newgame; 
@@ -25,8 +25,44 @@ typedef struct game_s *game;
 
 
 game game_new(color *cells, uint nb_moves_max){
-    return NULL;
-
+    game g = malloc(sizeof(struct game_s));
+    if (g == NULL){
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    g->tab = (color**) malloc(SIZE*sizeof(color*));
+    if (g->tab == NULL){
+        free(g);
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    for (uint i=0 ; i<SIZE ; i++){
+        g->tab[i] = (color*) malloc(SIZE*sizeof(color));
+        if (g->tab[i] == NULL){
+            free(g->tab);
+            free(g);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    for (uint i=0 ; i<SIZE ; i++){
+        for (uint j=0 ; j<SIZE ; j++){
+            g->tab[i][j] = (*cells);
+        }
+    }
+    if (nb_moves_max <= 0){
+        for (uint i=0 ; i<SIZE ; i++){
+            for (uint j=0 ; j<SIZE ; j++){
+                free(g->tab[i]);
+            }
+        free(g->tab);
+        free(g);
+        fprintf(stderr, "Nb_max_moves less or egal than 0\n");
+        exit(EXIT_FAILURE);
+        }
+    }
+    g->nb_max = nb_moves_max;
+    return g;
 }
 
 
@@ -61,8 +97,11 @@ void game_set_max_moves(game g, uint nb_max_moves){
 
 
 uint game_nb_moves_max(cgame g){
-     return 0;
-
+    if (g == NULL){
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    return g->nb_max;
 }
 
 
@@ -97,7 +136,6 @@ void game_delete(game g){
     }
     free(g->tab);
     free(g);
-
 }
 
 
