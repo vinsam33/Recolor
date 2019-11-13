@@ -4,7 +4,9 @@ Vincent SAMSON :
            test_game_cell_current_color
            test_game_delete
 
-    fonction game.c :
+    fonction game.c : game_new_empty
+                      game_cell_current_color
+                      game_delete
 
 Elhadj Mamadou DIALLO :
 
@@ -12,7 +14,9 @@ Elhadj Mamadou DIALLO :
            test_game_set_cell_init
            test_game_is_over
 
-    fonction game.c :
+    fonction game.c : nb_moves_cur
+                      game_set_cell_init
+                      game_is_over
 
 Emeric MOLERE :
 
@@ -20,7 +24,9 @@ Emeric MOLERE :
            test_game_play_one_move
            test_game_restart
 
-    fonction game.c :
+    fonction game.c : game_set_max_moves
+                      game_play_one_move
+                      game_restart
 
 Sylavin LASCOSTES :
 
@@ -28,7 +34,9 @@ Sylavin LASCOSTES :
            test_game_nb_moves_max
            test_game_copy
 
-    fonction game.c :
+    fonction game.c : game_new
+                      game_nb_moves_max
+                      game_copy
 
 Commun au groupe :
 
