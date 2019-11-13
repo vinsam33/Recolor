@@ -64,15 +64,25 @@ game game_new(color *cells, uint nb_moves_max){
 }
 
 
-
 game game_new_empty(){
     game g = malloc (sizeof(game));
     if (g==NULL){
+        fprintf(stderr, "Problem allocation memory\n");
         return;
     }
-    g->tab=malloc(sizeof(color));
+    g->tab=malloc(sizeof(color*));
     if(g->tab==NULL){
+        free(g);
+        fprintf(stderr, "Problem allocation memory\n");
         return;
+    }for (uint i=0;i<SIZE;i++){
+        g->tab[i]=malloc(SIZE*sizeof(color));
+            if (g->tab[i]==NULL){
+                free(g);
+                fprintf(stderr, "Problem allocation memory\n");
+                return;
+            }
+
     }
     for (uint y=0;y<SIZE;y++){
         for (uint x=0; x<SIZE;x++){
@@ -83,7 +93,6 @@ game game_new_empty(){
     return g;
 
 }
-
 void game_set_cell_init(game g, uint x, uint y, color c){
     if(g==NULL){
         fprintf(stderr, "Error: do not game null");
@@ -119,7 +128,7 @@ color game_cell_current_color(cgame g, uint x, uint y){
     if (g==NULL){
         return ;
     }
-    return g->tab[y*SIZE+x];
+    return g->tab[x][y];
 
 }
 
@@ -186,15 +195,17 @@ game game_copy(cgame g){
     return g2;
 }
 
-
 void game_delete(game g){
     if (g==NULL){
         return;
     }
+    for (uint x=0; x<SIZE;x++){
+        free(g->tab[x]);
+    }
     free(g->tab);
     free(g);
-}
 
+}
 
 bool game_is_over(cgame g){
     if(g==NULL){
