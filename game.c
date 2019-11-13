@@ -125,8 +125,32 @@ void game_play_one_move(game g, color c){
 }
 
 game game_copy(cgame g){
-     return NULL;
-
+    if (g == NULL){
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    game g2;
+    g2->tab = (color**) malloc(SIZE*sizeof(color*));
+    if (g2->tab == NULL){
+        free(g);
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    for (uint i=0 ; i<SIZE ; i++){
+        g2->tab[i] = (color*) malloc(SIZE*sizeof(color));
+        if (g2->tab[i] == NULL){
+            free(g->tab);
+            free(g);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    for (uint i=0 ; i<SIZE ; i++){
+        for (uint j=0 ; j<SIZE ; j++){
+            g2->tab[i][j] = g->tab[i][j];
+        }
+    }
+    return g2;
 }
 
 
