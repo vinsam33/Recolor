@@ -22,12 +22,6 @@ typedef struct game_s *game;
 
 //typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
 
-
-
-
-
-
-
 game game_new(color *cells, uint nb_moves_max){
     game g = malloc(sizeof(struct game_s));
     if (g == NULL){
