@@ -220,6 +220,8 @@ game game_copy(cgame g){
             g2->tab[i][j] = g->tab[i][j];
         }
     }
+    g2->nb_max = g->nb_max;
+    g2->nb_curr = g->nb_curr;
     return g2;
 }
 
@@ -255,6 +257,11 @@ bool game_is_over(cgame g){
 
 
 void game_restart(game g){
-
+    if(g = NULL){
+        fprintf(stderr, "Error: do not game null");
+        exit(EXIT_FAILURE);
+    }
+    game new_game = game_copy(g);
 }
+
 
