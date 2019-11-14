@@ -12,7 +12,7 @@ struct game_s{
     color **tab;
     uint nb_max;
     uint nb_curr;
-    game initgame;
+    color **initgame;
 };
 
 typedef struct game_s *game;
@@ -110,9 +110,9 @@ void game_set_max_moves(game g, uint nb_max_moves){
         fprintf(stderr,"g can't be NULL");
         exit(EXIT_FAILURE);
     }
-    g->initgame->nb_max=nb_max_moves;
+    //g->initgame->nb_max=nb_max_moves;
     g->nb_max=nb_max_moves;
-    }
+}
 
 
 uint game_nb_moves_max(cgame g){
@@ -141,17 +141,38 @@ uint game_nb_moves_cur(cgame g){
     return g->nb_curr;
 }
 
+void remplissage(game g, color cible, color rep, uint x, uint y){
+    if(g==NULL){
+        fprintf(stderr, "g can't be null");
+        exit(EXIT_FAILURE);
+    }
+    if(game_cell_current_color(g, x, y) == cible){
+        g->tab[x][y] = rep;
+        if(y-1 >= 0){
+            remplissage(g, cible, rep, x, y-1); // Remplissage au nord
+        }
+        if(y+1 <= SIZE-1){
+            remplissage(g, cible, rep, x, y+1); // Remplissage au sud
+        }
+        if(x+1 <= SIZE-1){
+            remplissage(g, cible, rep, x+1, y); // Remplissage à l'est
+        }
+        if(x-1 >= 0){
+            remplissage(g, cible, rep, x-1, y); // Remplissage à l'ouest
+        }
+    }
+}
 
 void game_play_one_move(game g, color c){
-    if (g==NULL){
+    /*if (g==NULL){
         fprintf(stderr, "g can't be null");
         exit(EXIT_FAILURE);
     }
 
-    firt_case=game_cell_current_color(g, 0, 0);
+    color firt_case=game_cell_current_color(g, 0, 0);
     uint y=1, x=1;
-    cell_y=game_cell_current_color(g,0,y);
-    cell_x=game_cell_current_color(g,x,0);
+    color cell_y=game_cell_current_color(g,0,y);
+    color cell_x=game_cell_current_color(g,x,0);
 
     while (first_case==cell_y && y<SIZE-1){
        cell_y=game_cell_current_color(g,0,y+1);
@@ -162,7 +183,15 @@ void game_play_one_move(game g, color c){
         cell_x=game_cell_current_color(g,x+1,0);
         g->tab[x][0]=c;
     }
-    g->tab[0][0]=c;
+    g->tab[0][0]=c;*/
+    if(g==NULL){
+        fprintf(stderr, "g can't be null");
+        exit(EXIT_FAILURE);
+    }
+    color first_case = game_cell_current_color(g, 0, 0);
+    if(first_case != c){
+        remplissage(g, first_case, c, 0, 0);
+    }
 }
 
 game game_copy(cgame g){
