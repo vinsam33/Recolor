@@ -106,7 +106,7 @@ void game_set_cell_init(game g, uint x, uint y, color c){
 }
 
 void game_set_max_moves(game g, uint nb_max_moves){
-    if (g==NULL){
+    if (g==NULL || nb_max_moves==0){
         fprintf(stderr,"g can't be NULL");
         exit(EXIT_FAILURE);
     }
@@ -257,11 +257,14 @@ bool game_is_over(cgame g){
 
 
 void game_restart(game g){
-    if(g = NULL){
+    if(g==NULL){
         fprintf(stderr, "Error: do not game null");
         exit(EXIT_FAILURE);
     }
     game new_game = game_copy(g);
+    new_game->nb_curr=0;
+    new_game->tab=new_game->init_game;
+
 }
 
 
