@@ -12,7 +12,7 @@ struct game_s{
     color **tab;
     uint nb_max;
     uint nb_curr;
-    color **initgame;
+    color **init_game;
 };
 
 typedef struct game_s *game;
@@ -34,6 +34,12 @@ game game_new(color *cells, uint nb_moves_max){
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
+    g->init_game = (color**) malloc(SIZE*sizeof(color*));
+    if (g->init_game == NULL){
+        free(g);
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
     for (uint i=0 ; i<SIZE ; i++){
         g->tab[i] = (color*) malloc(SIZE*sizeof(color));
         if (g->tab[i] == NULL){
@@ -42,18 +48,28 @@ game game_new(color *cells, uint nb_moves_max){
             fprintf(stderr, "Problem allocation memory\n");
             exit(EXIT_FAILURE);
         }
+        g->init_game[i] = (color*) malloc(SIZE*sizeof(color));
+        if (g->init_game[i] == NULL){
+            free(g->init_game);
+            free(g);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
     }
     for (uint i=0 ; i<SIZE ; i++){
         for (uint j=0 ; j<SIZE ; j++){
-            g->tab[i][j] = (*cells);
+            g->tab[i][j] = cells[j*SIZE+i];
+            g->init_game[i][j] = cells[j*SIZE+i];
         }
     }
     if (nb_moves_max <= 0){
         for (uint i=0 ; i<SIZE ; i++){
             for (uint j=0 ; j<SIZE ; j++){
                 free(g->tab[i]);
+                free(g->init_game[i]);
             }
         free(g->tab);
+        free(g->init_game);
         free(g);
         fprintf(stderr, "Nb_max_moves less or egal than 0\n");
         exit(EXIT_FAILURE);
@@ -75,19 +91,32 @@ game game_new_empty(){
         free(g);
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
-    }for (uint i=0;i<SIZE;i++){
+    }
+    g->init_game=malloc(sizeof(color*));
+    if(g->init_game==NULL){
+        free(g);
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    for (uint i=0;i<SIZE;i++){
         g->tab[i]=malloc(SIZE*sizeof(color));
-            if (g->tab[i]==NULL){
-                free(g);
-                fprintf(stderr, "Problem allocation memory\n");
-                exit(EXIT_FAILURE);
-            }
-
+        if (g->tab[i]==NULL){
+            free(g);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
+        g->init_game[i]=malloc(SIZE*sizeof(color)); 
+        if (g->init_game[i]==NULL){
+            free(g);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
     }
     for (uint y=0;y<SIZE;y++){
         for (uint x=0; x<SIZE;x++){
             game_set_cell_init(g, x,y, RED);
             game_set_max_moves(g,0);
+            g->init_game[x][y] = RED; 
         }
     }
     return g;
@@ -199,7 +228,11 @@ game game_copy(cgame g){
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
-    game g2;
+    game g2 = malloc(sizeof(struct game_s));
+    if (g2 == NULL){
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
     g2->tab = (color**) malloc(SIZE*sizeof(color*));
     if (g2->tab == NULL){
         free(g2);
@@ -234,7 +267,6 @@ void game_delete(game g){
     }
     free(g->tab);
     free(g);
-
 }
 
 bool game_is_over(cgame g){
@@ -243,16 +275,17 @@ bool game_is_over(cgame g){
         exit(EXIT_FAILURE);
     }
     color c = game_cell_current_color(g,0,0);
-    if(g->nb_max==g->nb_curr){
-        for (int x=0; x<SIZE; x++){
-            for( int y=0; y<SIZE; y++){
-                if(c != game_cell_current_color(g,x,y) ){
+    if(g->nb_curr<=g->nb_max){
+        for (uint x=0; x<SIZE; x++){
+            for(uint y=0; y<SIZE; y++){
+                if(c != game_cell_current_color(g,x,y)){
                     return false;
                 }
             }
         }
-	return true;
+        return true;
     }
+    return false;
 }
 
 
@@ -261,10 +294,12 @@ void game_restart(game g){
         fprintf(stderr, "Error: do not game null");
         exit(EXIT_FAILURE);
     }
-    game new_game = game_copy(g);
-    new_game->nb_curr=0;
-    new_game->tab=new_game->init_game;
-
+    g->nb_curr = 0;
+    for(unsigned int i=0 ; i<SIZE ; i++){
+        for(unsigned int j=0 ; j<SIZE ; j++){
+            g->tab[i][j] = g->init_game[i][j];
+        }
+    }
 }
 
 
