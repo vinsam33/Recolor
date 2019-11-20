@@ -154,8 +154,12 @@ uint game_nb_moves_max(cgame g){
 
 
 color game_cell_current_color(cgame g, uint x, uint y){
-    if (g==NULL || x>=SIZE || y>=SIZE){
+    if (g == NULL || g->tab == NULL || g->init_game == NULL){
         fprintf(stderr, "Problem allocation memory curr_color\n");
+        exit(EXIT_FAILURE);
+    }
+    if (x >= SIZE || y >= SIZE){
+        fprintf(stderr, "Problem size curr_color\n");
         exit(EXIT_FAILURE);
     }
     return g->tab[x][y];
@@ -177,16 +181,16 @@ void remplissage(game g, color cible, color rep, uint x, uint y){
     }
     if(game_cell_current_color(g, x, y) == cible){
         g->tab[x][y] = rep;
-        if(y-1 >= 0){
+        if(y > 0){
             remplissage(g, cible, rep, x, y-1); // Remplissage au nord
         }
-        if(y+1 <= SIZE-1){
+        if(y < SIZE-1){
             remplissage(g, cible, rep, x, y+1); // Remplissage au sud
         }
-        if(x+1 <= SIZE-1){
+        if(x < SIZE-1){
             remplissage(g, cible, rep, x+1, y); // Remplissage à l'est
         }
-        if(x-1 >= 0){
+        if(x > 0){
             remplissage(g, cible, rep, x-1, y); // Remplissage à l'ouest
         }
     }
@@ -200,6 +204,7 @@ void game_play_one_move(game g,color c){
     color first_case = game_cell_current_color(g, 0, 0);
     if(first_case != c){
         remplissage(g, first_case, c, 0, 0);
+        g->nb_curr++;
     }
 }
 
