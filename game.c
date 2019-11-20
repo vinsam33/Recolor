@@ -105,7 +105,7 @@ game game_new_empty(){
             fprintf(stderr, "Problem allocation memory\n");
             exit(EXIT_FAILURE);
         }
-        g->init_game[i]=malloc(SIZE*sizeof(color)); 
+        g->init_game[i]=malloc(SIZE*sizeof(color));
         if (g->init_game[i]==NULL){
             free(g);
             fprintf(stderr, "Problem allocation memory\n");
@@ -116,7 +116,7 @@ game game_new_empty(){
         for (uint x=0; x<SIZE;x++){
             game_set_cell_init(g, x,y, RED);
             game_set_max_moves(g,0);
-            g->init_game[x][y] = RED; 
+            g->init_game[x][y] = RED;
         }
     }
     return g;
@@ -275,7 +275,7 @@ bool game_is_over(cgame g){
 
 
 void game_restart(game g){
-    if(g==NULL){
+    if(g == NULL || g->tab == NULL || g->init_game == NULL){
         fprintf(stderr, "Error: do not game null");
         exit(EXIT_FAILURE);
     }
@@ -286,5 +286,3 @@ void game_restart(game g){
         }
     }
 }
-
-

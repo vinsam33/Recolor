@@ -31,5 +31,10 @@ add_test(test_nb_moves_cur ./test_game_elhdiallo nb_moves_cur)
 add_test(test_game_set_cell_init ./test_game_elhdiallo game_set_cell_init)
 add_test(test_game_is_over ./test_game_elhdiallo game_is_over)
 
-add_test(test_emolere ./test_game_emolere)
-add_test(test_vsamson ./test_game_vsamson)
+add_test(test_game_set_max_moves ./test_game_emolere game_set_max_moves)
+add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
+add_test(test_game_restart ./test_game_emolere game_restart)
+
+add_test(test_game_new_empty ./test_game_vsamson game_new_empty)
+add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_color)
+add_test(test_game_delete ./test_game_vsamson game_delete)
