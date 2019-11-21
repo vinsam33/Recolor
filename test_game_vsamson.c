@@ -5,19 +5,19 @@
 
 bool test_game_new_empty() {
   game g = game_new_empty();
-  if (g == NULL) {
+  if (g == NULL || game_nb_moves_max(g) != 0) {
     return false;
   }
   for (unsigned int y = 0; y < SIZE; y++) {
     for (unsigned int x = 0; x < SIZE; x++) {
-      if (game_cell_current_color(g, x, y) != RED ||
-          game_nb_moves_max(g) != 0) {
+      if (game_cell_current_color(g, x, y) != RED) {
         return false;
       }
     }
   }
   return true;
 }
+
 bool test_game_cell_current_color() {
   game g = game_new_empty();
   if (!g) {
