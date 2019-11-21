@@ -86,45 +86,47 @@ game game_new_empty(){
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
-    g->tab=malloc(sizeof(color*));
-    if(g->tab==NULL){
+    g->tab = malloc(SIZE*sizeof(color*));
+    if(g->tab == NULL){
         free(g);
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
-    g->init_game=malloc(sizeof(color*));
-    if(g->init_game==NULL){
+    g->init_game = malloc(SIZE*sizeof(color*)); // ERROR !!!!
+    if(g->init_game == NULL){
         free(g);
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
-    for (uint i=0;i<SIZE;i++){
-        g->tab[i]=malloc(SIZE*sizeof(color));
-        if (g->tab[i]==NULL){
+    for (uint i=0 ; i<SIZE ; i++){
+        g->tab[i] = malloc(SIZE*sizeof(color));
+        if (g->tab[i] == NULL){
             free(g);
             fprintf(stderr, "Problem allocation memory\n");
             exit(EXIT_FAILURE);
         }
-        g->init_game[i]=malloc(SIZE*sizeof(color));
-        if (g->init_game[i]==NULL){
+        g->init_game[i] = malloc(SIZE*sizeof(color));
+        if (g->init_game[i] == NULL){
             free(g);
             fprintf(stderr, "Problem allocation memory\n");
             exit(EXIT_FAILURE);
         }
     }
-    for (uint y=0;y<SIZE;y++){
-        for (uint x=0; x<SIZE;x++){
-            game_set_cell_init(g, x,y, RED);
-            game_set_max_moves(g,0);
+    for (uint x=0 ; x<SIZE ; x++){
+        for (uint y=0; y<SIZE ; y++){
+            //game_set_cell_init(g, x,y, RED);
+            g->tab[x][y] = RED;
             g->init_game[x][y] = RED;
         }
     }
+    g->nb_max = 0;
+    g->nb_curr = 0;
     return g;
 }
 
 void game_set_cell_init(game g, uint x, uint y, color c){
     if(g==NULL){
-        fprintf(stderr, "Error: do not game null");
+        fprintf(stderr, "Error: do not game null\n");
         exit(EXIT_FAILURE);
     }
     if((x<SIZE)&& (y<SIZE) && (0<= c)&& (c <  NB_COLORS)){
@@ -136,7 +138,7 @@ void game_set_cell_init(game g, uint x, uint y, color c){
 
 void game_set_max_moves(game g, uint nb_max_moves){
     if (g==NULL || nb_max_moves==0){
-        fprintf(stderr,"g can't be NULL");
+        fprintf(stderr,"g can't be NULL\n");
         exit(EXIT_FAILURE);
     }
     //g->initgame->nb_max=nb_max_moves;
@@ -168,7 +170,7 @@ color game_cell_current_color(cgame g, uint x, uint y){
 
 uint game_nb_moves_cur(cgame g){
     if(g==NULL){
-        fprintf(stderr, "Error: do not game null");
+        fprintf(stderr, "Error: do not game null\n");
         exit(EXIT_FAILURE);
     }
     return g->nb_curr;
@@ -176,7 +178,7 @@ uint game_nb_moves_cur(cgame g){
 
 void remplissage(game g, color cible, color rep, uint x, uint y){
     if(g==NULL){
-        fprintf(stderr, "g can't be null");
+        fprintf(stderr, "g can't be null\n");
         exit(EXIT_FAILURE);
     }
     if(game_cell_current_color(g, x, y) == cible){
@@ -198,7 +200,7 @@ void remplissage(game g, color cible, color rep, uint x, uint y){
 
 void game_play_one_move(game g,color c){
     if(g==NULL){
-        fprintf(stderr, "g can't be null");
+        fprintf(stderr, "g can't be null\n");
         exit(EXIT_FAILURE);
     }
     color first_case = game_cell_current_color(g, 0, 0);
@@ -270,7 +272,7 @@ void game_delete(game g){
 
 bool game_is_over(cgame g){
     if(g==NULL){
-        fprintf(stderr, "Error: do not game null");
+        fprintf(stderr, "Error: do not game null\n");
         exit(EXIT_FAILURE);
     }
     color c = game_cell_current_color(g,0,0);
@@ -290,7 +292,7 @@ bool game_is_over(cgame g){
 
 void game_restart(game g){
     if(g == NULL || g->tab == NULL || g->init_game == NULL){
-        fprintf(stderr, "Error: do not game null");
+        fprintf(stderr, "Error: do not game null\n");
         exit(EXIT_FAILURE);
     }
     g->nb_curr = 0;
