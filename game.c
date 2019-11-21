@@ -224,6 +224,12 @@ game game_copy(cgame g){
         fprintf(stderr, "Problem allocation memory\n");
         exit(EXIT_FAILURE);
     }
+    g2->init_game= (color**) malloc(SIZE*sizeof(color*));
+    if (g2->init_game == NULL){
+        free(g2);
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
     for (uint i=0 ; i<SIZE ; i++){
         g2->tab[i] = (color*) malloc(SIZE*sizeof(color));
         if (g2->tab[i] == NULL){
@@ -232,10 +238,18 @@ game game_copy(cgame g){
             fprintf(stderr, "Problem allocation memory\n");
             exit(EXIT_FAILURE);
         }
+        g2->init_game[i] = (color*) malloc(SIZE*sizeof(color));
+        if (g2->init_game[i] == NULL){
+            free(g2->init_game);
+            free(g2);
+            fprintf(stderr, "Problem allocation memory\n");
+            exit(EXIT_FAILURE);
+        }
     }
     for (uint i=0 ; i<SIZE ; i++){
         for (uint j=0 ; j<SIZE ; j++){
             g2->tab[i][j] = g->tab[i][j];
+            g2->init_game[i][j] = g->init_game[i][j];
         }
     }
     g2->nb_max = g->nb_max;
