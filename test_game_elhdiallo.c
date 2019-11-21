@@ -11,7 +11,7 @@
 typedef unsigned int uint;
 
 // 1ere fonction 
-bool test_nb_moves_cur(uint x){
+bool test_nb_moves_cur(){
     game g=game_new_empty();
     if(g == NULL){
         return false;
@@ -21,10 +21,11 @@ bool test_nb_moves_cur(uint x){
         fprintf(stderr, " game_nb_moves_cur est censé retourné 0");
         return false;
     }
-    for(uint i=0; i<x; i++){
+    /*for(uint i=0; i<x; i++){
         game_play_one_move(g, 3);
-    }
-    if(game_nb_moves_cur(g)!=x){
+    }*/
+    game_play_one_move(g,3);
+    if(game_nb_moves_cur(g) == 0){
         return false;
     }
     return true;
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
     bool ok = false;
 
     if (strcmp("nb_moves_cur", argv[1]) == 0){
-        ok = test_nb_moves_cur(3);
+        ok = test_nb_moves_cur();
     }else if ((strcmp("game_set_cell_init", argv[1]) == 0)){
         ok = test_game_set_cell_init(g, 5, 6);
     }else if (((strcmp("game_is_over", argv[1]) == 0))){
