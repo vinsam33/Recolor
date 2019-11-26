@@ -87,13 +87,13 @@ game game_new_empty() {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g->tab = malloc(SIZE * sizeof(color *));
+  g->tab = (color **)malloc(SIZE * sizeof(color *));
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g->init_game = malloc(SIZE * sizeof(color *));  // ERROR !!!!
+  g->init_game = (color **)malloc(SIZE * sizeof(color *));
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
@@ -101,7 +101,7 @@ game game_new_empty() {
     exit(EXIT_FAILURE);
   }
   for (uint i = 0; i < SIZE; i++) {
-    g->tab[i] = malloc(SIZE * sizeof(color));
+    g->tab[i] =(color *)malloc(SIZE * sizeof(color));
     if (g->tab[i] == NULL) {
       free(g->tab);
       free(g->init_game);
@@ -109,7 +109,7 @@ game game_new_empty() {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
-    g->init_game[i] = malloc(SIZE * sizeof(color));
+    g->init_game[i] = (color *)malloc(SIZE * sizeof(color));
     if (g->init_game[i] == NULL) {
       for(uint x=0; x<SIZE; x++){
         free(g->tab[x]);
@@ -234,6 +234,7 @@ game game_copy(cgame g) {
   }
   g2->init_game = (color **)malloc(SIZE * sizeof(color *));
   if (g2->init_game == NULL) {
+    free(g2->tab);
     free(g2);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -242,13 +243,18 @@ game game_copy(cgame g) {
     g2->tab[i] = (color *)malloc(SIZE * sizeof(color));
     if (g2->tab[i] == NULL) {
       free(g2->tab);
+      free(g2->init_game);
       free(g2);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
     g2->init_game[i] = (color *)malloc(SIZE * sizeof(color));
     if (g2->init_game[i] == NULL) {
+      for(uint i=0 ; i<SIZE ; i++){
+        free(g2->tab[i]);
+      }
       free(g2->init_game);
+      free(g2->tab);
       free(g2);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
