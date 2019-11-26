@@ -33,6 +33,7 @@ game game_new(color *cells, uint nb_moves_max) {
   }
   g->init_game = (color **)malloc(SIZE * sizeof(color *));
   if (g->init_game == NULL) {
+    free(g->tab);
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -41,12 +42,17 @@ game game_new(color *cells, uint nb_moves_max) {
     g->tab[i] = (color *)malloc(SIZE * sizeof(color));
     if (g->tab[i] == NULL) {
       free(g->tab);
+      free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
     g->init_game[i] = (color *)malloc(SIZE * sizeof(color));
-    if (g->init_game[i] == NULL) {
+    if (g->init_game[i] == NULL){
+      for (uint i = 0; i < SIZE; i++) {
+        free(g->tab[i]);
+      }
+      free(g->tab);
       free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
@@ -61,16 +67,14 @@ game game_new(color *cells, uint nb_moves_max) {
   }
   if (nb_moves_max <= 0) {
     for (uint i = 0; i < SIZE; i++) {
-      for (uint j = 0; j < SIZE; j++) {
         free(g->tab[i]);
         free(g->init_game[i]);
-      }
-      free(g->tab);
-      free(g->init_game);
-      free(g);
-      fprintf(stderr, "Nb_max_moves less or egal than 0\n");
-      exit(EXIT_FAILURE);
     }
+    free(g->tab);
+    free(g->init_game);
+    free(g);
+    fprintf(stderr, "Nb_max_moves less or egal than 0\n");
+    exit(EXIT_FAILURE);
   }
   g->nb_max = nb_moves_max;
   g->nb_curr = 0;
