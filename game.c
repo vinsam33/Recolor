@@ -95,6 +95,7 @@ game game_new_empty() {
   }
   g->init_game = malloc(SIZE * sizeof(color *));  // ERROR !!!!
   if (g->init_game == NULL) {
+    free(g->tab);
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -102,12 +103,19 @@ game game_new_empty() {
   for (uint i = 0; i < SIZE; i++) {
     g->tab[i] = malloc(SIZE * sizeof(color));
     if (g->tab[i] == NULL) {
+      free(g->tab);
+      free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
     g->init_game[i] = malloc(SIZE * sizeof(color));
     if (g->init_game[i] == NULL) {
+      for(uint x=0; x<SIZE; x++){
+        free(g->tab[x]);
+      }
+      free(g->tab);
+      free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
@@ -263,7 +271,9 @@ void game_delete(game g) {
   }
   for (uint x = 0; x < SIZE; x++) {
     free(g->tab[x]);
+    free(g->init_game[x]);
   }
+  free(g->init_game);
   free(g->tab);
   free(g);
 }
