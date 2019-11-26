@@ -16,7 +16,7 @@ bool test_nb_moves_cur() {
   if (g == NULL) {
     return false;
   }
-  
+
   game_nb_moves_cur(g);
   if (game_nb_moves_cur(g) != 0) {
     fprintf(stderr, " game_nb_moves_cur est censé retourné 0");
@@ -26,7 +26,8 @@ bool test_nb_moves_cur() {
       game_play_one_move(g, 3);
   }*/
   game_play_one_move(g, 3);
-  if (game_nb_moves_cur(g) != 1) {
+
+  if (game_nb_moves_cur(g) ==0) {
     return false;
   }
   return true;
