@@ -13,7 +13,7 @@ typedef unsigned int uint;
 // 1ere fonction
 bool test_nb_moves_cur() {
   game g = game_new_empty();
-  if (g == NULL) {
+  if ( g==NULL){
     return false;
   }
 
@@ -32,7 +32,6 @@ bool test_nb_moves_cur() {
   }
   return true;
 }
-
 // 2eme fonction
 bool test_game_set_cell_init(game g, uint x, uint y) {
   // game g=game_new_empty();
