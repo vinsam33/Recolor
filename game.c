@@ -211,7 +211,7 @@ void game_play_one_move(game g, color c) {
   }
   color first_case = game_cell_current_color(g, 0, 0);
   if (first_case != c) {
-    if (0 <= c < 4){
+    if (0 <= c && c < NB_COLORS){
       remplissage(g, first_case, c, 0, 0);
       g->nb_curr++;
     }
