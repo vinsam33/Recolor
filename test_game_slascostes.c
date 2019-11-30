@@ -9,15 +9,18 @@
 bool test_game_new(color *cells, unsigned int nb_moves_max) {
   game g = game_new(cells, nb_moves_max);
   if (g == NULL) {
+    game_delete(g);//
     return false;
   }
   unsigned int nb_max = game_nb_moves_max(g);
   if (nb_moves_max != nb_max) {
+    game_delete(g);//
     return false;
   }
   for (unsigned int y = 0; y < SIZE; y++) {
     for (unsigned int x = 0; x < SIZE; x++) {
       if (game_cell_current_color(g, x, y) != cells[y * SIZE + x]) {
+        game_delete(g);//
         return false;
       }
     }
@@ -61,6 +64,7 @@ bool test_game_copy() {
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
   game g = game_new(cells, 11);
   if (g == NULL) {
+    game_delete(g);
     return false;
   }
   game g2 = game_copy(g);

@@ -19,6 +19,7 @@ bool test_game_set_max_moves(uint max) {
   game(g) = game_new(cells, max);
   if (!g) {
     fprintf(stderr, "Error : invalid game\n\n");
+    game_delete(g);
     return false;
   }
 
@@ -34,6 +35,7 @@ bool test_game_set_max_moves(uint max) {
   game_set_max_moves(g, max);
   if (game_nb_moves_max(g) != max) {
     fprintf(stderr, "Error : too much number of moves\n\n");
+    game_delete(g);
     return false;
   }
   return true;
@@ -43,6 +45,7 @@ bool test_game_play_one_move(color c) {
   game g = game_new_empty();
   if (!g) {
     fprintf(stderr, "Error : invalid game\n\n");
+    game_delete(g);
     return false;
   }
 
@@ -50,12 +53,14 @@ bool test_game_play_one_move(color c) {
   for (unsigned int y = 0; y < SIZE; y++) {
     for (unsigned int x = 0; x < SIZE; x++) {
       if (game_cell_current_color(g, x, y) != c) {
+        game_delete(g);
         return false;
       }
     }
   }
   if (c >= NB_COLORS || c <= 0) {
     fprintf(stderr, "Error : invalid game\n\n");
+    game_delete(g);
     return false;
   }
   return true;
@@ -75,14 +80,17 @@ bool test_game_restart() {
 
   if (!game_new_empty()) {
     fprintf(stderr, "Error : Bad color, game_restart failed\n\n");
+    game_delete(g);
     return false;
   }
   if (game_nb_moves_cur(g) != 0) {
     fprintf(stderr, "Error : Number of moves different from 0\n\n");
+    game_delete(g);
     return false;
   }
   if (game_cell_current_color(g, 0, 0) != 0) {
     fprintf(stderr, "Error : game_cell_current_color different from 0\n\n");
+    game_delete(g);
     return false;
   } else {
     return true;

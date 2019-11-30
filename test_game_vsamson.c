@@ -6,11 +6,13 @@
 bool test_game_new_empty() {
   game g = game_new_empty();
   if (g == NULL || game_nb_moves_max(g) != 0) {
+    game_delete(g);
     return false;
   }
   for (unsigned int y = 0; y < SIZE; y++) {
     for (unsigned int x = 0; x < SIZE; x++) {
       if (game_cell_current_color(g, x, y) != RED) {
+        game_delete(g);
         return false;
       }
     }
@@ -21,12 +23,14 @@ bool test_game_new_empty() {
 bool test_game_cell_current_color() {
   game g = game_new_empty();
   if (!g) {
+    game_delete(g);
     return false;
   }
   for (uint y = 0; y < SIZE; y++) {
     for (uint x = 0; x < SIZE; x++) {
       game_set_cell_init(g, x, y, BLUE);
       if (game_cell_current_color(g, x, y) != BLUE) {
+        game_delete(g);
         return false;
       }
     }
