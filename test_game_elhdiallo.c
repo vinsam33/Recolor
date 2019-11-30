@@ -79,13 +79,11 @@ bool test_game_is_over() {
   game_set_cell_init(t1, 0, 0, BLUE);
   if (game_is_over(t1)) {
     fprintf(stderr, "echec game_is_over: censé returner jeux non terminé \n");
-    game_delete(g);
     return false;
   }
   game_play_one_move(t1, RED);
   if (!game_is_over(t1)) {
     fprintf(stderr, "echec game_is_over: censé retourner jeux terminé \n");
-    game_delete(g);
     return false;
   }
 
