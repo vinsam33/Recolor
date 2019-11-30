@@ -72,8 +72,7 @@ bool is_grid_red(game g) {
 bool test_game_is_over() {
   // premier test , cas toutes les cellules de même coul et nbCoupJoué < nbMax
   game t1 = game_new_empty();
-  if (t1 == NULL) {
-    game_delete(g);
+  if (t1 == NULL){
     return false;
   }
   game_set_max_moves(t1, 3);
