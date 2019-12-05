@@ -10,6 +10,9 @@ struct game_s {
   color **tab;
   uint nb_max;
   uint nb_curr;
+  uint height;
+  uint width; 
+  bool wrapping; 
   color **init_game;
 };
 
@@ -330,9 +333,34 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
 }
 
 game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
-  game g = game_new_empty();
+  
+  if(width <= 0 || height <= 0){
+    fprintf(stderr, "Error : Invalid grid");
+    exit(EXIT_FAILURE);
+  }
+
+  if(cells==NULL){
+    fprintf(stderr, "Error : Invalid cells pointer");
+    exit(EXIT_FAILURE);
+  }
+
+  if(nb_moves_max <= 0){
+    fprintf(stderr, "Error : Invalid nb_moves_max");
+    exit(EXIT_FAILURE);
+  }
+  
+  *game g = malloc(sizeof (struct game_s));
+  
+  if (g == NULL){
+    fprintf(stderr, "Error : Invalid game");
+    exit(EXIT_FAILURE);
+  }
+
+
+  game g = game_new_empty_ext();
   return g;
 }
+
 
 uint game_height(cgame game){
   return 1;
