@@ -3,40 +3,50 @@ Vincent SAMSON :
     test : test_game_new_empty
            test_game_cell_current_color
            test_game_delete
+           test_game_height
 
     fonction game.c : game_new_empty
                       game_cell_current_color
                       game_delete
+                      game_is_wrapping
+                      game_width
 
 Elhadj Mamadou DIALLO :
 
     test : test_nb_moves_cur
            test_game_set_cell_init
            test_game_is_over
+           test_game_is_wrapping
+           test_game_width
 
     fonction game.c : nb_moves_cur
                       game_set_cell_init
                       game_is_over
+                      game_new_empty_ext
 
 Emeric MOLERE :
 
     test : test_game_set_max_moves
            test_game_play_one_move
            test_game_restart
+           test_game_new_empty_ext
 
     fonction game.c : game_set_max_moves
                       game_play_one_move
                       game_restart
+                      game_new_ext
 
 Sylavin LASCOSTES :
 
     test : test_game_new
            test_game_nb_moves_max
            test_game_copy
+           test_game_new_ext
 
     fonction game.c : game_new
                       game_nb_moves_max
                       game_copy
+                      game_height
 
 Commun au groupe :
 
