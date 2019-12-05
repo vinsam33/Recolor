@@ -18,7 +18,7 @@ struct game_s {
 
 typedef struct game_s *game;
 
-#define SIZE 12
+//#define SIZE 12
 
 // typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
 
@@ -273,33 +273,38 @@ void game_restart(game g) {
   }
 }
 
-///V2///
+///V2//
 
 bool game_is_wrapping(cgame g){
   return true;
 }
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
+
   game g = malloc(sizeof(game));
   if (g == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g->tab = (color **)malloc(SIZE * sizeof(color *));
+   if(width <= 0 || height <= 0){
+    fprintf(stderr, "Error : Invalid grid");
+    exit(EXIT_FAILURE);
+  }
+  g->tab = (color **)malloc(width*height*sizeof(color *));
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g->init_game = (color **)malloc(SIZE * sizeof(color *));
+  g->init_game = (color **)malloc(width*height*sizeof(color *));
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  for (uint i = 0; i < SIZE; i++) {
-    g->tab[i] =(color *)malloc(SIZE * sizeof(color));
+  for (uint i = 0; i < width*height; i++) {
+    g->tab[i] =(color *)malloc(width * height* sizeof(color));
     if (g->tab[i] == NULL) {
       free(g->tab);
       free(g->init_game);
@@ -307,9 +312,9 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
-    g->init_game[i] = (color *)malloc(SIZE * sizeof(color));
+    g->init_game[i] = (color *)malloc(width * height* sizeof(color));
     if (g->init_game[i] == NULL) {
-      for(uint x=0; x<SIZE; x++){
+      for(uint x=0; x<width * height; x++){
         free(g->tab[x]);
       }
       free(g->tab);
@@ -319,8 +324,8 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
       exit(EXIT_FAILURE);
     }
   }
-  for (uint x = 0; x < SIZE; x++) {
-    for (uint y = 0; y < SIZE; y++) {
+  for (uint x = 0; x < ; x++) {
+    for (uint y = 0; y < width * height; y++) {
       // game_set_cell_init(g, x,y, RED);
       g->tab[x][y] = RED;
       g->init_game[x][y] = RED;
@@ -332,7 +337,7 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
 }
 
 game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
-  
+
   if(width <= 0 || height <= 0){
     fprintf(stderr, "Error : Invalid grid");
     exit(EXIT_FAILURE);
