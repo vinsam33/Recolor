@@ -317,3 +317,27 @@ void game_restart(game g) {
     }
   }
 }
+
+///V2///
+
+bool game_is_wrapping(cgame g){
+  return true;
+}
+
+game game_new_empty_ext(uint width, uint height, bool wrapping){
+  game g = game_new_empty();
+  return g;
+}
+
+game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
+  game g = game_new_empty();
+  return g;
+}
+
+uint game_height(cgame game){
+  return 1;
+}
+
+uint game_width(cgame game){
+  return 1;
+}
