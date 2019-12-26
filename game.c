@@ -22,8 +22,13 @@ typedef struct game_s *game;
 
 // typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
 
+
+
 game game_new(color *cells, uint nb_moves_max) {
-  game g = malloc(sizeof(struct game_s));
+
+  return game_new_ext(SIZE, SIZE, &cells, nb_moves_max, false); 
+
+  /*game g = malloc(sizeof(struct game_s));
   if (g == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -82,6 +87,7 @@ game game_new(color *cells, uint nb_moves_max) {
   g->nb_max = nb_moves_max;
   g->nb_curr = 0;
   return g;
+  */
 }
 
 game game_new_empty() {
@@ -338,32 +344,69 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
 
 game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
 
-  if(width <= 0 || height <= 0){
-    fprintf(stderr, "Error : Invalid grid");
+  game g = malloc(sizeof(struct game_s));
+  if (g == NULL) {
+    fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
 
-  if(cells==NULL){
-    fprintf(stderr, "Error : Invalid cells pointer");
+  g->wrapping = wrapping; 
+  g->nb_max = nb_moves_max; 
+  g->width = width; 
+  g->height = height; 
+
+  g->tab = (color **)malloc(width * sizeof(color *));
+  if (g->tab == NULL) {
+    free(g);
+    fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-
-  if(nb_moves_max <= 0){
-    fprintf(stderr, "Error : Invalid nb_moves_max");
+  g->init_game = (color **)malloc(width * sizeof(color *));
+  if (g->init_game == NULL) {
+    free(g->tab);
+    free(g);
+    fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  
-  *game g = malloc(sizeof (struct game_s));
-  
-  if (g == NULL){
-    fprintf(stderr, "Error : Invalid game");
+  for (uint i = 0; i < width; i++) {
+    g->tab[i] = (color *)malloc(height * sizeof(color));
+    if (g->tab[i] == NULL) {
+      free(g->tab);
+      free(g->init_game);
+      free(g);
+      fprintf(stderr, "Problem allocation memory\n");
+      exit(EXIT_FAILURE);
+    }
+    g->init_game[i] = (color *)malloc(height * sizeof(color));
+    if (g->init_game[i] == NULL){
+      for (uint i = 0; i < width; i++) {
+        free(g->tab[i]);
+      }
+      free(g->tab);
+      free(g->init_game);
+      free(g);
+      fprintf(stderr, "Problem allocation memory\n");
+      exit(EXIT_FAILURE);
+    }
+  }
+  for (uint i = 0; i < width; i++) {
+    for (uint j = 0; j < height; j++) {
+      g->tab[i][j] = cells[(j+1)*(height+1)+i];
+      g->init_game[i][j] = cells[(j+1)*(height+1)+i];
+    }
+  }
+  if (nb_moves_max <= 0) {
+    for (uint i = 0; i < width; i++) {
+        free(g->tab[i]);
+        free(g->init_game[i]);
+    }
+    free(g->tab);
+    free(g->init_game);
+    free(g);
+    fprintf(stderr, "Nb_max_moves less or egal than 0\n");
     exit(EXIT_FAILURE);
   }
-
-
-  game g = game_new_empty_ext(){
-    
-
+  return g;
 }
 
 
