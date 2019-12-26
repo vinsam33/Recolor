@@ -97,9 +97,33 @@ bool test_game_restart() {
   }
 }
 
+bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
+  game g = game_new_empty_ext(width, height, wrapping);
+  if (g == NULL || game_nb_moves_max(g) != 0 || width <= 0 || height <= 0 || g->wrapping != wrapping){
+    game_delete(g);
+    return false;
+  }
+  for (unsigned int x = 0; x < width; x++) {
+    for (unsigned int y = 0; y < height; y++) {
+      if (game_cell_current_color(g, x, y) != 0) {
+        game_delete(g);
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 int main(void) {
-  unsigned int max = 12;
-  printf("-- Start test of Game_set_max_moves\n");
+  uint max = 12;
+  uint width = rand()%100;
+  uint height = rand()%100; 
+  uint w = rand()%1; 
+  bool wrapping; 
+  if(w==0) wrapping=true; 
+  if(w==1) wrapping=false; 
+  
+  printf("-- Start test of Game_set_max_moves --\n");
   bool daccord = test_game_set_max_moves(max);
   if (daccord) {
     fprintf(stderr, "Execution of game_set_max_moves : Success\n\n");
@@ -108,7 +132,7 @@ int main(void) {
     return EXIT_FAILURE;
   }
 
-  printf("--Start test of game_play_one_move\n");
+  printf("--Start test of game_play_one_move --\n");
   bool ok = test_game_play_one_move(BLUE);
   if (ok) {
     fprintf(stderr, "Execution of test_game_play_one_move : Success\n\n");
@@ -116,12 +140,22 @@ int main(void) {
     fprintf(stderr, "Execution of test_game_play_one_move : Denied\n\n");
     return EXIT_FAILURE;
   }
-  printf("--Start test of game_restart\n");
+  
+  printf("--Start test of game_restart --\n");
   bool okay = test_game_restart();
   if (okay) {
     fprintf(stderr, "Execution of game_restart : Success\n\n");
   } else {
     fprintf(stderr, "Execution of game_restart : Denied\n\n");
+    return EXIT_FAILURE;
+  }
+  
+  printf("-- Start test of test_game_new_empty_ext --\n");
+  bool daccord = test_game_new_empty_ext(width, height, wrapping);
+  if (daccord) {
+    fprintf(stderr, "Execution of test_game_new_empty_ext : Success\n\n");
+  } else {
+    fprintf(stderr, "Execution of test_game_new_empty_ext : Denied\n\n");
     return EXIT_FAILURE;
   }
 

@@ -26,7 +26,7 @@ typedef struct game_s *game;
 
 game game_new(color *cells, uint nb_moves_max) {
 
-  return game_new_ext(SIZE, SIZE, &cells, nb_moves_max, false); 
+  return game_new_ext(SIZE, SIZE, cells, nb_moves_max, false); 
 
   /*game g = malloc(sizeof(struct game_s));
   if (g == NULL) {
