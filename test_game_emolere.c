@@ -50,8 +50,8 @@ bool test_game_play_one_move(color c) {
   }
 
   game_play_one_move(g, c);
-  for (unsigned int y = 0; y < game_height; y++) {
-    for (unsigned int x = 0; x < game_width; x++) {
+  for (unsigned int y = 0; y < game_height(g); y++) {
+    for (unsigned int x = 0; x < game_width(g); x++) {
       if (game_cell_current_color(g, x, y) != c) {
         game_delete(g);
         return false;
@@ -103,8 +103,8 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
     game_delete(g);
     return false;
   }
-  for (unsigned int x = 0; x < game_width; x++) {
-    for (unsigned int y = 0; y < game_height; y++) {
+  for (unsigned int x = 0; x < width; x++) {
+    for (unsigned int y = 0; y < height; y++) {
       if (game_cell_current_color(g, x, y) != 0) {
         game_delete(g);
         return false;
@@ -123,7 +123,7 @@ int main(void) {
   if(w==0) wrapping=true; 
   if(w==1) wrapping=false; 
   
-  printf("-- Start test of Game_set_max_moves --\n");
+  printf("-- Start test of game_set_max_moves --\n");
   bool daccord = test_game_set_max_moves(max);
   if (daccord) {
     fprintf(stderr, "Execution of game_set_max_moves : Success\n\n");
@@ -150,7 +150,7 @@ int main(void) {
     return EXIT_FAILURE;
   }
   
-  printf("-- Start test of test_game_new_empty_ext --\n");
+  printf("-- Start test of game_new_empty_ext --\n");
   bool daccord = test_game_new_empty_ext(width, height, wrapping);
   if (daccord) {
     fprintf(stderr, "Execution of game_new_empty_ext : Success\n\n");

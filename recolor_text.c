@@ -4,8 +4,8 @@
 #include "game_io.h"
 
 void affichage_grille(game g) {
-  for (unsigned int y = 0; y < game_height; y++) {
-    for (unsigned int x = 0; x < game_width; x++) {
+  for (unsigned int y = 0; y < game_height(g); y++) {
+    for (unsigned int x = 0; x < game_width(g); x++) {
       printf("%d", game_cell_current_color(g, x, y));
     }
     printf("\n");
@@ -25,7 +25,7 @@ int main(void) {
          game_nb_moves_max(g));
   affichage_grille(g);
   printf(
-      "Jouer un coup: (0,1,2,3,r ou q ;  r pour redémarrer ou q pour "
+      "Jouer un coup: (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,r ou q ;  r pour redémarrer ou q pour "
       "quitter)\n");
   while (game_is_over(g) == false) {
     int c = getchar();

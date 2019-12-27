@@ -49,5 +49,5 @@ Sylavin LASCOSTES :
                       game_height
 
 Commun au groupe :
-
+    recolor_text
     Makefile
