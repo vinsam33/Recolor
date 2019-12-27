@@ -50,8 +50,8 @@ bool test_game_play_one_move(color c) {
   }
 
   game_play_one_move(g, c);
-  for (unsigned int y = 0; y < SIZE; y++) {
-    for (unsigned int x = 0; x < SIZE; x++) {
+  for (unsigned int y = 0; y < game_height; y++) {
+    for (unsigned int x = 0; x < game_width; x++) {
       if (game_cell_current_color(g, x, y) != c) {
         game_delete(g);
         return false;
@@ -103,8 +103,8 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
     game_delete(g);
     return false;
   }
-  for (unsigned int x = 0; x < width; x++) {
-    for (unsigned int y = 0; y < height; y++) {
+  for (unsigned int x = 0; x < game_width; x++) {
+    for (unsigned int y = 0; y < game_height; y++) {
       if (game_cell_current_color(g, x, y) != 0) {
         game_delete(g);
         return false;

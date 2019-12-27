@@ -272,8 +272,8 @@ void game_restart(game g) {
     exit(EXIT_FAILURE);
   }
   g->nb_curr = 0;
-  for (unsigned int i = 0; i < SIZE; i++) {
-    for (unsigned int j = 0; j < SIZE; j++) {
+  for (unsigned int i = 0; i < width; i++) {
+    for (unsigned int j = 0; j < height; j++) {
       g->tab[i][j] = g->init_game[i][j];
     }
   }
@@ -361,6 +361,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
+
   g->init_game = (color **)malloc(width * sizeof(color *));
   if (g->init_game == NULL) {
     free(g->tab);
@@ -368,6 +369,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
+
   for (uint i = 0; i < width; i++) {
     g->tab[i] = (color *)malloc(height * sizeof(color));
     if (g->tab[i] == NULL) {

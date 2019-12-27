@@ -4,8 +4,8 @@
 #include "game_io.h"
 
 void affichage_grille(game g) {
-  for (unsigned int y = 0; y < SIZE; y++) {
-    for (unsigned int x = 0; x < SIZE; x++) {
+  for (unsigned int y = 0; y < game_height; y++) {
+    for (unsigned int x = 0; x < game_width; x++) {
       printf("%d", game_cell_current_color(g, x, y));
     }
     printf("\n");
@@ -44,7 +44,7 @@ int main(void) {
           "Jouer un coup: (0,1,2,3,r ou q ;  r pour redémarrer ou q pour "
           "quitter)\n");
     }
-    if (c >= '0' && c <= '3') {
+    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')){
       game_play_one_move(g, c - 48);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
