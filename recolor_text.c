@@ -41,7 +41,7 @@ int main(void) {
              game_nb_moves_max(g));
       affichage_grille(g);
       printf(
-          "Jouer un coup: (0,1,2,3,r ou q ;  r pour redémarrer ou q pour "
+          "Jouer un coup: (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,r ou q ;  r pour redémarrer ou q pour "
           "quitter)\n");
     }
     if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')){

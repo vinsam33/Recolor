@@ -287,7 +287,7 @@ bool game_is_wrapping(cgame g){
         exit(EXIT_FAILURE);
     }
 
-    return g->wrap;
+    return g->wrapping;
 }
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
