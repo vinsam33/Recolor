@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(projet_techno C)
 
-set(CMAKE_C_FLAGS "-std=c99 -g -Wall")
+set(CMAKE_C_FLAGS "-std=c99 -g -Wall  --coverage")
 
 add_library(game game_io.c game.c)
 
@@ -21,6 +21,7 @@ target_link_libraries(test_game_emolere game)
 add_executable(test_game_vsamson test_game_vsamson.c)
 target_link_libraries(test_game_vsamson game)
 
+include(CTest)
 enable_testing()
 
 add_test(test_game_new ./test_game_slascostes game_new)
@@ -39,3 +40,4 @@ add_test(test_game_new_empty_ext ./test_game_emolere game_new_empty_ext)
 add_test(test_game_new_empty ./test_game_vsamson game_new_empty)
 add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_color)
 add_test(test_game_delete ./test_game_vsamson game_delete)
+add_test(test_game_height ./test_game_vsamson game_height)

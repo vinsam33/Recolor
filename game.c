@@ -282,7 +282,12 @@ void game_restart(game g) {
 ///V2//
 
 bool game_is_wrapping(cgame g){
-  return true;
+  if(g == NULL || g->tab == NULL){
+        fprintf(stderr, "Null pointer !\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return g->wrap;
 }
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
@@ -417,5 +422,10 @@ uint game_height(cgame game){
 }
 
 uint game_width(cgame game){
-  return 1;
+  if(game == NULL || game->tab == NULL){
+        fprintf(stderr, "Null pointer !\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return game->width;
 }
