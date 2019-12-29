@@ -415,10 +415,10 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
       exit(EXIT_FAILURE);
     }
   }
-  for (uint i = 0; i < width; i++) {
-    for (uint j = 0; j < height; j++) {
-      g->tab[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
-      g->init_game[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+  for (uint x = 0; x < width; x++) {
+    for (uint y = 0; y < height; y++) {
+      g->tab[x][y] = cells[y * width + x]; //Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+      g->init_game[x][y] = cells[y * width + x]; //Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
     }
   }
   return g;
