@@ -9,8 +9,20 @@ bool test_game_new_empty() {
     game_delete(g);
     return false;
   }
-  for (unsigned int y = 0; y < SIZE; y++) {
-    for (unsigned int x = 0; x < SIZE; x++) {
+  if(game_width(g) != SIZE || game_height(g) != SIZE || !game_is_over(g)){
+    game_delete(g);
+    return false;
+  }
+  if(game_nb_moves_max(g)!=0){
+    game_delete(g);
+    return false;
+  }
+  if(game_nb_moves_cur(g) !=0){
+    game_delete(g);
+    return false;
+  }
+  for (unsigned int y = 0; y < game_height; y++) {
+    for (unsigned int x = 0; x < game_width; x++) {
       if (game_cell_current_color(g, x, y) != RED) {
         game_delete(g);
         return false;
@@ -26,8 +38,8 @@ bool test_game_cell_current_color() {
     game_delete(g);
     return false;
   }
-  for (uint y = 0; y < SIZE; y++) {
-    for (uint x = 0; x < SIZE; x++) {
+  for (uint y = 0; y < game_height; y++) {
+    for (uint x = 0; x < game_width; x++) {
       game_set_cell_init(g, x, y, BLUE);
       if (game_cell_current_color(g, x, y) != BLUE) {
         game_delete(g);
@@ -53,29 +65,48 @@ bool test_game_delete() {
   game_delete(g);
   return true;
 }
+bool test_game_height(){
+  cgame game;
+  if (game==NULL){
+    game_delete(game);
+    return false;
+  }
+  if(game_height<0 || game_height> SIZE){
+    game_delete(game);
+    return false;
+  }
+
+  return true;
+}
 
 int main(void) {
   bool nouveaux = test_game_new_empty();
   if (nouveaux == true) {
-    fprintf(stderr, "EXECUTING OF game_new_empty IS : REUSSITE\n\n ");
+    fprintf(stderr, "EXECUTING OF game_new_empty IS : SUCCESS\n\n ");
   } else {
     fprintf(stderr, "EXECUTING OF game_new_empty IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
   bool color = test_game_cell_current_color();
   if (color == true) {
-    fprintf(stderr, "EXECUTING OF game_cell_current_color IS : REUSITE\n\n");
+    fprintf(stderr, "EXECUTING OF game_cell_current_color IS : SUCCESS\n\n");
   } else {
     fprintf(stderr, "EXECUTING OF game_cell_current_color IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
   bool supr = test_game_delete();
   if (supr == true) {
-    fprintf(stderr, "EXECUTING OF game_delete IS : REUSITE\n\n ");
+    fprintf(stderr, "EXECUTING OF game_delete IS : SUCCESS\n\n ");
 
   } else {
     fprintf(stderr, "EXECUTING OF game_delete IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
+  /*bool height = test_game_height();
+  if(height==true){
+    fprintf(stderr, "EXECUTING OF height IS : SUCCESS\n\n ");
+  }else{
+    fprintf(stderr, "EXECUTING OF height IS : FAILURE\n\n ");
+  }*/
   return EXIT_SUCCESS;
 }
