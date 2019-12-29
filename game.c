@@ -419,7 +419,11 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
 
 
 uint game_height(cgame game){
-  return 1;
+  if(game == NULL){
+    fprintf(stderr,"Problem allocation memory\n");
+    exit(EXIT_FAILURE);
+  }
+  return game->height;
 }
 
 uint game_width(cgame game){

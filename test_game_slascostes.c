@@ -103,6 +103,40 @@ bool test_game_copy() {
   return true;
 }
 
+bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
+  game g = game_new_ext(width,height,cells,nb_moves_max,wrapping);
+  if(g == NULL){
+    game_delete(g);
+    return g;
+  }
+  unsigned int nb_max = game_nb_moves_max(g);
+  if (nb_moves_max != nb_max) {
+    game_delete(g);//
+    return false;
+  }
+  for (unsigned int y = 0; y < SIZE; y++) {
+    for (unsigned int x = 0; x < SIZE; x++) {
+      if (game_cell_current_color(g, x, y) != cells[y * SIZE + x]) {
+        game_delete(g);//
+        return false;
+      }
+    }
+  }
+  if (width != game_width(g)){
+    game_delete(g);//
+    return false;
+  }
+  if (height != game_height(g)){
+    game_delete(g);//
+    return false;
+  }
+  if (wrapping != game_is_wrapping(g)){
+    game_delete(g);//
+    return false;
+  }
+  return true;
+}
+
 void usage(int argc, char *argv[]) {
   fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
   exit(EXIT_FAILURE);
@@ -129,6 +163,8 @@ int main(int argc, char *argv[]) {
     ok = test_game_nb_moves_max();
   else if (strcmp("game_copy", argv[1]) == 0)
     ok = test_game_copy();
+  else if (strcmp("game_new_ext", argv[1]) == 0)
+    ok = test_game_new_ext(11,11,cells,11,false);
   else {
     fprintf(stderr, "Error: test \"%s\" not found!\n", argv[1]);
     exit(EXIT_FAILURE);
