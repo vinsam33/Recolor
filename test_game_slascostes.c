@@ -8,7 +8,7 @@
 
 bool test_game_new(color *cells, unsigned int nb_moves_max) {
   game g = game_new(cells, nb_moves_max);
-  if (g == NULL) {
+  /*if (g == NULL) {
     game_delete(g);//
     return false;
   }
@@ -17,15 +17,16 @@ bool test_game_new(color *cells, unsigned int nb_moves_max) {
     game_delete(g);//
     return false;
   }
-  for (unsigned int y = 0; y < SIZE; y++) {
-    for (unsigned int x = 0; x < SIZE; x++) {
-      if (game_cell_current_color(g, x, y) != cells[y * SIZE + x]) {
+  for (unsigned int y = 0; y < game_height(g); y++) {
+    for (unsigned int x = 0; x < game_width(g); x++) {
+      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) + x]) {
         game_delete(g);//
         return false;
       }
     }
   }
-  return true;
+  return true;*/
+  return test_game_new_ext(game_width(g),game_height(g),cell,nb_moves_max,false);
 }
 
 bool test_game_nb_moves_max() {
@@ -88,8 +89,8 @@ bool test_game_copy() {
     game_delete(g2);
     return false;
   }
-  for (unsigned int x = 0; x < SIZE; x++) {
-    for (unsigned int y = 0; y < SIZE; y++) {
+  for (unsigned int x = 0; x < game_width(g); x++) {
+    for (unsigned int y = 0; y < game_height(g); y++) {
       if (game_cell_current_color(g2, y, x) !=
           game_cell_current_color(g, y, x)) {
         game_delete(g);
@@ -114,9 +115,9 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
     game_delete(g);//
     return false;
   }
-  for (unsigned int y = 0; y < SIZE; y++) {
-    for (unsigned int x = 0; x < SIZE; x++) {
-      if (game_cell_current_color(g, x, y) != cells[y * SIZE + x]) {
+  for (unsigned int y = 0; y < height; y++) {
+    for (unsigned int x = 0; x < width; x++) {
+      if (game_cell_current_color(g, x, y) != cells[y * width + x]) {
         game_delete(g);//
         return false;
       }
