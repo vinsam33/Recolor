@@ -7,13 +7,13 @@ typedef unsigned int uint;
 typedef const struct game_s *cgame;
 
 struct game_s {
-  color **tab;
-  uint nb_max;
-  uint nb_curr;
-  uint height;
-  uint width; 
-  bool wrapping; 
-  color **init_game;
+  color **tab; //grille de jeu 
+  uint nb_max; //nombre de mouvements maximums autorisés pour gagner
+  uint nb_curr; //nombre de mouvements actuels 
+  uint height; //hauteur du jeu
+  uint width; //largeur du jeu
+  bool wrapping; //est ou non wrapping 
+  color **init_game; //jeu initial
 };
 
 typedef struct game_s *game;
@@ -282,7 +282,7 @@ void game_restart(game g) {
 ///V2//
 
 bool game_is_wrapping(cgame g){
-  if(g == NULL || g->tab == NULL){
+  if(g == NULL){
         fprintf(stderr, "Null pointer !\n");
         exit(EXIT_FAILURE);
     }
@@ -398,8 +398,8 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
   for (uint i = 0; i < width; i++) {
     for (uint j = 0; j < height; j++) {
-      g->tab[i][j] = cells[(j+1)*(height+1)+i];
-      g->init_game[i][j] = cells[(j+1)*(height+1)+i];
+      g->tab[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+      g->init_game[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
     }
   }
   if (nb_moves_max <= 0) {
@@ -422,7 +422,7 @@ uint game_height(cgame game){
 }
 
 uint game_width(cgame game){
-  if(game == NULL || game->tab == NULL){
+  if(game == NULL){
         fprintf(stderr, "Null pointer !\n");
         exit(EXIT_FAILURE);
     }
