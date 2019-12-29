@@ -8,7 +8,7 @@
 
 bool test_game_new(color *cells, unsigned int nb_moves_max) {
   game g = game_new(cells, nb_moves_max);
-  /*if (g == NULL) {
+  if (g == NULL) {
     game_delete(g);//
     return false;
   }
@@ -25,8 +25,7 @@ bool test_game_new(color *cells, unsigned int nb_moves_max) {
       }
     }
   }
-  return true;*/
-  return test_game_new_ext(game_width(g),game_height(g),cell,nb_moves_max,false);
+  return true;
 }
 
 bool test_game_nb_moves_max() {
