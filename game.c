@@ -316,9 +316,8 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
   for (uint i = 0; i < width; i++) {
     g->tab[i] =(color *)malloc(height* sizeof(color));
     if (g->tab[i] == NULL) {
-      for(uint x=0; x<width; x++){
-        free(g->tab[x]);
-        free(g->init_game[x]); 
+      for(uint x=0; x<i; x++){
+        free(g->tab[x]); 
       }  
       free(g->tab);
       free(g->init_game);
@@ -333,7 +332,9 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
     if (g->init_game[i] == NULL) {
       for(uint x=0; x<width; x++){
         free(g->tab[x]);
-        free(g->init_game[x]); 
+      }
+      for(uint y=0; y<i; y++){
+        free(g->init_game[y]); 
       }
       free(g->tab);
       free(g->init_game);
@@ -387,9 +388,8 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   for (uint i = 0; i < width; i++) {
     g->tab[i] = (color *)malloc(height * sizeof(color));
     if (g->tab[i] == NULL) {
-      for (uint i=0; i< width; i++){
-        free(g->tab[i]); 
-        free(g->init_game[i]); 
+      for (uint x=0; x<i; x++){
+        free(g->tab[x]); 
       } 
       free(g->tab);
       free(g->init_game);
@@ -402,9 +402,11 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   for (uint i = 0; i < width; i++) {
     g->init_game[i] = (color *)malloc(height * sizeof(color));
     if (g->init_game[i] == NULL){
-      for (uint i = 0; i < width; i++) {
-        free(g->tab[i]);
-        free(g->init_game[i]); 
+      for (uint x = 0; x < width; x++) {
+        free(g->tab[x]);
+      }
+      for(uint y=0; y<i; y++){
+        free(g->init_game[y]); 
       }
       free(g->tab);
       free(g->init_game);
