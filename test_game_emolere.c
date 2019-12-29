@@ -99,7 +99,13 @@ bool test_game_restart() {
 
 bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
   game g = game_new_empty_ext(width, height, wrapping);
-  if (g == NULL || game_nb_moves_max(g) != 0 || width == 0 || height == 0 || g->wrapping != wrapping){
+  if (game_is_wrapping(g)!=wrapping){
+    fprintf(stderr, "Error : Different Wrapping 0\n\n");
+    game_delete(g); 
+    return false;
+  }
+  if (g == NULL || game_nb_moves_max(g) != 0 || width == 0 || height == 0){
+    fprintf(stderr, "Error : creation fault\n\n");
     game_delete(g);
     return false;
   }
