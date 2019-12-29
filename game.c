@@ -99,7 +99,7 @@ void game_set_cell_init(game g, uint x, uint y, color c) {
     fprintf(stderr, "Error: do not game null\n");
     exit(EXIT_FAILURE);
   }
-  if ((x < SIZE) && (y < SIZE) && (0 <= c) && (c < NB_COLORS)) {
+  if ((x < game_width(g)) && (y < game_height(g)) && (0 <= c) && (c < NB_COLORS)) {
     g->tab[x][y] = c;
     /*g->initgame[x][y]=c;*/
   }
@@ -128,7 +128,7 @@ color game_cell_current_color(cgame g, uint x, uint y) {
     fprintf(stderr, "Problem allocation memory curr_color\n");
     exit(EXIT_FAILURE);
   }
-  if (x >= SIZE || y >= SIZE) {
+  if (x >= game_width(g) || y >= game_height(g)) {
     fprintf(stderr, "Problem size curr_color\n");
     exit(EXIT_FAILURE);
   }
@@ -189,13 +189,13 @@ game game_copy(cgame g) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g2->tab = (color **)malloc(SIZE * sizeof(color *));
+  g2->tab = (color **)malloc(game_width(g) * sizeof(color *));
   if (g2->tab == NULL) {
     free(g2);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g2->init_game = (color **)malloc(SIZE * sizeof(color *));
+  g2->init_game = (color **)malloc(game_width(g)* sizeof(color *));
   if (g2->init_game == NULL) {
     free(g2->tab);
     free(g2);
@@ -203,7 +203,7 @@ game game_copy(cgame g) {
     exit(EXIT_FAILURE);
   }
   for (uint i = 0; i < SIZE; i++) {
-    g2->tab[i] = (color *)malloc(SIZE * sizeof(color));
+    g2->tab[i] = (color *)malloc(game_height(g)* sizeof(color));
     if (g2->tab[i] == NULL) {
       free(g2->tab);
       free(g2->init_game);
@@ -211,9 +211,9 @@ game game_copy(cgame g) {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
-    g2->init_game[i] = (color *)malloc(SIZE * sizeof(color));
+    g2->init_game[i] = (color *)malloc(game_height(g) * sizeof(color));
     if (g2->init_game[i] == NULL) {
-      for(uint i=0 ; i<SIZE ; i++){
+      for(uint i=0 ; i<game_width(g) ; i++){
         free(g2->tab[i]);
       }
       free(g2->init_game);
@@ -223,8 +223,8 @@ game game_copy(cgame g) {
       exit(EXIT_FAILURE);
     }
   }
-  for (uint i = 0; i < SIZE; i++) {
-    for (uint j = 0; j < SIZE; j++) {
+  for (uint i = 0; i < game_width(g); i++) {
+    for (uint j = 0; j < game_height(g); j++) {
       g2->tab[i][j] = g->tab[i][j];
       g2->init_game[i][j] = g->init_game[i][j];
     }
@@ -238,7 +238,7 @@ void game_delete(game g) {
   if (g == NULL) {
     return;
   }
-  for (uint x = 0; x < SIZE; x++) {
+  for (uint x = 0; x < game_width(g); x++) {
     free(g->tab[x]);
     free(g->init_game[x]);
   }
@@ -254,8 +254,8 @@ bool game_is_over(cgame g) {
   }
   color c = game_cell_current_color(g, 0, 0);
   if (g->nb_curr <= g->nb_max) {
-    for (uint x = 0; x < SIZE; x++) {
-      for (uint y = 0; y < SIZE; y++) {
+    for (uint x = 0; x < game_width(g); x++) {
+      for (uint y = 0; y < game_height(g); y++) {
         if (c != game_cell_current_color(g, x, y)) {
           return false;
         }
@@ -272,8 +272,8 @@ void game_restart(game g) {
     exit(EXIT_FAILURE);
   }
   g->nb_curr = 0;
-  for (unsigned int i = 0; i < width; i++) {
-    for (unsigned int j = 0; j < height; j++) {
+  for (unsigned int i = 0; i < game_width(g); i++) {
+    for (unsigned int j = 0; j < game_height(g); j++) {
       g->tab[i][j] = g->init_game[i][j];
     }
   }
@@ -297,16 +297,14 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-   if(width <= 0 || height <= 0){
-    fprintf(stderr, "Error : Invalid grid");
-    exit(EXIT_FAILURE);
-  }
+  
   g->tab = (color **)malloc(width*sizeof(color *));
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
+  
   g->init_game = (color **)malloc(width*sizeof(color *));
   if (g->init_game == NULL) {
     free(g->tab);
@@ -314,19 +312,28 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  for (uint i = 0; i < width*height; i++) {
+  
+  for (uint i = 0; i < width; i++) {
     g->tab[i] =(color *)malloc(height* sizeof(color));
     if (g->tab[i] == NULL) {
+      for(uint x=0; x<width; x++){
+        free(g->tab[x]);
+        free(g->init_game[x]); 
+      }  
       free(g->tab);
       free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
+  }  
+
+  for (uint i = 0; i < width; i++) {
     g->init_game[i] = (color *)malloc(height* sizeof(color));
     if (g->init_game[i] == NULL) {
       for(uint x=0; x<width; x++){
         free(g->tab[x]);
+        free(g->init_game[x]); 
       }
       free(g->tab);
       free(g->init_game);
@@ -335,6 +342,7 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
       exit(EXIT_FAILURE);
     }
   }
+  
   for (uint x = 0; x < width ; x++) {
     for (uint y = 0; y < height; y++) {
       // game_set_cell_init(g, x,y, RED);
@@ -379,16 +387,24 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   for (uint i = 0; i < width; i++) {
     g->tab[i] = (color *)malloc(height * sizeof(color));
     if (g->tab[i] == NULL) {
+      for (uint i=0; i< width; i++){
+        free(g->tab[i]); 
+        free(g->init_game[i]); 
+      } 
       free(g->tab);
       free(g->init_game);
       free(g);
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
+  }
+
+  for (uint i = 0; i < width; i++) {
     g->init_game[i] = (color *)malloc(height * sizeof(color));
     if (g->init_game[i] == NULL){
       for (uint i = 0; i < width; i++) {
         free(g->tab[i]);
+        free(g->init_game[i]); 
       }
       free(g->tab);
       free(g->init_game);
@@ -402,17 +418,6 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
       g->tab[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
       g->init_game[i][j] = cells[(j+1)*(height+1)+i]; //Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
     }
-  }
-  if (nb_moves_max <= 0) {
-    for (uint i = 0; i < width; i++) {
-        free(g->tab[i]);
-        free(g->init_game[i]);
-    }
-    free(g->tab);
-    free(g->init_game);
-    free(g);
-    fprintf(stderr, "Nb_max_moves less or egal than 0\n");
-    exit(EXIT_FAILURE);
   }
   return g;
 }
