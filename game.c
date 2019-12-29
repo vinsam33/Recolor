@@ -144,23 +144,52 @@ uint game_nb_moves_cur(cgame g) {
 }
 
 void remplissage(game g, color cible, color rep, uint x, uint y) {
-  if (g == NULL) {
-    fprintf(stderr, "g can't be null\n");
-    exit(EXIT_FAILURE);
+  if (!game_is_wrapping(g){
+    if (g == NULL) {
+      fprintf(stderr, "g can't be null\n");
+      exit(EXIT_FAILURE);
+    }
+    if (game_cell_current_color(g, x, y) == cible) {
+      g->tab[x][y] = rep;
+      if (y > 0) {
+        remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
+      }
+      if (y < game_height(g) - 1) {
+        remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
+      }
+      if (x < game_width(g) - 1) {
+        remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
+      }
+      if (x > 0) {
+        remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
+      }
+    }
   }
-  if (game_cell_current_color(g, x, y) == cible) {
-    g->tab[x][y] = rep;
-    if (y > 0) {
-      remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
+   else{ //game_is_wrapping
+    if (g == NULL) {
+      fprintf(stderr, "g can't be null\n");
+      exit(EXIT_FAILURE);
     }
-    if (y < SIZE - 1) {
-      remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
-    }
-    if (x < SIZE - 1) {
-      remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
-    }
-    if (x > 0) {
-      remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
+    if (game_cell_current_color(g, x, y) == cible) {
+      g->tab[x][y] = rep;
+      if (y > 0) {
+        remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
+      }
+      if (y < game_height(g) - 1) {
+        remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
+      }
+      if (x < game_width(g) - 1) {
+        remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
+      }
+      if (x > 0) {
+        remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
+      }
+      if (y = game_height(g) -1){
+        remplissage(g, cible, rep, x, 0);     // Remplissage en Wrapping bas/haut
+      }
+      if (x = game_width(g) - 1){
+        remplissage(g, cible, rep, 0, y);     // Remplissage en Wrapping droite/gauche
+      }
     }
   }
 }
