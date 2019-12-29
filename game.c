@@ -205,6 +205,9 @@ game game_copy(cgame g) {
   for (uint i = 0; i < SIZE; i++) {
     g2->tab[i] = (color *)malloc(game_height(g)* sizeof(color));
     if (g2->tab[i] == NULL) {
+      for(uint x=0 ; x<i ; x++){
+        free(g2->tab[x]);
+      }
       free(g2->tab);
       free(g2->init_game);
       free(g2);
@@ -213,8 +216,11 @@ game game_copy(cgame g) {
     }
     g2->init_game[i] = (color *)malloc(game_height(g) * sizeof(color));
     if (g2->init_game[i] == NULL) {
-      for(uint i=0 ; i<game_width(g) ; i++){
-        free(g2->tab[i]);
+      for(uint x=0 ; x<game_width(g) ; x++){
+        free(g2->tab[x]);
+      }
+      for(uint y=0 ; y<i ; y++){
+        free(g2->init_game[y]);
       }
       free(g2->init_game);
       free(g2->tab);
@@ -231,6 +237,9 @@ game game_copy(cgame g) {
   }
   g2->nb_max = g->nb_max;
   g2->nb_curr = g->nb_curr;
+  g2->height = g->height;
+  g2->width = g->width;
+  g2->wrapping = g->wrapping;
   return g2;
 }
 
