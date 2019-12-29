@@ -25,6 +25,7 @@ bool test_game_new(color *cells, unsigned int nb_moves_max) {
       }
     }
   }
+  game_delete(g);
   return true;
 }
 
@@ -62,7 +63,7 @@ bool test_game_copy() {
       1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  game g = game_new(cells, 11);
+  game g = game_new_ext(12,12,cells, 11,false);
   if (g == NULL) {
     game_delete(g);
     return false;
@@ -97,6 +98,21 @@ bool test_game_copy() {
         return false;
       }
     }
+  }
+  if(game_height(g) != game_height(g2)){
+    game_delete(g);
+    game_delete(g2);
+    return true;  
+  }
+  if(game_width(g) != game_width(g2)){
+    game_delete(g);
+    game_delete(g2);
+    return true;  
+  }
+  if(game_is_wrapping(g) != game_is_wrapping(g2)){
+    game_delete(g);
+    game_delete(g2);
+    return true;  
   }
   game_delete(g);
   game_delete(g2);
@@ -134,6 +150,7 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
     game_delete(g);//
     return false;
   }
+  game_delete(g);
   return true;
 }
 
