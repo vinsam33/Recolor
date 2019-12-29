@@ -99,13 +99,13 @@ bool test_game_restart() {
 
 bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
   game g = game_new_empty_ext(width, height, wrapping);
-  if (g == NULL || game_nb_moves_max(g) != 0 || width <= 0 || height <= 0 || g->wrapping != wrapping){
+  if (g == NULL || game_nb_moves_max(g) != 0 || width == 0 || height == 0 || g->wrapping != wrapping){
     game_delete(g);
     return false;
   }
   for (unsigned int x = 0; x < width; x++) {
     for (unsigned int y = 0; y < height; y++) {
-      if (game_cell_current_color(g, x, y) != 0) {
+      if (game_cell_current_color(g, x, y) != 0){
         game_delete(g);
         return false;
       }
@@ -151,8 +151,8 @@ int main(void) {
   }
   
   printf("-- Start test of game_new_empty_ext --\n");
-  bool daccord = test_game_new_empty_ext(width, height, wrapping);
-  if (daccord) {
+  bool okok = test_game_new_empty_ext(width, height, wrapping);
+  if (okok) {
     fprintf(stderr, "Execution of game_new_empty_ext : Success\n\n");
   } else {
     fprintf(stderr, "Execution of game_new_empty_ext : Denied\n\n");
