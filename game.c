@@ -301,13 +301,13 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
     fprintf(stderr, "Error : Invalid grid");
     exit(EXIT_FAILURE);
   }
-  g->tab = (color **)malloc(width*height*sizeof(color *));
+  g->tab = (color **)malloc(width*sizeof(color *));
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  g->init_game = (color **)malloc(width*height*sizeof(color *));
+  g->init_game = (color **)malloc(width*sizeof(color *));
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
@@ -315,7 +315,7 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
     exit(EXIT_FAILURE);
   }
   for (uint i = 0; i < width*height; i++) {
-    g->tab[i] =(color *)malloc(width * height* sizeof(color));
+    g->tab[i] =(color *)malloc(height* sizeof(color));
     if (g->tab[i] == NULL) {
       free(g->tab);
       free(g->init_game);
@@ -323,9 +323,9 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
     }
-    g->init_game[i] = (color *)malloc(width * height* sizeof(color));
+    g->init_game[i] = (color *)malloc(height* sizeof(color));
     if (g->init_game[i] == NULL) {
-      for(uint x=0; x<width * height; x++){
+      for(uint x=0; x<width; x++){
         free(g->tab[x]);
       }
       free(g->tab);
@@ -335,11 +335,11 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
       exit(EXIT_FAILURE);
     }
   }
-  for (uint x = 0; x < ; x++) {
-    for (uint y = 0; y < width * height; y++) {
+  for (uint x = 0; x < width ; x++) {
+    for (uint y = 0; y < height; y++) {
       // game_set_cell_init(g, x,y, RED);
-      g->tab[x][y] = RED;
-      g->init_game[x][y] = RED;
+      g->tab[x][y] = 0;
+      g->init_game[x][y] = 0;
     }
   }
   g->nb_max = 0;
@@ -357,6 +357,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
 
   g->wrapping = wrapping; 
   g->nb_max = nb_moves_max; 
+  g->nb_curr = 0;
   g->width = width; 
   g->height = height; 
 
