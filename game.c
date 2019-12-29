@@ -99,19 +99,16 @@ void game_set_cell_init(game g, uint x, uint y, color c) {
     fprintf(stderr, "Error: do not game null\n");
     exit(EXIT_FAILURE);
   }
-  if ((x < game_width(g)) && (y < game_height(g)) && (0 <= c) && (c < NB_COLORS)) {
+  if ((x < game_width(g)) && (y < game_height(g)) && (0 <= c)) {
     g->tab[x][y] = c;
-    /*g->initgame[x][y]=c;*/
   }
-  return;
 }
 
 void game_set_max_moves(game g, uint nb_max_moves) {
   if (g == NULL || nb_max_moves == 0) {
-    fprintf(stderr, "g can't be NULL\n");
+    fprintf(stderr, "Parameters error\n");
     exit(EXIT_FAILURE);
   }
-  // g->initgame->nb_max=nb_max_moves;
   g->nb_max = nb_max_moves;
 }
 
@@ -124,7 +121,7 @@ uint game_nb_moves_max(cgame g) {
 }
 
 color game_cell_current_color(cgame g, uint x, uint y) {
-  if (g == NULL || g->tab == NULL || g->init_game == NULL) {
+  if (g == NULL || g->tab == NULL || /*g->init_game == NULL*/) {
     fprintf(stderr, "Problem allocation memory curr_color\n");
     exit(EXIT_FAILURE);
   }
@@ -144,7 +141,7 @@ uint game_nb_moves_cur(cgame g) {
 }
 
 void remplissage(game g, color cible, color rep, uint x, uint y) {
-  if (!game_is_wrapping(g){
+  if (!game_is_wrapping(g)){
     if (g == NULL) {
       fprintf(stderr, "g can't be null\n");
       exit(EXIT_FAILURE);
@@ -231,7 +228,7 @@ game game_copy(cgame g) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  for (uint i = 0; i < SIZE; i++) {
+  for (uint i = 0; i < game_width(g); i++) {
     g2->tab[i] = (color *)malloc(game_height(g)* sizeof(color));
     if (g2->tab[i] == NULL) {
       for(uint x=0 ; x<i ; x++){
