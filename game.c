@@ -121,7 +121,7 @@ uint game_nb_moves_max(cgame g) {
 }
 
 color game_cell_current_color(cgame g, uint x, uint y) {
-  if (g == NULL || g->tab == NULL || /*g->init_game == NULL*/) {
+  if (g == NULL || g->tab == NULL /*|| g->init_game == NULL*/) {
     fprintf(stderr, "Problem allocation memory curr_color\n");
     exit(EXIT_FAILURE);
   }
@@ -472,7 +472,6 @@ uint game_width(cgame game){
   if(game == NULL){
         fprintf(stderr, "Null pointer !\n");
         exit(EXIT_FAILURE);
-    }
-
-    return game->width;
+  }
+  return game->width;
 }
