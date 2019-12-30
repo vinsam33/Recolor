@@ -5,19 +5,15 @@
 
 bool test_game_new_empty() {
   game g = game_new_empty();
-  if (g == NULL || game_nb_moves_max(g) != 0) {
+  if (g == NULL) {
     game_delete(g);
     return false;
-  }
-  if(game_width(g) != SIZE || game_height(g) != SIZE || !game_is_over(g)){
+  } //verif dimensions
+  if(game_width(g) != SIZE || game_height(g) != SIZE || game_is_over(g)!=NULL){
     game_delete(g);
     return false;
-  }
-  if(game_nb_moves_max(g)!=0){
-    game_delete(g);
-    return false;
-  }
-  if(game_nb_moves_cur(g) !=0){
+  }//verif moves
+  if(game_nb_moves_cur(g) !=0 || game_nb_moves_max(g) != 0 ){
     game_delete(g);
     return false;
   }
@@ -102,11 +98,11 @@ int main(void) {
     fprintf(stderr, "EXECUTING OF game_delete IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
-  /*bool height = test_game_height();
+  bool height = test_game_height();
   if(height==true){
     fprintf(stderr, "EXECUTING OF height IS : SUCCESS\n\n ");
   }else{
     fprintf(stderr, "EXECUTING OF height IS : FAILURE\n\n ");
-  }*/
+  }
   return EXIT_SUCCESS;
 }
