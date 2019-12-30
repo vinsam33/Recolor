@@ -327,7 +327,7 @@ bool game_is_wrapping(cgame g){
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
 
-  game g = malloc(sizeof(game));
+  /*game g = malloc(sizeof(game));
   if (g == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -388,6 +388,16 @@ game game_new_empty_ext(uint width, uint height, bool wrapping){
   }
   g->nb_max = 0;
   g->nb_curr = 0;
+  return g;*/
+  uint size_of_tab = height*width;
+  color *cells = calloc(size_of_tab,sizeof(color)); //initialiser à 0.
+  if(cells==NULL){
+    fprintf(stderr,"ERROR : memory\n");
+    exit(EXIT_FAILURE);
+  }
+  game g =game_new_ext(width,height,cells,0,wrapping); //reutilisation de la fonction game_new_ext avec le calloc 
+  
+  free(cells);
   return g;
 }
 
