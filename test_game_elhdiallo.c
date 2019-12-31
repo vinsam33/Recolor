@@ -99,8 +99,9 @@ bool test_game_is_over() {
 }
 bool test_game_is_wrapping(){
 }
+
 bool test_game_width(){
-    game g = game_new_empty_ext(width, height, wrapping);
+    game g = game_new_empty_ext(2, 5, true);
     if (game_width(g)!=width){
         return false;
     }
