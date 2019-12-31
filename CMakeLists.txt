@@ -32,6 +32,8 @@ add_test(test_game_new_ext ./test_game_slascostes game_new_ext)
 add_test(test_nb_moves_cur ./test_game_elhdiallo nb_moves_cur)
 add_test(test_game_set_cell_init ./test_game_elhdiallo game_set_cell_init)
 add_test(test_game_is_over ./test_game_elhdiallo game_is_over)
+add_test(test_game_is_wrapping ./test_game_elhdiallo game_is_wrapping)
+add_test(test_game_width ./test_game_elhdiallo game_width)
 
 add_test(test_game_set_max_moves ./test_game_emolere game_set_max_moves)
 add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
