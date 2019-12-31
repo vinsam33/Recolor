@@ -93,11 +93,19 @@ bool test_game_is_over() {
   if (game_is_over(t1) && is_grid_red(t1) == false) {
     fprintf(stderr, "echec test de game_is_over: grille non uniforment rouge");
   }
-  // liberer la mémoire
+  //liberer la mémoire
   game_delete(t1);
   return true;
 }
-
+bool test_game_is_wrapping(){
+}
+bool test_game_width(){
+    game g = game_new_empty_ext(width, height, wrapping);
+    if (game_width(g)!=width){
+        return false;
+    }
+    return true;
+}
 void usage(int argc, char *argv[]) {
   fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
   exit(EXIT_FAILURE);
