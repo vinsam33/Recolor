@@ -9,7 +9,7 @@ bool test_game_new_empty() {
     game_delete(g);
     return false;
   } //verif dimensions
-  if(game_is_over(g)==NULL){
+  if(!game_is_over(g)){
     fprintf(stderr, "ERROR : GAME_IS_OVER\n\n");
     game_delete(g);
     return false;
@@ -67,7 +67,7 @@ bool test_game_delete() {
   return true;
 }
 bool test_game_height(){
-  cgame g = game_new_empty_ext(5, 5, true);
+  game g = game_new_empty_ext(5, 5, true);
     if (g==NULL){
       fprintf(stderr,"error pointer\n");
       game_delete(g);
