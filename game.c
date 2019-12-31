@@ -171,10 +171,10 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
       if (x > 0) {
         remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
       }
-      if (y = (game_height(g)) -1){
+      if (y = (game_height(g) -1)){
         remplissage(g, cible, rep, x, 0);     // Remplissage en Wrapping bas/haut
       }
-      if (x = (game_width(g)) - 1){
+      if (x = (game_width(g) - 1)){
         remplissage(g, cible, rep, 0, y);     // Remplissage en Wrapping droite/gauche
       }
     }
