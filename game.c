@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "game.h"
 
-typedef unsigned int uint;
-typedef const struct game_s *cgame;
+
 
 struct game_s {
   color **tab; //grille de jeu 
@@ -15,14 +13,6 @@ struct game_s {
   bool wrapping; //est ou non wrapping 
   color **init_game; //jeu initial
 };
-
-typedef struct game_s *game;
-
-//#define SIZE 12
-
-// typedef enum color_e {RED, GREEN, BLUE, YELLOW, NB_COLORS} color;
-
-
 
 game game_new(color *cells, uint nb_moves_max) {
 
@@ -181,10 +171,10 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
       if (x > 0) {
         remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
       }
-      if (y = game_height(g) -1){
+      if (y = (game_height(g)) -1){
         remplissage(g, cible, rep, x, 0);     // Remplissage en Wrapping bas/haut
       }
-      if (x = game_width(g) - 1){
+      if (x = (game_width(g)) - 1){
         remplissage(g, cible, rep, 0, y);     // Remplissage en Wrapping droite/gauche
       }
     }
