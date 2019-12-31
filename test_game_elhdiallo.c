@@ -58,8 +58,8 @@ bool test_game_set_cell_init(game g, uint x, uint y) {
 
 // test grille uniforme
 bool is_grid_red(game g) {
-  for (uint x = 0; x < SIZE; x++) {
-    for (uint y = 0; y < SIZE; y++) {
+  for (uint x = 0; x < game_width(g); x++) {
+    for (uint y = 0; y < game_height(g); y++) {
       if (game_cell_current_color(g, x, y) != RED) {
         game_delete(g);
         return false;
@@ -98,6 +98,7 @@ bool test_game_is_over() {
   return true;
 }
 bool test_game_is_wrapping(){
+    
 }
 
 bool test_game_width(){
