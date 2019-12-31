@@ -103,9 +103,17 @@ bool test_game_is_wrapping(){
 
 bool test_game_width(){
     game g = game_new_empty_ext(2, 5, true);
+    if (g==NULL){
+      fprintf(stderr,"Error: don't NULL pointer \n");
+      game_delete(g);
+      return false;
+    }
     if (game_width(g)!=2){
+        fprintf(stderr,"Error: check game_witdh() \n");
+        game_delete(g);
         return false;
     }
+    game_delete(g);
     return true;
 }
 void usage(int argc, char *argv[]) {
@@ -126,7 +134,12 @@ int main(int argc, char *argv[]) {
     ok = test_game_set_cell_init(g, 5, 6);
   } else if (((strcmp("game_is_over", argv[1]) == 0))) {
     ok = test_game_is_over();
+  }else if (((strcmp("game_width", argv[1]) == 0))) {
+    ok = test_game_width();
+  }else if (((strcmp("game_is_wrapping", argv[1]) == 0))) {
+   ok = test_game_is_wrapping();
   }
+    
   if (ok) {
     fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
     return EXIT_SUCCESS;
