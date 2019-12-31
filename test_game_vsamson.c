@@ -9,33 +9,37 @@ bool test_game_new_empty() {
     game_delete(g);
     return false;
   } //verif dimensions
-  if(game_width(g) != SIZE || game_height(g) != SIZE || game_is_over(g)!=NULL){
+  if(game_is_over(g)==NULL){
+    fprintf(stderr, "ERROR : GAME_IS_OVER\n\n");
     game_delete(g);
     return false;
   }//verif moves
   if(game_nb_moves_cur(g) !=0 || game_nb_moves_max(g) != 0 ){
+    fprintf(stderr, "ERROR : MOVE\n\n");
     game_delete(g);
     return false;
   }
-  for (unsigned int y = 0; y < game_height; y++) {
-    for (unsigned int x = 0; x < game_width; x++) {
+  for (unsigned int y = 0; y < game_height(g); y++) {
+    for (unsigned int x = 0; x < game_width(g); x++) {
       if (game_cell_current_color(g, x, y) != RED) {
         game_delete(g);
         return false;
       }
     }
   }
+  game_delete(g);
   return true;
 }
 
 bool test_game_cell_current_color() {
   game g = game_new_empty();
   if (!g) {
+    fprintf(stderr,"ERROR\n\n");
     game_delete(g);
     return false;
   }
-  for (uint y = 0; y < game_height; y++) {
-    for (uint x = 0; x < game_width; x++) {
+  for (uint y = 0; y < game_height(g); y++) {
+    for (uint x = 0; x < game_width(g); x++) {
       game_set_cell_init(g, x, y, BLUE);
       if (game_cell_current_color(g, x, y) != BLUE) {
         game_delete(g);
@@ -47,7 +51,7 @@ bool test_game_cell_current_color() {
 }
 
 bool test_game_delete() {
-  color cells[144] = {
+  color cells[SIZE*SIZE] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
       1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
       2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
