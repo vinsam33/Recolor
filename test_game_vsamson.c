@@ -47,11 +47,12 @@ bool test_game_cell_current_color() {
       }
     }
   }
+  game_delete(g);
   return true;
 }
 
 bool test_game_delete() {
-  color cells[SIZE*SIZE] = {
+  color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
       1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
       2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
@@ -66,17 +67,19 @@ bool test_game_delete() {
   return true;
 }
 bool test_game_height(){
-  cgame game;
-  if (game==NULL){
-    game_delete(game);
-    return false;
-  }
-  if(game_height<0 || game_height> SIZE){
-    game_delete(game);
-    return false;
-  }
+  cgame g = game_new_empty_ext(5, 5, true);
+    if (g==NULL){
+      fprintf(stderr,"error pointer\n");
+      game_delete(g);
+      return false;
+    }
+    if (game_height(g)!=5){
+        fprintf(stderr,"ERROR HEIGHT\n");
+        game_delete(g);
+        return false;
+    }game_delete(g);
 
-  return true;
+    return true;
 }
 
 int main(void) {
