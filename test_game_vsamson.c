@@ -32,7 +32,7 @@ bool test_game_new_empty() {
 }
 
 bool test_game_cell_current_color() {
-  game g = game_new_empty();
+  game g = game_new_empty_ext(5,5,true);
   if (!g) {
     fprintf(stderr,"ERROR\n\n");
     game_delete(g);
@@ -59,7 +59,7 @@ bool test_game_delete() {
       1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  game g = game_new(cells, 10);
+  game g = game_new_ext(12 ,12,cells,10,true);
   if (g == NULL) {
     exit(EXIT_FAILURE);
   }
