@@ -137,6 +137,8 @@ void usage(int argc, char *argv[]) {
   exit(EXIT_FAILURE);
 }
 int main(int argc, char *argv[]) {
+    uint width, height;
+    bool wrapping;
   if (argc == 1) usage(argc, argv);
   game g = game_new_empty();
 
