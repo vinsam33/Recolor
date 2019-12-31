@@ -98,9 +98,20 @@ bool test_game_is_over() {
   return true;
 }
 bool test_game_is_wrapping(){
-    
+    game g = game_new_empty_ext(2, 5, true);
+    if (g==NULL){
+      fprintf(stderr,"Error: don't NULL pointer \n");
+      game_delete(g);
+      return false;
+    }
+    if (game_is_wrapping(g)!=true){
+        fprintf(stderr,"Error: check game_witdh() \n");
+        game_delete(g);
+        return false;
+    }
+    game_delete(g);
+    return true;
 }
-
 bool test_game_width(){
     game g = game_new_empty_ext(2, 5, true);
     if (g==NULL){
