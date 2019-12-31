@@ -102,7 +102,7 @@ bool test_game_is_wrapping(){
 
 bool test_game_width(){
     game g = game_new_empty_ext(2, 5, true);
-    if (game_width(g)!=width){
+    if (game_width(g)!=2){
         return false;
     }
     return true;
