@@ -34,7 +34,7 @@ bool test_game_new_empty() {
 bool test_game_cell_current_color() {
   game g = game_new_empty_ext(5,5,true);
   if (!g) {
-    fprintf(stderr,"ERROR\n\n");
+    fprintf(stderr,"ERROR POINTER\n\n");
     game_delete(g);
     return false;
   }
@@ -61,6 +61,7 @@ bool test_game_delete() {
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
   game g = game_new_ext(12 ,12,cells,10,true);
   if (g == NULL) {
+    fprintf(stderr,"ERROR POINTER\n");
     exit(EXIT_FAILURE);
   }
   game_delete(g);
@@ -69,7 +70,7 @@ bool test_game_delete() {
 bool test_game_height(){
   game g = game_new_empty_ext(5, 5, true);
     if (g==NULL){
-      fprintf(stderr,"error pointer\n");
+      fprintf(stderr,"ERROR POINTER\n");
       game_delete(g);
       return false;
     }
@@ -83,6 +84,8 @@ bool test_game_height(){
 }
 
 int main(void) {
+  printf("----------------Start test_new_empty----------------\n\n");
+
   bool nouveaux = test_game_new_empty();
   if (nouveaux == true) {
     fprintf(stderr, "EXECUTING OF game_new_empty IS : SUCCESS\n\n ");
@@ -90,6 +93,10 @@ int main(void) {
     fprintf(stderr, "EXECUTING OF game_new_empty IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
+
+  printf("----------------Start test_game_cell_current_color----------------\n\n");
+
+
   bool color = test_game_cell_current_color();
   if (color == true) {
     fprintf(stderr, "EXECUTING OF game_cell_current_color IS : SUCCESS\n\n");
@@ -97,6 +104,9 @@ int main(void) {
     fprintf(stderr, "EXECUTING OF game_cell_current_color IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
+
+  printf("----------------Start test_game_delete----------------\n\n");
+
   bool supr = test_game_delete();
   if (supr == true) {
     fprintf(stderr, "EXECUTING OF game_delete IS : SUCCESS\n\n ");
@@ -105,11 +115,16 @@ int main(void) {
     fprintf(stderr, "EXECUTING OF game_delete IS : FAILURE\n\n ");
     return EXIT_FAILURE;
   }
+
+  printf("----------------Start test_game_height----------------\n\n");
+
+
   bool height = test_game_height();
   if(height==true){
     fprintf(stderr, "EXECUTING OF height IS : SUCCESS\n\n ");
   }else{
     fprintf(stderr, "EXECUTING OF height IS : FAILURE\n\n ");
   }
+
   return EXIT_SUCCESS;
 }
