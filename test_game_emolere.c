@@ -7,7 +7,7 @@
 #include "game.h"
 
 bool test_game_set_max_moves(uint max) {
-  game(g) = game_new_empty_ext(12, 12, false); 
+  game g = game_new_empty_ext(12, 12, false); 
   if (!g) {
     fprintf(stderr, "Error : invalid game\n\n");
     game_delete(g);
@@ -15,7 +15,7 @@ bool test_game_set_max_moves(uint max) {
   }
 
   game_set_max_moves(g, max);
-  if (g->nb_max != max) {
+  if (game_nb_moves_max(g) != max) {
     fprintf(stderr, "Error : too much number of moves\n\n");
     game_delete(g);
     return false;
