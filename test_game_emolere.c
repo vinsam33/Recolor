@@ -1,9 +1,10 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "game_io.h"
-
-typedef unsigned int uint;
+#include "game.h"
 
 bool test_game_set_max_moves(uint max) {
   game(g) = game_new_empty_ext(12, 12, false); 
@@ -106,7 +107,7 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
 int main(void) {
   
   printf("-- Start test of game_set_max_moves --\n");
-  bool Agree = test_game_set_max_moves(max);
+  bool Agree = test_game_set_max_moves(12);
   if (Agree) {
     fprintf(stderr, "Execution of game_set_max_moves : Success\n\n");
   } else {
