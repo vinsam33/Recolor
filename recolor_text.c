@@ -10,9 +10,12 @@ void affichage_grille(game g) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       c = game_cell_current_color(g, x, y);
       if (c >= 10){
-        c = 'a' + (c-10);
+        c = 'A' + (c-10);
+        printf("%c",c);
       }
-      printf("%c",c);
+      else{
+        printf("%u",c);
+      }
     }
     printf("\n");
   }
@@ -93,8 +96,17 @@ int main(int argc, char *argv[]) {
           "Jouer un coup: (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f ou r ou q ;  r pour redémarrer ou q pour "
           "quitter)\n");
     }
-    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')){
+    if (c >= '0' && c <= '9'){
       game_play_one_move(g, c - 48);
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+             game_nb_moves_max(g));
+      affichage_grille(g);
+      printf(
+          "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
+          "quitter)\n");
+    }
+    if(c >= 'A' && c <= 'F'){
+      game_play_one_move(g, c - 65+16);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
