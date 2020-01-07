@@ -76,9 +76,25 @@ int main(int argc, char *argv[]) {
   printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
          game_nb_moves_max(g));
   affichage_grille(g);
-  printf(
-      "Jouer un coup: (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f ou r ou q ;  r pour redémarrer ou q pour "
-      "quitter)\n");
+  
+  printf("Jouer un coup: (");
+  uint k; 
+  if (nb>9){
+    for(uint i=0; i<10; i++){
+      printf("%d,",i);
+    }
+    for (uint j =10; j<nb; j++){
+      k = 'A' + (j-10);
+      printf("%c,", k); 
+    }
+  }
+  else{
+    for(uint i=0; i<nb; i++){
+      printf("%d,",i);
+    }
+  }
+  printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
+  
   while (game_is_over(g) == false) {
     int c = getchar();
     if (c == EOF) {
@@ -92,12 +108,28 @@ int main(int argc, char *argv[]) {
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
-      printf(
-          "Jouer un coup: (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f ou r ou q ;  r pour redémarrer ou q pour "
-          "quitter)\n");
+      
+      printf("Jouer un coup: (");
+      uint k; 
+      if (nb>9){
+        for(uint i=0; i<10; i++){
+          printf("%d",i);
+        }
+        for (uint j =10; j<nb; j++){
+          k = 'A' + (j-10);
+          printf("%c", k); 
+        }
+      }
+      else{
+        for(uint i=0; i<nb; i++){
+          printf("%d",i);
+        }
+      }
+      printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
+    
     if (c >= '0' && c <= '9'){
-      game_play_one_move(g, c - 48);
+      game_play_one_move(g, c - 57);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
@@ -105,6 +137,7 @@ int main(int argc, char *argv[]) {
           "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
           "quitter)\n");
     }
+    
     if(c >= 'A' && c <= 'F'){
       game_play_one_move(g, c - 65+16);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
