@@ -113,16 +113,16 @@ int main(int argc, char *argv[]) {
       uint k; 
       if (nb>9){
         for(uint i=0; i<10; i++){
-          printf("%d",i);
+          printf("%d,",i);
         }
         for (uint j =10; j<nb; j++){
           k = 'A' + (j-10);
-          printf("%c", k); 
+          printf("%c,", k); 
         }
       }
       else{
         for(uint i=0; i<nb; i++){
-          printf("%d",i);
+          printf("%d,",i);
         }
       }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
