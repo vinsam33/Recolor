@@ -171,11 +171,11 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
       if (x > 0) {
         remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
       }
-      if (y = (game_height(g) -1)){
-        remplissage(g, cible, rep, x, 0);     // Remplissage en Wrapping bas/haut
+      if (y == 0){
+        remplissage(g, cible, rep, x, (game_height(g) -1));     // Remplissage en Wrapping bas/haut
       }
-      if (x = (game_width(g) - 1)){
-        remplissage(g, cible, rep, 0, y);     // Remplissage en Wrapping droite/gauche
+      if (x == 0){
+        remplissage(g, cible, rep, (game_width(g) - 1), y);     // Remplissage en Wrapping droite/gauche
       }
     }
   }
@@ -188,7 +188,7 @@ void game_play_one_move(game g, color c) {
   }
   color first_case = game_cell_current_color(g, 0, 0);
   if (first_case != c) {
-    if (0 <= c && c < NB_COLORS){
+    if (0 <= c /* && c < NB_COLORS */){
       remplissage(g, first_case, c, 0, 0);
       g->nb_curr++;
     }

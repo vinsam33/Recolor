@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
     }
     
     if (c >= '0' && c <= '9'){
-      game_play_one_move(g, c - 57);
+      game_play_one_move(g, c - 48);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     }
     
     if(c >= 'A' && c <= 'F'){
-      game_play_one_move(g, c - 65+16);
+      game_play_one_move(g, c - 71+16);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
