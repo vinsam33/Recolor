@@ -37,7 +37,7 @@ bool test_game_cell_current_color() {
     fprintf(stderr,"ERROR POINTER\n\n");
     game_delete(g);
     return false;
-  }// verif si on a pas les mêmes couleurs dans les deux fonctions.
+  }// verif si on a les mêmes couleurs dans les deux fonctions et à la bonne case.
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
       game_set_cell_init(g, x, y, BLUE);
@@ -83,7 +83,7 @@ bool test_game_height(){
     return true;
 }
 
-int main(void) {// demarrage des tests.
+int main(void) {// start tests.
   printf("----------------Start test_new_empty----------------\n\n");
 
   bool nouveaux = test_game_new_empty();
