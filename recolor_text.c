@@ -72,8 +72,7 @@ int main(int argc, char *argv[]) {
   affichage_grille(g);
 
   printf("Jouer un coup: (");
-  printf("%u ",0,1,2,3,4,5,6,7,8,9);
-  printf("%c ",A,B,C,D,E,F);
+  printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
   printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
   
   while (game_is_over(g) == false) {
@@ -89,8 +88,7 @@ int main(int argc, char *argv[]) {
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
       printf("Jouer un coup: (");
-      printf("%u ",0,1,2,3,4,5,6,7,8,9);
-      printf("%c ",A,B,C,D,E,F); 
+      printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
       }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
