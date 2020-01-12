@@ -64,8 +64,8 @@ bool test_game_restart() {
     game_delete(g);
     return false;
   }
-  for (uint x = 0; x < width; x++) {
-    for (uint y = 0; y < height; y++) {
+  for (uint x = 0; x < game_width(g); x++) {
+    for (uint y = 0; y < game_height(g); y++) {
       if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // Après un restart chaque case du jeu doit être identique à la case d'indice correspondant dans cells, car cells correpond au tableau de valeurs de départ
         fprintf(stderr, "Error : game_cell_current_color different from cells\n\n");
         game_delete(g);
