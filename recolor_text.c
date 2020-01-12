@@ -71,25 +71,9 @@ int main(int argc, char *argv[]) {
          game_nb_moves_max(g));
   affichage_grille(g);
 
-  printf("Jouer un coup: (");   //Affiche les possibilités de jeu en fonction du nombre de couleurs choisies
-  uint k; 
-  if (nb>9){
-    for(uint i=0; i<10; i++){
-      printf("%d,",i);
-    }
-    for (uint j =10; j<nb-1; j++){
-      k = 'A' + (j-10);
-      printf("%c,",k); 
-    }
-    k = 'A' + (nb-11);
-    printf("%c",k); 
-  }
-  else{
-    for(uint i=0; i<nb-1; i++){
-      printf("%d,",i);
-    }
-    printf("%d",nb-1); 
-  }
+  printf("Jouer un coup: (");
+  printf("%u ",0,1,2,3,4,5,6,7,8,9);
+  printf("%c ",A,B,C,D,E,F);
   printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
   
   while (game_is_over(g) == false) {
@@ -105,23 +89,8 @@ int main(int argc, char *argv[]) {
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
       printf("Jouer un coup: (");
-      uint k; 
-      if (nb>9){
-        for(uint i=0; i<10; i++){
-          printf("%d,",i);
-        }
-        for (uint j =10; j<nb-1; j++){
-          k = 'A' + (j-10);
-          printf("%c,",k); 
-        }
-        k = 'A' + (nb-11);
-        printf("%c",k); 
-      }
-      else{
-        for(uint i=0; i<nb-1; i++){
-            printf("%d,",i);
-        }
-        printf("%d",nb-1); 
+      printf("%u ",0,1,2,3,4,5,6,7,8,9);
+      printf("%c ",A,B,C,D,E,F); 
       }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
@@ -134,7 +103,7 @@ int main(int argc, char *argv[]) {
       "quitter)\n");
     }
     if(c >= 'A' && c <= 'F'){   // Jeu avec une couleur alphabétique
-      game_play_one_move(g, c - 71);
+      game_play_one_move(g, c - 55);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
       printf(
