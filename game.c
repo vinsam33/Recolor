@@ -255,68 +255,6 @@ bool game_is_wrapping(cgame g){
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
 
-  /*game g = malloc(sizeof(game));
-  if (g == NULL) {
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  
-  g->tab = (color **)malloc(width*sizeof(color *));
-  if (g->tab == NULL) {
-    free(g);
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  
-  g->init_game = (color **)malloc(width*sizeof(color *));
-  if (g->init_game == NULL) {
-    free(g->tab);
-    free(g);
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  
-  for (uint i = 0; i < width; i++) {
-    g->tab[i] =(color *)malloc(height* sizeof(color));
-    if (g->tab[i] == NULL) {
-      for(uint x=0; x<i; x++){
-        free(g->tab[x]); 
-      }  
-      free(g->tab);
-      free(g->init_game);
-      free(g);
-      fprintf(stderr, "Problem allocation memory\n");
-      exit(EXIT_FAILURE);
-    }
-  }  
-
-  for (uint i = 0; i < width; i++) {
-    g->init_game[i] = (color *)malloc(height* sizeof(color));
-    if (g->init_game[i] == NULL) {
-      for(uint x=0; x<width; x++){
-        free(g->tab[x]);
-      }
-      for(uint y=0; y<i; y++){
-        free(g->init_game[y]); 
-      }
-      free(g->tab);
-      free(g->init_game);
-      free(g);
-      fprintf(stderr, "Problem allocation memory\n");
-      exit(EXIT_FAILURE);
-    }
-  }
-  
-  for (uint x = 0; x < width ; x++) {
-    for (uint y = 0; y < height; y++) {
-      // game_set_cell_init(g, x,y, RED);
-      g->tab[x][y] = 0;
-      g->init_game[x][y] = 0;
-    }
-  }
-  g->nb_max = 0;
-  g->nb_curr = 0;
-  return g;*/
   uint size_of_tab = height*width;
   color *cells = calloc(size_of_tab,sizeof(color)); //initialiser à 0.
   if(cells==NULL){
