@@ -1,14 +1,12 @@
-
-
-// game_set_cell_init
-// game_nb_moves_cur
-// game_is_over
+//author: DIALLO Elhadj Mamadou
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "game.h"
 typedef unsigned int uint;
+//Fonctions testées: 
+//game_set_cell_init, game_nb_moves_cur, game_is_over, game_is_wrapping, game_width
 
 // Elle teste la fonction nb_moves_cur() 
 bool test_nb_moves_cur() {
@@ -17,7 +15,6 @@ bool test_nb_moves_cur() {
     game_delete(g);
     return false;
   }
-
   game_nb_moves_cur(g);
   if (game_nb_moves_cur(g) != 0) {
     fprintf(stderr, " game_nb_moves_cur est censé retourné 0");
@@ -51,8 +48,6 @@ bool test_game_set_cell_init(game g, uint x, uint y) {
   }
   return true;
 }
-
-
 // Elle verifie si la grille est uniforme
 bool is_grid_red(game g) {
   for (uint x = 0; x < game_width(g); x++) {
@@ -137,8 +132,6 @@ void usage(int argc, char *argv[]) {
   exit(EXIT_FAILURE);
 }
 int main(int argc, char *argv[]) {
-    //uint width, height;
-    //bool wrapping; 
   if (argc == 1) usage(argc, argv);
   game g = game_new_empty();
 
