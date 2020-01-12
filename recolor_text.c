@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   for(uint i=0 ; i<w*h ; i++){
-    cells[i] = rand()%nb; //alloue un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
+    cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
   }
   game g = game_new_ext(w,h,cells,12,state);
   printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
@@ -110,48 +110,45 @@ int main(int argc, char *argv[]) {
     }
     if (c == 'r') { // redémarre le jeu
       game_restart(g);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
-             game_nb_moves_max(g));
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
-      
       printf("Jouer un coup: (");
-        uint k; 
-        if (nb>9){
-          for(uint i=0; i<10; i++){
-            printf("%d,",i);
-          }
-          for (uint j =10; j<nb-1; j++){
-            k = 'A' + (j-10);
-            printf("%c,",k); 
-          }
-          k = 'A' + (nb-11);
-          printf("%c",k); 
+      uint k; 
+      if (nb>9){
+        for(uint i=0; i<10; i++){
+          printf("%d,",i);
         }
-        else{
-          for(uint i=0; i<nb-1; i++){
-            printf("%d,",i);
-          }
-          printf("%d",nb-1); 
+        for (uint j =10; j<nb-1; j++){
+          k = 'A' + (j-10);
+          printf("%c,",k); 
         }
-        printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
-    
-    if (c >= '0' && c <= '9'){ // Ordre de jeu avec une couleur comprise entre 0 et 9
-      game_play_one_move(g, c - 57);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
-             game_nb_moves_max(g));
-      affichage_grille(g);
-      printf(
-          "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
-          "quitter)\n");
-    }
-    if(c >= 'A' && c <= 'F'){   // Ordre de jeu avec une couleur comprise entre 'A' et 'F'
-      game_play_one_move(g, c - 65+16);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
-             game_nb_moves_max(g));
-      affichage_grille(g);
-      printf(
-          "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
-          "quitter)\n");
+        k = 'A' + (nb-11);
+        printf("%c",k); 
+      }
+      else{
+        for(uint i=0; i<nb-1; i++){
+            printf("%d,",i);
+        }
+        printf("%d",nb-1); 
+      }
+      printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
+
+      if (c >= '0' && c <= '9'){ // Jeu avec une couleur numérique
+        game_play_one_move(g, c - 48);
+        printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
+        affichage_grille(g);
+        printf(
+        "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
+        "quitter)\n");
+      }
+      if(c >= 'A' && c <= 'F'){   // Jeu avec une couleur alphabétique
+        game_play_one_move(g, c - 65+16);
+        printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
+        affichage_grille(g);
+        printf(
+        "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
+        "quitter)\n");
+      }
     }
   }
 
