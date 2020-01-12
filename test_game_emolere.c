@@ -1,10 +1,7 @@
 #include <assert.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include "game_io.h"
-#include "game.h"
 
 bool test_game_set_max_moves(uint max) {
   game g = game_new_empty_ext(12, 12, false); 
@@ -14,7 +11,7 @@ bool test_game_set_max_moves(uint max) {
     return false;
   }
 
-  game_set_max_moves(g, max);
+  game_set_max_moves(g, max); // On appelle game_set_max_moves pour définir un nb de mouvements maximum pour le jeu g et on vérifie que le nombre maximum de mouvements de g est bien max
   if (game_nb_moves_max(g) != max) {
     fprintf(stderr, "Error : too much number of moves\n\n");
     game_delete(g);
@@ -25,14 +22,14 @@ bool test_game_set_max_moves(uint max) {
 }
 
 bool test_game_play_one_move(color c) {
-  game g = game_new_empty_ext(12, 12, false); 
+  game g = game_new_empty_ext(12, 12, false); // Comme le jeu est empty toutes ses cases ont pour valeur 0 
   if (!g) {
     fprintf(stderr, "Error : invalid game\n\n");
     game_delete(g);
     return false;
   }
 
-  game_play_one_move(g, c);
+  game_play_one_move(g, c); // Comme toutes les cases ont pour valeur 0 après avoir joué un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       if (game_cell_current_color(g, x, y) != c) {
@@ -67,15 +64,17 @@ bool test_game_restart() {
     game_delete(g);
     return false;
   }
-  if (game_cell_current_color(g, 0, 0) != cells[0]) {
-    fprintf(stderr, "Error : game_cell_current_color different from cells[0]\n\n");
-    game_delete(g);
-    return false;
+  for (uint x = 0; x < width; x++) {
+    for (uint y = 0; y < height; y++) {
+      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // Après un restart chaque case du jeu doit être identique à la case d'indice correspondant dans cells, car cells correpond au tableau de valeurs de départ
+        fprintf(stderr, "Error : game_cell_current_color different from cells\n\n");
+        game_delete(g);
+        return false;
+      }
+    }
   }
-  else {
-    game_delete(g);
-    return true;
-  }
+  game_delete(g);
+  return true;
 }
 
 bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
@@ -85,12 +84,12 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
     game_delete(g); 
     return false;
   }
-  if (g == NULL || game_nb_moves_max(g) != 0 || width == 0 || height == 0){
+  if (g == NULL || game_nb_moves_max(g) != 0){
     fprintf(stderr, "Error : creation fault\n\n");
     game_delete(g);
     return false;
   }
-  for (unsigned int x = 0; x < width; x++) {
+  for (unsigned int x = 0; x < width; x++) { // La valeur de chaque case du tableau doit être 0
     for (unsigned int y = 0; y < height; y++) {
       if (game_cell_current_color(g, x, y) != 0){
         game_delete(g);
