@@ -89,8 +89,8 @@ int main(int argc, char *argv[]) {
       affichage_grille(g);
       printf("Jouer un coup: (");
       printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
-      }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
+    }
     if (c >= '0' && c <= '9'){ // Jeu avec une couleur numérique
       game_play_one_move(g, c - 48);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
