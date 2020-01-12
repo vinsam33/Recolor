@@ -132,6 +132,7 @@ int main(int argc, char *argv[]) {
         printf("%d",nb-1); 
       }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
+    }
 
       if (c >= '0' && c <= '9'){ // Jeu avec une couleur numérique
         game_play_one_move(g, c - 48);
@@ -142,14 +143,14 @@ int main(int argc, char *argv[]) {
         "quitter)\n");
       }
       if(c >= 'A' && c <= 'F'){   // Jeu avec une couleur alphabétique
-        game_play_one_move(g, c - 65+16);
+        game_play_one_move(g, c - 71+16);
         printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
         affichage_grille(g);
         printf(
         "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
         "quitter)\n");
       }
-    }
+    
   }
 
   if (game_is_over(g) && game_nb_moves_cur(g) <= game_nb_moves_max(g)) {    // Affiche si le jeu est gagné ou non
