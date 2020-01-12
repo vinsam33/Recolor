@@ -57,15 +57,7 @@ int main(int argc, char *argv[]) {
   }
   else{
     nb = atoi(argv[4]);
-  }
-  /* color cells[144] = {
-      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
-      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
-      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
-      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
-      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1}; */
- 
+  } 
   color * cells = malloc((w*h)*sizeof(color));
   if(cells == NULL){
     fprintf(stderr,"Problem allocation memory\n");
@@ -133,24 +125,22 @@ int main(int argc, char *argv[]) {
       }
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
-
-      if (c >= '0' && c <= '9'){ // Jeu avec une couleur numérique
-        game_play_one_move(g, c - 48);
-        printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
-        affichage_grille(g);
-        printf(
-        "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
-        "quitter)\n");
-      }
-      if(c >= 'A' && c <= 'F'){   // Jeu avec une couleur alphabétique
-        game_play_one_move(g, c - 71+16);
-        printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
-        affichage_grille(g);
-        printf(
-        "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
-        "quitter)\n");
-      }
-    
+    if (c >= '0' && c <= '9'){ // Jeu avec une couleur numérique
+      game_play_one_move(g, c - 48);
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
+      affichage_grille(g);
+      printf(
+      "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
+      "quitter)\n");
+    }
+    if(c >= 'A' && c <= 'F'){   // Jeu avec une couleur alphabétique
+      game_play_one_move(g, c - 71);
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
+      affichage_grille(g);
+      printf(
+      "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
+      "quitter)\n");
+    }
   }
 
   if (game_is_over(g) && game_nb_moves_cur(g) <= game_nb_moves_max(g)) {    // Affiche si le jeu est gagné ou non
