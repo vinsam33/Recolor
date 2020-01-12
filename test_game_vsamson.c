@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include "game.h"
 #include "game_io.h"
-
+/**
+*@brief : teste la fonction  game_new_empty.
+*@return false s'il y a une erreur ou si la couleur n'est pas RED ,sinon true.
+**/
 bool test_game_new_empty() {
   game g = game_new_empty();
   if (g == NULL) {// verif si le pointer n'est pas NULL.
@@ -31,6 +34,11 @@ bool test_game_new_empty() {
   return true;
 }
 
+
+/**
+*@brief : teste la fonction  game_cell_current_color.
+*@return false s'il y a une erreur ou ce n'est pas la bonne couleur,sinon true.
+**/
 bool test_game_cell_current_color() {
   game g = game_new_empty_ext(5,5,true);
   if (!g) {// verif si le pointer n'est pas NULL.
@@ -50,7 +58,12 @@ bool test_game_cell_current_color() {
   game_delete(g);
   return true;
 }
-
+/**
+ * @brief teste la fonction game_delete.
+ * 
+ * @return true  si le jeu est detruit.
+ * @return false s'il y a un probleme de memoire.
+ **/
 bool test_game_delete() {
   color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
@@ -67,6 +80,12 @@ bool test_game_delete() {
   game_delete(g);
   return true;
 }
+/**
+ * @brief teste la fonction game_height.
+ * 
+ * @return true si c'est la bonne dimension et aucun problème.
+ * @return false si ce n'est pas la  bonne taille.
+ **/
 bool test_game_height(){
   game g = game_new_empty_ext(5, 5, true);
     if (g==NULL){ // verif si le pointer n'est pas NULL.
