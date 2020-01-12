@@ -4,17 +4,17 @@
 #include "game_io.h"
 #include "string.h"
 
-void affichage_grille(game g) {
-  color c;
+void affichage_grille(game g) { //affiche la grille
+  color c; //couleur.
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       c = game_cell_current_color(g, x, y);
-      if (c >= 10){
+      if (c >= 10){ // si c = A,B,C,D,E ou F.
         c = 'A' + (c-10);
-        printf("%c",c);
+        printf("%c",c); // affiche la lettre.
       }
       else{
-        printf("%u",c);
+        printf("%u",c); // sinon affiche chiffre.
       }
     }
     printf("\n");
@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   bool state;
-  int h;
-  int w;
-  int nb;
+  int h; //height.
+  int w; //weight.
+  int nb; // nb_color.
   if(strcmp(argv[1],"yes") == 0){
     state = true;
   }
@@ -70,14 +70,14 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   for(uint i=0 ; i<w*h ; i++){
-    cells[i] = rand()%nb;
+    cells[i] = rand()%nb; //selectionne couleur au hasard.
   }
-  game g = game_new_ext(w,h,cells,12,state);
-  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+  game g = game_new_ext(w,h,cells,12,state); //jeux initialisé.
+  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), //affiche le score.
          game_nb_moves_max(g));
   affichage_grille(g);
   
-  printf("Jouer un coup: (");
+  printf("Jouer un coup: ("); // affiche le message en fonction du nombre de couleurs choisies.
   uint k; 
   if (nb>9){
     for(uint i=0; i<10; i++){
@@ -100,16 +100,16 @@ int main(int argc, char *argv[]) {
     if (c == EOF) {
       exit(EXIT_SUCCESS);
     }
-    if (c == 'q') {
+    if (c == 'q') { // quitte le jeu.
       break;
     }
-    if (c == 'r') {
+    if (c == 'r') { //redemarre le jeu.
       game_restart(g);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), //affiche le score quand on redemarre.
              game_nb_moves_max(g));
       affichage_grille(g);
       
-      printf("Jouer un coup: (");
+      printf("Jouer un coup: ("); //affiche le message de depart quand on redemarre le jeu.
       uint k; 
       if (nb>9){
         for(uint i=0; i<10; i++){
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
     
-    if (c >= '0' && c <= '9'){
+    if (c >= '0' && c <= '9'){ // deplacement avec les chiffres.
       game_play_one_move(g, c - 48);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
           "quitter)\n");
     }
     
-    if(c >= 'A' && c <= 'F'){
+    if(c >= 'A' && c <= 'F'){ // deplacement avec les lettres.
       game_play_one_move(g, c - 71+16);
       printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
@@ -150,9 +150,9 @@ int main(int argc, char *argv[]) {
   }
 
   if (game_is_over(g) && game_nb_moves_cur(g) <= game_nb_moves_max(g)) {
-    printf("BRAVO\n");
+    printf("BRAVO\n"); //affiche si on a gagné.
   } else {
-    printf("DOMMAGE\n");
+    printf("DOMMAGE\n");//affiche si on a perdu/on quitte le jeu.
   }
   game_delete(g);
   return EXIT_SUCCESS;

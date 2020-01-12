@@ -5,7 +5,7 @@
 
 bool test_game_new_empty() {
   game g = game_new_empty();
-  if (g == NULL) {
+  if (g == NULL) {// verif si le pointer n'est pas NULL.
     game_delete(g);
     return false;
   } //verif dimensions
@@ -18,7 +18,7 @@ bool test_game_new_empty() {
     fprintf(stderr, "ERROR : MOVE\n\n");
     game_delete(g);
     return false;
-  }
+  } //verif si on a dans une case ,une couleur differente de RED.
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       if (game_cell_current_color(g, x, y) != RED) {
@@ -33,11 +33,11 @@ bool test_game_new_empty() {
 
 bool test_game_cell_current_color() {
   game g = game_new_empty_ext(5,5,true);
-  if (!g) {
+  if (!g) {// verif si le pointer n'est pas NULL.
     fprintf(stderr,"ERROR POINTER\n\n");
     game_delete(g);
     return false;
-  }
+  }// verif si on a pas les mêmes couleurs dans les deux fonctions.
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
       game_set_cell_init(g, x, y, BLUE);
@@ -60,21 +60,21 @@ bool test_game_delete() {
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
   game g = game_new_ext(12 ,12,cells,10,true);
-  if (g == NULL) {
+  if (g == NULL) {// verif si le pointer n'est pas NULL.
     fprintf(stderr,"ERROR POINTER\n");
     exit(EXIT_FAILURE);
-  }
+  }//supprime le jeu.
   game_delete(g);
   return true;
 }
 bool test_game_height(){
   game g = game_new_empty_ext(5, 5, true);
-    if (g==NULL){
+    if (g==NULL){ // verif si le pointer n'est pas NULL.
       fprintf(stderr,"ERROR POINTER\n");
       game_delete(g);
       return false;
     }
-    if (game_height(g)!=5){
+    if (game_height(g)!=5){// verif si on a la bonne height.
         fprintf(stderr,"ERROR HEIGHT\n");
         game_delete(g);
         return false;
@@ -83,7 +83,7 @@ bool test_game_height(){
     return true;
 }
 
-int main(void) {
+int main(void) {// demarrage des tests.
   printf("----------------Start test_new_empty----------------\n\n");
 
   bool nouveaux = test_game_new_empty();
