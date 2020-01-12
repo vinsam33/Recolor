@@ -15,69 +15,7 @@ struct game_s {
 };
 
 game game_new(color *cells, uint nb_moves_max) {
-
-  return game_new_ext(SIZE, SIZE, cells, nb_moves_max, false); 
-
-  /*game g = malloc(sizeof(struct game_s));
-  if (g == NULL) {
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  g->tab = (color **)malloc(SIZE * sizeof(color *));
-  if (g->tab == NULL) {
-    free(g);
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  g->init_game = (color **)malloc(SIZE * sizeof(color *));
-  if (g->init_game == NULL) {
-    free(g->tab);
-    free(g);
-    fprintf(stderr, "Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  for (uint i = 0; i < SIZE; i++) {
-    g->tab[i] = (color *)malloc(SIZE * sizeof(color));
-    if (g->tab[i] == NULL) {
-      free(g->tab);
-      free(g->init_game);
-      free(g);
-      fprintf(stderr, "Problem allocation memory\n");
-      exit(EXIT_FAILURE);
-    }
-    g->init_game[i] = (color *)malloc(SIZE * sizeof(color));
-    if (g->init_game[i] == NULL){
-      for (uint i = 0; i < SIZE; i++) {
-        free(g->tab[i]);
-      }
-      free(g->tab);
-      free(g->init_game);
-      free(g);
-      fprintf(stderr, "Problem allocation memory\n");
-      exit(EXIT_FAILURE);
-    }
-  }
-  for (uint i = 0; i < SIZE; i++) {
-    for (uint j = 0; j < SIZE; j++) {
-      g->tab[i][j] = cells[j * SIZE + i];
-      g->init_game[i][j] = cells[j * SIZE + i];
-    }
-  }
-  if (nb_moves_max <= 0) {
-    for (uint i = 0; i < SIZE; i++) {
-        free(g->tab[i]);
-        free(g->init_game[i]);
-    }
-    free(g->tab);
-    free(g->init_game);
-    free(g);
-    fprintf(stderr, "Nb_max_moves less or egal than 0\n");
-    exit(EXIT_FAILURE);
-  }
-  g->nb_max = nb_moves_max;
-  g->nb_curr = 0;
-  return g;
-  */
+  return game_new_ext(SIZE, SIZE, cells, nb_moves_max, false);
 }
 
 game game_new_empty() {
@@ -200,7 +138,7 @@ game game_copy(cgame g) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  game g2 = malloc(sizeof(struct game_s));
+  game g2 = malloc(sizeof(struct game_s)); // On alloue une nouvelle structure et les deux nouveaux tableaux
   if (g2 == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -245,13 +183,13 @@ game game_copy(cgame g) {
       exit(EXIT_FAILURE);
     }
   }
-  for (uint i = 0; i < game_width(g); i++) {
-    for (uint j = 0; j < game_height(g); j++) {
+  for (uint i = 0; i < game_width(g); i++) { // On copie les anciens tableaux dans la nouvelle structure
+      for (uint j = 0; j < game_height(g); j++) {
       g2->tab[i][j] = g->tab[i][j];
       g2->init_game[i][j] = g->init_game[i][j];
     }
   }
-  g2->nb_max = g->nb_max;
+  g2->nb_max = g->nb_max; // On copie l'ancienne structure champ à champ
   g2->nb_curr = g->nb_curr;
   g2->height = g->height;
   g2->width = g->width;

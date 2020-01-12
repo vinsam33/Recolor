@@ -139,15 +139,15 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
     }
   }
   if (width != game_width(g)){
-    game_delete(g);//
+    game_delete(g);
     return false;
   }
   if (height != game_height(g)){
-    game_delete(g);//
+    game_delete(g);
     return false;
   }
   if (wrapping != game_is_wrapping(g)){
-    game_delete(g);//
+    game_delete(g);
     return false;
   }
   game_delete(g);
