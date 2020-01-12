@@ -69,52 +69,31 @@ uint game_nb_moves_cur(cgame g) {
 }
 
 void remplissage(game g, color cible, color rep, uint x, uint y) {
-  if (!game_is_wrapping(g)){
-    if (g == NULL) {
-      fprintf(stderr, "g can't be null\n");
-      exit(EXIT_FAILURE);
+  if (g == NULL) {
+    fprintf(stderr, "g can't be null\n");
+    exit(EXIT_FAILURE);
+  }
+  if (game_cell_current_color(g, x, y) == cible) {
+    g->tab[x][y] = rep;
+    if (y > 0) {
+      remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
     }
-    if (game_cell_current_color(g, x, y) == cible) {
-      g->tab[x][y] = rep;
-      if (y > 0) {
-        remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
-      }
-      if (y < game_height(g) - 1) {
-        remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
-      }
-      if (x < game_width(g) - 1) {
-        remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
-      }
-      if (x > 0) {
-        remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
-      }
+    if (y < game_height(g) - 1) {
+      remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
+    }
+    if (x < game_width(g) - 1) {
+      remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
+    }
+    if (x > 0) {
+      remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
     }
   }
-   else{ //game_is_wrapping
-    if (g == NULL) {
-      fprintf(stderr, "g can't be null\n");
-      exit(EXIT_FAILURE);
+  if (g->wrapping == true ){
+    if (y == 0){
+        remplissage(g, cible, rep, x, game_height(g) -1);     // Remplissage en Wrapping bas/haut
     }
-    if (game_cell_current_color(g, x, y) == cible) {
-      g->tab[x][y] = rep;
-      if (y > 0) {
-        remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
-      }
-      if (y < game_height(g) - 1) {
-        remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
-      }
-      if (x < game_width(g) - 1) {
-        remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
-      }
-      if (x > 0) {
-        remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
-      }
-      if (y == 0){
-        remplissage(g, cible, rep, x, (game_height(g) -1));     // Remplissage en Wrapping bas/haut
-      }
-      if (x == 0){
-        remplissage(g, cible, rep, (game_width(g) - 1), y);     // Remplissage en Wrapping droite/gauche
-      }
+    if (x == 0){
+    remplissage(g, cible, rep, game_width(g) - 1, y);     // Remplissage en Wrapping droite/gauche
     }
   }
 }
@@ -126,7 +105,7 @@ void game_play_one_move(game g, color c) {
   }
   color first_case = game_cell_current_color(g, 0, 0);
   if (first_case != c) {
-    if (0 <= c /* && c < NB_COLORS */){
+    if (0 <= c ){
       remplissage(g, first_case, c, 0, 0);
       g->nb_curr++;
     }
@@ -235,7 +214,7 @@ void game_restart(game g) {
     exit(EXIT_FAILURE);
   }
   g->nb_curr = 0;
-  for (unsigned int i = 0; i < game_width(g); i++) {
+  for (unsigned int i = 0; i < game_width(g); i++) { // On réinitialise chaque valeur de la grille de jeu tab par sa valeur de départ contenue dans init_game
     for (unsigned int j = 0; j < game_height(g); j++) {
       g->tab[i][j] = g->init_game[i][j];
     }
@@ -249,46 +228,42 @@ bool game_is_wrapping(cgame g){
         fprintf(stderr, "Null pointer !\n");
         exit(EXIT_FAILURE);
     }
-
     return g->wrapping;
 }
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
-
   uint size_of_tab = height*width;
-  color *cells = calloc(size_of_tab,sizeof(color)); //initialiser à 0.
+  color *cells = calloc(size_of_tab,sizeof(color)); // initialisation de toutes les valeurs de *cells à 0.
   if(cells==NULL){
     fprintf(stderr,"ERROR : memory\n");
     exit(EXIT_FAILURE);
   }
-  game g =game_new_ext(width,height,cells,0,wrapping); //reutilisation de la fonction game_new_ext avec le calloc 
-  
+  game g =game_new_ext(width,height,cells,0,wrapping); // reutilisation de la fonction game_new_ext avec le calloc 
   free(cells);
   return g;
 }
 
 game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
 
-  game g = malloc(sizeof(struct game_s));
+  game g = malloc(sizeof(struct game_s)); // On alloue une nouvelle structure
   if (g == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
 
-  g->wrapping = wrapping; 
+  g->wrapping = wrapping; // On remplit cette structure champ par champ
   g->nb_max = nb_moves_max; 
   g->nb_curr = 0;
   g->width = width; 
   g->height = height; 
-
-  g->tab = (color **)malloc(width * sizeof(color *));
+  g->tab = (color **)malloc(width * sizeof(color *)); // On alloue le tableau ** tab
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
 
-  g->init_game = (color **)malloc(width * sizeof(color *));
+  g->init_game = (color **)malloc(width * sizeof(color *)); // On alloue le tableau ** init_game
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
@@ -297,7 +272,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
 
   for (uint i = 0; i < width; i++) {
-    g->tab[i] = (color *)malloc(height * sizeof(color));
+    g->tab[i] = (color *)malloc(height * sizeof(color));  // On alloue le tableau * tab[i]
     if (g->tab[i] == NULL) {
       for (uint x=0; x<i; x++){
         free(g->tab[x]); 
@@ -311,7 +286,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
 
   for (uint i = 0; i < width; i++) {
-    g->init_game[i] = (color *)malloc(height * sizeof(color));
+    g->init_game[i] = (color *)malloc(height * sizeof(color)); // On alloue le tableau * init_game[i]
     if (g->init_game[i] == NULL){
       for (uint x = 0; x < width; x++) {
         free(g->tab[x]);
@@ -328,8 +303,8 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
   for (uint x = 0; x < width; x++) {
     for (uint y = 0; y < height; y++) {
-      g->tab[x][y] = cells[y * width + x]; //Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
-      g->init_game[x][y] = cells[y * width + x]; //Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+      g->tab[x][y] = cells[y * width + x]; // Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+      g->init_game[x][y] = cells[y * width + x]; // Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
     }
   }
   return g;
