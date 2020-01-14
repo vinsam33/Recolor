@@ -24,7 +24,7 @@ bool test_game_new_empty() {
   } //verif si on a dans une case ,une couleur differente de RED.
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
-      if (game_cell_current_color(g, x, y) != RED) {
+      if (game_cell_current_color(g, x, y) != 0) {
         game_delete(g);
         return false;
       }
