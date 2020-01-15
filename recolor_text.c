@@ -23,10 +23,13 @@ void affichage_grille(game g) {
 }
 
 int main(int argc, char *argv[]) {
+  game g;
   if(argc != 5){
-    printf("Nombre d'arguments incorrects, arguments attendus : ./recolor_text [wrapping] [height] [width] [nb_color]\n");
-    exit(EXIT_FAILURE);
+    color cells[144]={0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
+    g = game_new(cells, 12);
   }
+  else{
+  
   bool state;
   int h;
   int w;
@@ -66,8 +69,8 @@ int main(int argc, char *argv[]) {
   for(uint i=0 ; i<w*h ; i++){
     cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
   }
-  game g = game_new_ext(w,h,cells,12,state);
-  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+  g = game_new_ext(w,h,cells,12,state);
+  }printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
          game_nb_moves_max(g));
   affichage_grille(g);
 
