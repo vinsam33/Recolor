@@ -102,6 +102,9 @@ void game_play_one_move(game g, color c) {
   if (g == NULL) {
     fprintf(stderr, "g can't be null\n");
     exit(EXIT_FAILURE);
+  }if(c<0 || c>16){
+    game_delete(g);
+    exit(EXIT_FAILURE);
   }
   color first_case = game_cell_current_color(g, 0, 0);
   if (first_case != c) {
