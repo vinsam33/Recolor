@@ -194,8 +194,9 @@ void game_delete(game g) {
 }
 
 bool game_is_over(cgame g) {
-  if (g == NULL) {
+  if (g == NULL|| g->tab == NULL || g->init_game == NULL) {
     fprintf(stderr, "Error: do not game null\n");
+    game_delete(g);
     exit(EXIT_FAILURE);
   }
   color c = game_cell_current_color(g, 0, 0);
@@ -215,6 +216,7 @@ bool game_is_over(cgame g) {
 void game_restart(game g) {
   if (g == NULL || g->tab == NULL || g->init_game == NULL) {
     fprintf(stderr, "Error: do not game null\n");
+    game_delete(g);
     exit(EXIT_FAILURE);
   }
   g->nb_curr = 0;
