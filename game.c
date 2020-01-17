@@ -101,16 +101,17 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
 void game_play_one_move(game g, color c) {
   if (g == NULL) {
     fprintf(stderr, "g can't be null\n");
+    game_delete(g);
     exit(EXIT_FAILURE);
-  }if(c<0 || c>16){
+  }if(c<0 || c>15){
     game_delete(g);
     exit(EXIT_FAILURE);
   }
   color first_case = game_cell_current_color(g, 0, 0);
+  g->nb_curr++;
   if (first_case != c) {
     if (0 <= c ){
       remplissage(g, first_case, c, 0, 0);
-      g->nb_curr++;
     }
   }
 }
