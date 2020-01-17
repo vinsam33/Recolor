@@ -181,13 +181,18 @@ game game_copy(cgame g) {
 }
 
 void game_delete(game g) {
-  if (g == NULL) {
-    return;
-  }
-  for (uint x = 0; x < game_width(g); x++) {
-    free(g->tab[x]);
-    free(g->init_game[x]);
-  }
+  if (g != NULL) {
+    
+    for (uint x = 0; x < game_width(g); x++) {
+        if (g->tab != NULL){
+          free(g->tab[x]);
+        }
+        if(g->init_game!=NULL){
+            free(g->init_game[x]);
+        }
+      }
+    }
+    
   free(g->init_game);
   free(g->tab);
   free(g);
@@ -196,7 +201,6 @@ void game_delete(game g) {
 bool game_is_over(cgame g) {
   if (g == NULL|| g->tab == NULL || g->init_game == NULL) {
     fprintf(stderr, "Error: do not game null\n");
-    game_delete(g);
     exit(EXIT_FAILURE);
   }
   color c = game_cell_current_color(g, 0, 0);
