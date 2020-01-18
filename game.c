@@ -87,14 +87,14 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
     if (x > 0) {
       remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
     }
-  }
-  if (g->wrapping == true ){
-    if (y == 0){
+    if (g->wrapping == true ){
+      if (y == 0){
         remplissage(g, cible, rep, x, game_height(g) -1);     // Remplissage en Wrapping bas/haut
-    }
-    if (x == 0){
-    remplissage(g, cible, rep, game_width(g) - 1, y);     // Remplissage en Wrapping droite/gauche
-    }
+      }
+      if (x == 0){
+        remplissage(g, cible, rep, game_width(g) - 1, y);     // Remplissage en Wrapping droite/gauche
+      }
+    }  
   }
 }
 
@@ -103,7 +103,7 @@ void game_play_one_move(game g, color c) {
     fprintf(stderr, "g can't be null\n");
     game_delete(g);
     exit(EXIT_FAILURE);
-  }if(c<0 || c>15){
+  }if(c < 0 || c > 15){
     game_delete(g);
     exit(EXIT_FAILURE);
   }
