@@ -3,6 +3,8 @@
 #include "game.h"
 #include "game_io.h"
 #include "string.h"
+#include "time.h"
+
 
 
 void affichage_grille(game g) {
@@ -66,6 +68,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr,"Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
+  srand(time(NULL));// initialisation de rand
   for(uint i=0 ; i<w*h ; i++){
     cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
   }

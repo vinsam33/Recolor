@@ -182,7 +182,6 @@ game game_copy(cgame g) {
 
 void game_delete(game g) {
   if (g != NULL) {
-    
     for (uint x = 0; x < game_width(g); x++) {
         if (g->tab != NULL){
           free(g->tab[x]);
@@ -191,11 +190,10 @@ void game_delete(game g) {
             free(g->init_game[x]);
         }
       }
-    }
-    
   free(g->init_game);
   free(g->tab);
   free(g);
+  }
 }
 
 bool game_is_over(cgame g) {
