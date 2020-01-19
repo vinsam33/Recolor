@@ -10,7 +10,7 @@ typedef unsigned int uint;
 
 // Elle teste la fonction nb_moves_cur() 
 bool test_nb_moves_cur() {
-  game g = game_new_empty();
+  game g = game_new_empty_ext();
   if ( g==NULL){
     game_delete(g);
     return false;
@@ -63,7 +63,7 @@ bool is_grid_red(game g) {
 // Elle teste la fonction game_is_over()
 bool test_game_is_over() {
   // premier test , cas toutes les cellules de même coul et nbCoupJoué < nbMax
-  game t1 = game_new_empty();
+  game t1 = game_new_empty_ext();
   if (t1 == NULL){
       fprintf(stderr,"Error: Null pointer \n");
       game_delete(t1);
