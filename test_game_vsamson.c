@@ -4,7 +4,7 @@
 #include "game_io.h"
 /**
 *@brief : teste la fonction  game_new_empty.
-*@return false s'il y a une erreur ou si la couleur n'est pas RED ,sinon true.
+*@return false s'il y a une erreur ou si la couleur n'est pas 0 ,sinon true.
 **/
 bool test_game_new_empty() {
   game g = game_new_empty();
@@ -12,16 +12,19 @@ bool test_game_new_empty() {
     game_delete(g);
     return false;
   } //verif dimensions
+
   if(!game_is_over(g)){
     fprintf(stderr, "ERROR : GAME_IS_OVER\n\n");
     game_delete(g);
     return false;
   }//verif moves
+
   if(game_nb_moves_cur(g) !=0 || game_nb_moves_max(g) != 0 ){
     fprintf(stderr, "ERROR : MOVE\n\n");
     game_delete(g);
     return false;
-  } //verif si on a dans une case ,une couleur differente de RED.
+  } //verif si on a dans une case ,une couleur differente de 0.
+
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       if (game_cell_current_color(g, x, y) != 0) {
@@ -30,6 +33,7 @@ bool test_game_new_empty() {
       }
     }
   }
+
   game_delete(g);
   return true;
 }
@@ -46,6 +50,7 @@ bool test_game_cell_current_color() {
     game_delete(g);
     return false;
   }// verif si on a les mêmes couleurs dans les deux fonctions et à la bonne case.
+
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
       game_set_cell_init(g, x, y, BLUE);
@@ -55,9 +60,12 @@ bool test_game_cell_current_color() {
       }
     }
   }
+
   game_delete(g);
   return true;
 }
+
+
 /**
  * @brief teste la fonction game_delete.
  * 
