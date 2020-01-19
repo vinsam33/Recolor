@@ -46,6 +46,7 @@ bool test_game_set_cell_init(game g, uint x, uint y) {
     game_delete(g);
     return false;
   }
+  game_delete(g);
   return true;
 }
 // Elle verifie si la grille est uniforme
