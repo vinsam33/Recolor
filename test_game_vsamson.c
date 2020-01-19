@@ -53,8 +53,8 @@ bool test_game_cell_current_color() {
 
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
-      game_set_cell_init(g, x, y, BLUE);
-      if (game_cell_current_color(g, x, y) != BLUE) {
+      game_set_cell_init(g, x, y, 2);
+      if (game_cell_current_color(g, x, y) != 2) {
         game_delete(g);
         return false;
       }
@@ -96,7 +96,7 @@ bool test_game_delete() {
  **/
 bool test_game_height(){
   game g = game_new_empty_ext(5, 5, true);
-    if (g==NULL){ // verif si le pointer n'est pas NULL.
+    if (g == NULL){ // verif si le pointer n'est pas NULL.
       fprintf(stderr,"ERROR POINTER\n");
       game_delete(g);
       return false;
@@ -105,7 +105,8 @@ bool test_game_height(){
         fprintf(stderr,"ERROR HEIGHT\n");
         game_delete(g);
         return false;
-    }game_delete(g);
+    }
+    game_delete(g);
 
     return true;
 }
@@ -147,7 +148,7 @@ int main(void) {// start tests.
 
 
   bool height = test_game_height();
-  if(height==true){
+  if(height == true){
     fprintf(stderr, "EXECUTING OF height IS : SUCCESS\n\n ");
   }else{
     fprintf(stderr, "EXECUTING OF height IS : FAILURE\n\n ");
