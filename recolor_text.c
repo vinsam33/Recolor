@@ -31,52 +31,50 @@ int main(int argc, char *argv[]) {
     g = game_new(cells, 12);
   }
   else{
-  
-  bool state;
-  int h;
-  int w;
-  int nb;
-  if(strcmp(argv[1],"yes") == 0){
-    state = true;
+    bool state;//wrapping
+    int h; //height
+    int w; //width
+    int nb;//nb_colors
+    if(strcmp(argv[1],"yes") == 0){
+      state = true;
+    }
+    else if(strcmp(argv[1],"no") == 0){
+      state = false;
+    }
+    else{
+      printf("Argument wrapping invalide\n");
+    }
+    if(atoi(argv[2]) == 0){
+      printf("Argument hauteur invalide\n");
+    }
+    else{
+      h = atoi(argv[2]);
+    }
+    if(atoi(argv[3]) == 0){
+      printf("Argument largeur invalide\n");
+    }
+    else{
+      w = atoi(argv[3]);
+    }
+    if(atoi(argv[4]) == 0 || atoi(argv[4]) > 16){
+      printf("Argument nombre de couleurs invalide\n");
+    }
+    else{
+      nb = atoi(argv[4]);
+    } 
+    color * cells = malloc((w*h)*sizeof(color));
+    if(cells == NULL){
+      fprintf(stderr,"Problem allocation memory\n");
+      exit(EXIT_FAILURE);
+    }
+    srand(time(NULL));// initialisation de rand
+    for(uint i=0 ; i<w*h ; i++){
+      cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
+    }
+    g = game_new_ext(w,h,cells,12,state);
   }
-  else if(strcmp(argv[1],"no") == 0){
-    state = false;
-  }
-  else{
-    printf("Argument wrapping invalide\n");
-  }
-  if(atoi(argv[2]) == 0){
-    printf("Argument hauteur invalide\n");
-  }
-  else{
-    h = atoi(argv[2]);
-  }
-  if(atoi(argv[3]) == 0){
-    printf("Argument largeur invalide\n");
-  }
-  else{
-    w = atoi(argv[3]);
-  }
-  if(atoi(argv[4]) == 0 || atoi(argv[4]) > 16){
-    printf("Argument nombre de couleurs invalide\n");
-  }
-  else{
-    nb = atoi(argv[4]);
-  } 
-  color * cells = malloc((w*h)*sizeof(color));
-  if(cells == NULL){
-    fprintf(stderr,"Problem allocation memory\n");
-    exit(EXIT_FAILURE);
-  }
-  srand(time(NULL));// initialisation de rand
-  for(uint i=0 ; i<w*h ; i++){
-    cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
-  }
-  g = game_new_ext(w,h,cells,12,state);
-  }printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
-         game_nb_moves_max(g));
+  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
   affichage_grille(g);
-
   printf("Jouer un coup: (");
   printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
   printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
