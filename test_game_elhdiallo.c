@@ -58,6 +58,7 @@ bool is_grid_red(game g) {
       }
     }
   }
+  game_delete(g);
   return true;
 }
 // Elle teste la fonction game_is_over()
