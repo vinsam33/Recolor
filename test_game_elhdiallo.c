@@ -10,7 +10,7 @@ typedef unsigned int uint;
 
 // Elle teste la fonction nb_moves_cur() 
 bool test_nb_moves_cur() {
-  game g = game_new_empty_ext();
+  game g = game_new_empty_ext(12, 12, false);
   if ( g==NULL){
     game_delete(g);
     return false;
@@ -82,7 +82,6 @@ bool test_game_is_over() {
     game_delete(t1);
     return false;
   }
-
   if (game_nb_moves_cur(t1) >= 3) {
     fprintf(stderr, "echec game_is_over: nbCoupjoués>=nbMax \n");
     game_delete(t1);
