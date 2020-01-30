@@ -59,3 +59,28 @@ void game_save(cgame g, char *filename) {
     }
     fclose(f);
 }
+
+
+/*void game_save(cgame g, char *filename) {
+    if ( filename==NULL ){
+        fprintf(stderr, "NULL pointer");
+        exit(EXIT_FAILURE);
+    }
+    FILE * f=fopen(filename, "w");
+    if(f==NULL){
+        fprintf(stderr, "NULL pointer");
+        exit(EXIT_FAILURE);
+    }
+    char *c;
+    c[1] = game_width(g);
+    c[2] = game_height(g);
+    c[3] = game_nb_moves_max(g);
+    c[4] = game_is_wrapping(g);
+    for (uint y=0; y<game_height(g);y++){
+        for (uint x=0; x < game_width(g); x++){
+            c[y * game_width(g) + x + 5] = game_cell_current_color(g, x, y);
+        } 
+    }
+    fputs(c, f); 
+    fclose(f);
+}*/
