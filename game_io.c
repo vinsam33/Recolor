@@ -8,34 +8,34 @@
 
 game game_load(char *filename) {
     if (filename==NULL){
-        fprintf(stderr, "Null pointer\n"); 
+        fprintf(stderr, "Null pointer\n");
         exit(EXIT_FAILURE);
     }
     FILE * f = fopen("filename","r");
     if (f == NULL){
-        exit(EXIT_FAILURE); 
+        exit(EXIT_FAILURE);
     }
-    char *s = malloc(sizeof (char)*MAXLINELEN); 
+    char *s = malloc(sizeof (char)*MAXLINELEN);
     if(s==NULL){
-        fprintf(stderr, "Null pointer\n"); 
-        fclose(f); 
+        fprintf(stderr, "Null pointer\n");
+        fclose(f);
         exit(EXIT_FAILURE);
     }
     char * g = fgets(s, MAXLINELEN, f);
     if(g==NULL) {
-        fprintf(stderr, "Null pointer\n"); 
-        fclose(f); 
+        fprintf(stderr, "Null pointer\n");
+        fclose(f);
         exit(EXIT_FAILURE);
     }
-    color *cells=NULL; 
+    color *cells=NULL;
     for (uint i=6; s[i]!='\n'; i++){
-        cells[i-6] = s[i]; 
+        cells[i-6] = s[i];
     }
-    game ga = game_new_ext(s[4], s[3], cells, s[5], s[2]); 
-    //game_new_empty_ext(s[0], s[1], s[2]); 
-    fclose(f); 
-    return ga; 
-    //return NULL; 
+    game ga = game_new_ext(s[4], s[3], cells, s[5], s[2]);
+    //game_new_empty_ext(s[0], s[1], s[2]);
+    fclose(f);
+    return ga;
+    //return NULL;
 }
 
 
