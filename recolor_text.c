@@ -30,38 +30,37 @@ int main(int argc, char *argv[]) {
     color cells[144]={0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
     g = game_new(cells, 12);
   }
-  else if (argc != 1 && argc != 6){
-    printf("Nombre d'arguments incorrects, arguments attendus : ./recolor_text [game_to_load] [wrapping] [height] [width] [nb_color]\n");
-    //exit(EXIT_FAILURE);
+  else if (argc==2){
+    g=game_load(argv[1]);
   }
+  
   else{
     bool state;//wrapping
     int h; //height
     int w; //width
-    int nb;//nb_colors
-    game_load(argv[1]); 
-    if(strcmp(argv[2],"yes") == 0){
+    int nb;//nb_colors 
+    if(strcmp(argv[1],"yes") == 0){
       state = true;
     }
-    else if(strcmp(argv[2],"no") == 0){
+    else if(strcmp(argv[1],"no") == 0){
       state = false;
     }
     else{
       printf("Argument wrapping invalide\n");
     }
-    if(atoi(argv[3]) == 0){
+    if(atoi(argv[2]) == 0){
       printf("Argument hauteur invalide\n");
     }
     else{
-      h = atoi(argv[3]);
+      h = atoi(argv[2]);
     }
-    if(atoi(argv[4]) == 0){
+    if(atoi(argv[3]) == 0){
       printf("Argument largeur invalide\n");
     }
     else{
-      w = atoi(argv[4]);
+      w = atoi(argv[3]);
     }
-    if(atoi(argv[5]) == 0 || atoi(argv[5]) > 16){
+    if(atoi(argv[4]) == 0 || atoi(argv[4]) > 16){
       printf("Argument nombre de couleurs invalide\n");
     }
     else{
@@ -77,6 +76,12 @@ int main(int argc, char *argv[]) {
       cells[i] = rand()%nb; //On remplit un tableau de couleur de taille largeur * hauteur avec des couleurs aléatoires
     }
     g = game_new_ext(w,h,cells,12,state);
+  }
+  if (argc != 1 && argc!=2 && argc != 6){
+    printf("Nombre d'arguments incorrects, arguments attendus  pour v1 : ./recolor_text \n");
+    printf("pour v2: ./recolor_text  [wrapping] [height] [width] [nb_color]\n");
+    printf("pour load: ./recolor_text fichier_load\n");
+    //exit(EXIT_FAILURE);
   }
   printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
   affichage_grille(g);
