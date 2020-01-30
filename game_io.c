@@ -84,3 +84,5 @@ void game_save(cgame g, char *filename) {
     fputs(c, f); 
     fclose(f);
 }*/
+
+int main(void) { return EXIT_SUCCESS; }
