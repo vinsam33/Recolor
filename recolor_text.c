@@ -26,41 +26,46 @@ void affichage_grille(game g) {
 
 int main(int argc, char *argv[]) {
   game g;
-  if(argc != 5){
+  if(argc == 1){
     color cells[144]={0,0,0,2,0,2,1,0,1,0,3,0,0,3,3,1,1,1,1,3,2,0,1,0,1,0,1,2,3,2,3,2,0,3,3,2,2,3,1,0,3,2,1,1,1,2,2,0,2,1,2,3,3,3,3,2,0,1,0,0,0,3,3,0,1,1,2,3,3,2,1,3,1,1,2,2,2,0,0,1,3,1,1,2,1,3,1,3,1,0,1,0,1,3,3,3,0,3,0,1,0,0,2,1,1,1,3,0,1,3,1,0,0,0,3,2,3,1,0,0,1,3,3,1,1,2,2,3,2,0,0,2,2,0,2,3,0,1,1,1,2,3,0,1};
     g = game_new(cells, 12);
+  }
+  else if (argc != 1 && argc != 6){
+    printf("Nombre d'arguments incorrects, arguments attendus : ./recolor_text [game_to_load] [wrapping] [height] [width] [nb_color]\n");
+    //exit(EXIT_FAILURE);
   }
   else{
     bool state;//wrapping
     int h; //height
     int w; //width
     int nb;//nb_colors
-    if(strcmp(argv[1],"yes") == 0){
+    game_load(argv[1]); 
+    if(strcmp(argv[2],"yes") == 0){
       state = true;
     }
-    else if(strcmp(argv[1],"no") == 0){
+    else if(strcmp(argv[2],"no") == 0){
       state = false;
     }
     else{
       printf("Argument wrapping invalide\n");
     }
-    if(atoi(argv[2]) == 0){
+    if(atoi(argv[3]) == 0){
       printf("Argument hauteur invalide\n");
     }
     else{
-      h = atoi(argv[2]);
+      h = atoi(argv[3]);
     }
-    if(atoi(argv[3]) == 0){
+    if(atoi(argv[4]) == 0){
       printf("Argument largeur invalide\n");
     }
     else{
-      w = atoi(argv[3]);
+      w = atoi(argv[4]);
     }
-    if(atoi(argv[4]) == 0 || atoi(argv[4]) > 16){
+    if(atoi(argv[5]) == 0 || atoi(argv[5]) > 16){
       printf("Argument nombre de couleurs invalide\n");
     }
     else{
-      nb = atoi(argv[4]);
+      nb = atoi(argv[5]);
     } 
     color * cells = malloc((w*h)*sizeof(color));
     if(cells == NULL){
