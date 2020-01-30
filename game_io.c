@@ -24,6 +24,7 @@ game game_load(char *filename) {
     char * g = fgets(s, MAXLINELEN, f);
     if(g==NULL) {
         fprintf(stderr, "Null pointer\n");
+        free(s);
         fclose(f);
         exit(EXIT_FAILURE);
     }
