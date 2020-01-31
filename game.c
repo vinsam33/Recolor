@@ -5,12 +5,12 @@
 
 
 struct game_s {
-  color **tab; //grille de jeu 
+  color **tab; //grille de jeu
   uint nb_max; //nombre de mouvements maximums autorisés pour gagner
-  uint nb_curr; //nombre de mouvements actuels 
+  uint nb_curr; //nombre de mouvements actuels
   uint height; //hauteur du jeu
   uint width; //largeur du jeu
-  bool wrapping; //est ou non wrapping 
+  bool wrapping; //est ou non wrapping
   color **init_game; //jeu initial
 };
 
@@ -94,7 +94,7 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
       if (x == 0){
         remplissage(g, cible, rep, game_width(g) - 1, y);     // Remplissage en Wrapping droite/gauche
       }
-    }  
+    }
   }
 }
 
@@ -260,10 +260,10 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
 
   g->wrapping = wrapping; // On remplit cette structure champ par champ
-  g->nb_max = nb_moves_max; 
+  g->nb_max = nb_moves_max;
   g->nb_curr = 0;
-  g->width = width; 
-  g->height = height; 
+  g->width = width;
+  g->height = height;
   g->tab = (color **)malloc(width * sizeof(color *)); // On alloue le tableau ** tab
   if (g->tab == NULL) {
     free(g);
@@ -283,8 +283,8 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
     g->tab[i] = (color *)malloc(height * sizeof(color));  // On alloue le tableau * tab[i]
     if (g->tab[i] == NULL) {
       for (uint x=0; x<i; x++){
-        free(g->tab[x]); 
-      } 
+        free(g->tab[x]);
+      }
       free(g->tab);
       free(g->init_game);
       free(g);
@@ -300,7 +300,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
         free(g->tab[x]);
       }
       for(uint y=0; y<i; y++){
-        free(g->init_game[y]); 
+        free(g->init_game[y]);
       }
       free(g->tab);
       free(g->init_game);
