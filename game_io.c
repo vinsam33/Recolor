@@ -21,14 +21,21 @@ game game_load(char *filename) {
         fclose(f);
         exit(EXIT_FAILURE);
     }
-    char * g = fgets(s, MAXLINELEN, f);
-    if(g==NULL) {
-        fprintf(stderr, "Null pointer\n");
-        free(s);
-        fclose(f);
-        exit(EXIT_FAILURE);
+    s = fgets(s, MAXLINELEN, f);
+    int w,h;
+    color *cells = ;
+    int i = 0;
+    while (s = fgets(s, MAXLINELEN, f) != NULL)
+    {
+        char *tok = strtok(s, " \n");
+        while (tok != NULL)
+        {
+            int n = atoi(tok);
+            cells[i] = n;
+            i++;
+        }
     }
-    color *cells=NULL;
+
     for (uint i=6; s[i]!='\n'; i++){
         cells[i-6] = s[i];
     }
