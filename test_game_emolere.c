@@ -22,28 +22,52 @@ bool test_game_set_max_moves(uint max) {
 }
 
 bool test_game_play_one_move(color c) {
-  game g = game_new_empty_ext(12, 12, false); // Comme le jeu est empty toutes ses cases ont pour valeur 0 
+  
+  /** Vérification play_one_move en wrapping = true **/
+
+  //Initialisation d'une grille de jeu spéciale test wrapping :
+  color cells[144] = {
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+  game g = game_new_ext(12, 12, cells, 12, true);
   if (!g) {
     fprintf(stderr, "Error : invalid game\n\n");
     game_delete(g);
     return false;
   }
-
-  game_play_one_move(g, c); // Comme toutes les cases ont pour valeur 0 après avoir joué un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
+  game_play_one_move(g,0);
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
-      if (game_cell_current_color(g, x, y) != c) {
+      if (game_cell_current_color(g, x, y) != 0) {
         game_delete(g);
         return false;
       }
     }
   }
+  game_delete(g);
+
+  /** Vérification play_one_move en wrapping = false **/
+
+  game ga = game_new_empty_ext(12, 12, false);
+  game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 après avoir joué un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
   if (c <= 0) {
     fprintf(stderr, "Error : invalid game\n\n");
-    game_delete(g);
+    game_delete(ga);
     return false;
   }
-  game_delete(g);
+  for (unsigned int y = 0; y < game_height(ga); y++) {
+    for (unsigned int x = 0; x < game_width(ga); x++) {
+      if (game_cell_current_color(ga, x, y) != c) {
+        game_delete(ga);
+        return false;
+      }
+    }
+  }
+  game_delete(ga);
   return true;
 }
 
