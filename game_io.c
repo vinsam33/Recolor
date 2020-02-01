@@ -22,28 +22,36 @@ game game_load(char *filename) {
         exit(EXIT_FAILURE);
     }
     s = fgets(s, MAXLINELEN, f);
-    int w,h;
-    color *cells = ;
+    //int w,h;
+    char *d = strtok(s, " \n");
+    uint w=atoi(d); 
+
+    d = strtok(NULL, " \n");
+    uint h=atoi(d); 
+
+    d = strtok(NULL, " \n");
+    uint nb_max=atoi(d); 
+
+    d = strtok(NULL, " \n");
+    bool wrapping = d; 
+
+    color *cells = malloc(sizeof(color)*MAXLINELEN);
     int i = 0;
-    while (s = fgets(s, MAXLINELEN, f) != NULL)
-    {
+    while (fgets(s, MAXLINELEN, f) != NULL){
         char *tok = strtok(s, " \n");
-        while (tok != NULL)
-        {
+        while (tok != NULL){
             int n = atoi(tok);
             cells[i] = n;
             i++;
+            tok = strtok(NULL, " \n"); 
         }
     }
-
-    for (uint i=6; s[i]!='\n'; i++){
-        cells[i-6] = s[i];
-    }
-    game ga = game_new_ext(s[4], s[3], cells, s[5], s[2]);
-    //game_new_empty_ext(s[0], s[1], s[2]);
+    //game ga = game_new_ext(s[4], s[3], cells, s[5], s[2]);
+    game ga = game_new_ext(w, h, cells, nb_max, wrapping); 
+    free(s); 
+    free(cells); 
     fclose(f);
     return ga;
-    //return NULL;
 }
 
 
