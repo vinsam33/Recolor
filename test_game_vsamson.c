@@ -203,7 +203,7 @@ int main(void) {  // start tests.
     return EXIT_FAILURE;
   }
 
-  / printf("----------------Start test_game_height----------------\n\n");
+  printf("----------------Start test_game_height----------------\n\n");
 
   bool height = test_game_height();
   if (height == true) {
