@@ -12,8 +12,9 @@ game game_load(char *filename) {
         fprintf(stderr, "Null pointer\n");
         exit(EXIT_FAILURE);
     }
-    FILE * f = fopen("filename","r");
+    FILE * f = fopen(filename,"r");
     if (f == NULL){
+        fprintf(stderr,"error f\n");
         exit(EXIT_FAILURE);
     }
     char *s = malloc(sizeof (char)*MAXLINELEN);
