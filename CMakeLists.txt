@@ -24,6 +24,7 @@ target_link_libraries(test_game_vsamson game)
 include(CTest)
 enable_testing()
 
+
 add_test(test_game_new ./test_game_slascostes game_new)
 add_test(test_game_nb_moves_max ./test_game_slascostes game_nb_moves_max)
 add_test(test_game_copy ./test_game_slascostes game_copy)
@@ -44,3 +45,4 @@ add_test(test_game_new_empty ./test_game_vsamson game_new_empty)
 add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_color)
 add_test(test_game_delete ./test_game_vsamson game_delete)
 add_test(test_game_height ./test_game_vsamson game_height)
+add_test(test_game_save ./test_game_vsamson game_save)
