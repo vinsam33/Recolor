@@ -35,7 +35,8 @@ game game_load(char *filename) {
   uint nb_max = atoi(d);
 
   d = strtok(NULL, " \n");
-  bool wrapping = d;
+  bool wrapping = true;
+  if (d=='N') wrapping = false;
 
   color *cells = malloc(sizeof(color) * MAXLINELEN);
   int i = 0;
@@ -48,7 +49,6 @@ game game_load(char *filename) {
       tok = strtok(NULL, " \n");
     }
   }
-  // game ga = game_new_ext(s[4], s[3], cells, s[5], s[2]);
   game ga = game_new_ext(w, h, cells, nb_max, wrapping);
   free(s);
   free(cells);
