@@ -126,6 +126,7 @@ bool test_game_save() {
       1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+  // test avec version wrapping
   game g = game_new_ext(12, 12, cells, 10, true);
   if (g == NULL) {
     game_delete(g);
@@ -146,14 +147,8 @@ bool test_game_save() {
       game_delete(g2);
       return false;
     }
-  } else {  // verif paramètre si on a pas de wrapping
-    if (game_width(g) != game_width(g2) || game_height(g) != game_height(g2) ||
-        game_nb_moves_max(g) != game_nb_moves_max(g2)) {
-      game_delete(g);
-      game_delete(g2);
-      return false;
-    }
-  }  // verif les positions des cellules
+  }
+  // verif les positions des cellules
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
       if (game_cell_current_color(g, x, y) !=
@@ -166,6 +161,37 @@ bool test_game_save() {
   }
   game_delete(g);
   game_delete(g2);
+
+  // test avec sans wrapping
+  game g3 = game_new_ext(12, 12, cells, 10, false);
+  if (g3 == NULL) {
+    game_delete(g3);
+    return false;
+  }
+  game_save(g3, "test2.rec");  // sauvegarde la partie directement au debut
+  game g4 = game_load("test2.rec");  // charge la partie et on verifie que l'on
+                                     // a bien sauvegardé
+  if (g4 == NULL) {
+    game_delete(g3);
+    game_delete(g4);
+  }
+  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) ||
+      game_nb_moves_max(g3) != game_nb_moves_max(g4)) {
+    game_delete(g3);
+    game_delete(g4);
+    return false;
+  }
+  // verif les positions des cellules
+  for (uint x = 0; x < game_width(g3); x++) {
+    for (uint y = 0; y < game_height(g3); y++) {
+      if (game_cell_current_color(g3, x, y) !=
+          game_cell_current_color(g3, x, y)) {
+        game_delete(g3);
+        game_delete(g4);
+        return false;
+      }
+    }
+  }
 
   return true;
 }
