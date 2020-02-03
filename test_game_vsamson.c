@@ -175,8 +175,7 @@ bool test_game_save() {
     game_delete(g3);
     game_delete(g4);
   }
-  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) ||
-      game_nb_moves_max(g3) != game_nb_moves_max(g4)) {
+  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) || game_nb_moves_max(g3) != game_nb_moves_max(g4)) {
     game_delete(g3);
     game_delete(g4);
     return false;
@@ -184,15 +183,15 @@ bool test_game_save() {
   // verif les positions des cellules
   for (uint x = 0; x < game_width(g3); x++) {
     for (uint y = 0; y < game_height(g3); y++) {
-      if (game_cell_current_color(g3, x, y) !=
-          game_cell_current_color(g3, x, y)) {
+      if (game_cell_current_color(g3, x, y) != game_cell_current_color(g3, x, y)) {
         game_delete(g3);
         game_delete(g4);
         return false;
       }
     }
   }
-
+  game_delete(g3);
+  game_delete(g4);
   return true;
 }
 
