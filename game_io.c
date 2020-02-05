@@ -68,16 +68,29 @@ void game_save(cgame g, char *filename) {
   }
 
   if (game_is_wrapping(g)) {
-    fprintf(f, "%d %d %d %s \n", game_width(g), game_height(g),
+    fprintf(f, "%d %d %d %s\n", game_width(g), game_height(g),
             game_nb_moves_max(g), "S");
   } else {
-    fprintf(f, "%d %d %d %s \n", game_width(g), game_height(g),
+    fprintf(f, "%d %d %d %s\n", game_width(g), game_height(g),
             game_nb_moves_max(g), "N");
   }
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
-      fprintf(f, "%d ", game_cell_current_color(g, x, y));
+      if (x != game_width(g)-1){
+        fprintf(f, "%d ", game_cell_current_color(g,x,y));
+
+      }
+      else{
+        fprintf(f,"%d",game_cell_current_color(g,x,y));
+      }
+  
+      /*fprintf(f, "%d", game_cell_current_color(g,x,y));
+      if (x != game_width(g)-1){
+        fprintf(f," ");
+      }*/
+  
     }
+    
     fprintf(f, "\n");
   }
   fclose(f);
