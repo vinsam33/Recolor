@@ -27,7 +27,7 @@ target_link_libraries(test_game_vsamson game)
 include(CTest)
 enable_testing()
 
-//file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 add_test(test_game_new ./test_game_slascostes game_new)
