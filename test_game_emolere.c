@@ -14,7 +14,7 @@ bool test_game_set_max_moves(uint max) {
     return false;
   }
 
-  game_set_max_moves(g, max); // On appelle game_set_max_moves pour définir un nb de mouvements maximum pour le jeu g et on vérifie que le nombre maximum de mouvements de g est bien max
+  game_set_max_moves(g, max); // On appelle game_set_max_moves pour dÃ©finir un nb de mouvements maximum pour le jeu g et on vÃ©rifie que le nombre maximum de mouvements de g est bien max
   if (game_nb_moves_max(g) != max) {
     fprintf(stderr, "Error : too much number of moves\n\n");
     game_delete(g);
@@ -26,9 +26,9 @@ bool test_game_set_max_moves(uint max) {
 
 bool test_game_play_one_move(color c) {
   
-  /** Vérification play_one_move en wrapping = true **/
+  /** VÃ©rification play_one_move en wrapping = true **/
 
-  //Initialisation d'une grille de jeu spéciale test wrapping :
+  //Initialisation d'une grille de jeu spÃ©ciale test wrapping :
   color cells[144] = {
       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -53,10 +53,10 @@ bool test_game_play_one_move(color c) {
   }
   game_delete(g);
 
-  /** Vérification play_one_move en wrapping = false **/
+  /** VÃ©rification play_one_move en wrapping = false **/
 
   game ga = game_new_empty_ext(12, 12, false);
-  game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 après avoir joué un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
+  game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 aprÃ¨s avoir jouÃ© un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
   if (c <= 0) {
     fprintf(stderr, "Error : invalid game\n\n");
     game_delete(ga);
@@ -93,7 +93,7 @@ bool test_game_restart() {
   }
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
-      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // Après un restart chaque case du jeu doit être identique à la case d'indice correspondant dans cells, car cells correpond au tableau de valeurs de départ
+      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // AprÃ¨s un restart chaque case du jeu doit Ãªtre identique Ã  la case d'indice correspondant dans cells, car cells correpond au tableau de valeurs de dÃ©part
         fprintf(stderr, "Error : game_cell_current_color different from cells\n\n");
         game_delete(g);
         return false;
@@ -116,7 +116,7 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
     game_delete(g);
     return false;
   }
-  for (unsigned int x = 0; x < width; x++) { // La valeur de chaque case du tableau doit être 0
+  for (unsigned int x = 0; x < width; x++) { // La valeur de chaque case du tableau doit Ãªtre 0
     for (unsigned int y = 0; y < height; y++) {
       if (game_cell_current_color(g, x, y) != 0){
         game_delete(g);
@@ -129,39 +129,19 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
 }
 
 bool test_game_load(){
-  color cells[144] = {
-      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
-      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
-      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
-      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
-      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  // test avec version wrapping
-  game g2 = game_new_ext(12, 12, cells, 10, true);
-  if (g2 == NULL) {
-    game_delete(g2);
-    return false;
-  }
-  game_save(g2, "default_game.rec.txt");  // sauvegarde la partie directement au debut
-  game g = game_load("default_game.rec.txt");  // charge la partie et on verifie que l'on a bien sauvegardé
-  if (g == NULL) {
-    game_delete(g2);
-    game_delete(g);
-  }
+  game g = game_load("default_game.rec.txt"); // Wrapping en true
   if ("default_game.rec.txt"==NULL){
     fprintf(stderr, "Null pointer\n");
     exit(EXIT_FAILURE);
   }
   FILE * f = fopen("default_game.rec.txt","r");
   if (f == NULL){
-    game_delete(g2);
     game_delete(g);
     exit(EXIT_FAILURE);
   }
   char *s = malloc(sizeof (char)*MAXLINELEN);
   if(s==NULL){
     fprintf(stderr, "Null pointer\n");
-    game_delete(g2);
     game_delete(g);
     fclose(f);
     exit(EXIT_FAILURE);
@@ -182,7 +162,6 @@ bool test_game_load(){
 
   if(game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
     free(s);
-    game_delete(g2);
     game_delete(g);
     fclose(f);
     return false;
@@ -204,7 +183,6 @@ bool test_game_load(){
       if (game_cell_current_color(g, x, y) != cells[y * w + x]){
         free(s);
         free(cells);
-        game_delete(g2);
         game_delete(g);
         fclose(f);
         return false;
@@ -213,45 +191,22 @@ bool test_game_load(){
   }
   free(s);
   free(cells);
-  game_delete(g2);
   game_delete(g);
   fclose(f);
-
-  color cells[144] = {
-      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
-      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
-      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
-      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
-      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  // test avec version non wrapping
-  game g3 = game_new_ext(12, 12, cells, 10, false);
-  if (g3 == NULL) {
-    game_delete(g3);
-    return false;
-  }
-  game_save(g3, "default_game.rec.txt");  // sauvegarde la partie directement au debut
-  game g4 = game_load("default_game.rec.txt");  // charge la partie et on verifie que l'on a bien sauvegardé
-  if (g4 == NULL) {
-    game_delete(g3);
-    game_delete(g4);
-  }
-  game g4 = game_load("horizontal_game2N.rec.txt"); // Wrapping en false
+  game g2 = game_load("horizontal_game2N.rec.txt"); // Wrapping en false
   if ("horizontal_game2N.rec.txt"==NULL){
     fprintf(stderr, "Null pointer\n");
     exit(EXIT_FAILURE);
   }
   FILE * f2 = fopen("horizontal_game2N.rec.txt","r");
   if (f2 == NULL){
-    game_delete(g3);
-    game_delete(g4); 
+    game_delete(g2);
     exit(EXIT_FAILURE);
   }
   char *s2 = malloc(sizeof (char)*MAXLINELEN);
   if(s2==NULL){
     fprintf(stderr, "Null pointer\n");
-    game_delete(g3);
-    game_delete(g4); 
+    game_delete(g2);
     fclose(f2);
     exit(EXIT_FAILURE);
   }
@@ -269,10 +224,9 @@ bool test_game_load(){
   bool wrapping2 = true;
   if (d2=='N') wrapping2 = false;
 
-  if(game_is_wrapping(g4) != wrapping2 || game_height(g4) != h2 || game_width(g4) != w2 || game_nb_moves_max(g4) != nb_max2){
+  if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
     free(s2);
-    game_delete(g3);
-    game_delete(g4); 
+    game_delete(g2);
     fclose(f2);
     return false;
   }
@@ -290,11 +244,10 @@ bool test_game_load(){
   }
   for (uint x=0; x < w2; x++){
     for (uint y=0; y < h2; y++){
-      if (game_cell_current_color(g4, x, y) != cells2[y * w2 + x]){
+      if (game_cell_current_color(g2, x, y) != cells2[y * w2 + x]){
         free(s2);
         free(cells2);
-        game_delete(g3);
-        game_delete(g4); 
+        game_delete(g2);
         fclose(f2);
         return false;
       }
@@ -302,8 +255,7 @@ bool test_game_load(){
   }
   free(s2);
   free(cells2);
-  game_delete(g3);
-  game_delete(g4); 
+  game_delete(g2);
   fclose(f2);
   return true;
 }
