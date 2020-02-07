@@ -9,8 +9,8 @@ add_library(game game_io.c game.c)
 add_executable(recolor_text recolor_text.c)
 target_link_libraries(recolor_text game)
 
-add_executable(recolor_solve recolor_solve.c)
-target_link_libraries(recolor_solve game)
+#add_executable(recolor_solve recolor_solve.c)
+#target_link_libraries(recolor_solve game)
 
 add_executable(test_game_slascostes test_game_slascostes.c)
 target_link_libraries(test_game_slascostes game)
@@ -26,6 +26,8 @@ target_link_libraries(test_game_vsamson game)
 
 include(CTest)
 enable_testing()
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 add_test(test_game_new ./test_game_slascostes game_new)
