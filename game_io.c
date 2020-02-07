@@ -35,8 +35,9 @@ game game_load(char *filename) {
   uint nb_max = atoi(d);
 
   d = strtok(NULL, " \n");
-  char * wrapping = d;
-  //if (d=='N') wrapping = false;
+  char wrapping[2];
+  strcpy(wrapping,d);
+  //printf("|%s|",wrapping);
 
   color *cells = malloc(sizeof(color) * MAXLINELEN);
   int i = 0;
@@ -83,11 +84,6 @@ void game_save(cgame g, char *filename) {
       else{
         fprintf(f,"%d",game_cell_current_color(g,x,y));
       }
-  
-      /*fprintf(f, "%d", game_cell_current_color(g,x,y));
-      if (x != game_width(g)-1){
-        fprintf(f," ");
-      }*/
   
     }
     
