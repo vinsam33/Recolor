@@ -25,7 +25,7 @@ void affichage_grille(game g) {
 
 int main(int argc, char *argv[]) {
   game g;
-  if (argc == 1) {
+  if (argc != 2 && argc != 5) {
     color cells[144] = {
         0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
         1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     if (atoi(argv[4]) == 0 || atoi(argv[4]) > 16) {
       printf("Argument nombre de couleurs invalide\n");
     } else {
-      nb = atoi(argv[5]);
+      nb = atoi(argv[4]);
     }
     color *cells = malloc((w * h) * sizeof(color));
     if (cells == NULL) {
@@ -77,15 +77,16 @@ int main(int argc, char *argv[]) {
     }
     g = game_new_ext(w, h, cells, 12, state);
   }
-  if (argc != 1 && argc != 2 && argc != 6) {
+  /*if (argc != 1 && argc != 2 && argc != 5) {
     printf(
         "Nombre d'arguments incorrects, arguments attendus  pour v1 : "
         "./recolor_text \n");
     printf("pour v2: ./recolor_text  [wrapping] [height] [width] [nb_color]\n");
-    printf("pour load: ./recolor_text fichier_load\n");
-    // exit(EXIT_FAILURE);
-  }
-  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
+    printf("pour load: ./recolor_text fichier_load.rec\n");
+    exit(EXIT_FAILURE);
+  }*/
+  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+         game_nb_moves_max(g));
   affichage_grille(g);
   printf("Jouer un coup: (");
   printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
@@ -97,11 +98,21 @@ int main(int argc, char *argv[]) {
       exit(EXIT_SUCCESS);
     }
     if (c == 'q') {  // quitte le jeu
+      if (argc == 2) {
+        game_save(g, argv[1]);  // sauvegarde du jeu quand on quitte la partie
+      }
+      if (argc == 5) {
+        game_save(g, "recolor_v2.rec");  // sauvegarde jeu a v2
+      }
+      if (argc != 5 && argc != 2) {
+        game_save(g, "recolor_v1.rec");  // sauvegarde jeu a v1
+      }
       break;
     }
     if (c == 'r') {  // redémarre le jeu
       game_restart(g);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+             game_nb_moves_max(g));
       affichage_grille(g);
       printf("Jouer un coup: (");
       printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
@@ -109,7 +120,7 @@ int main(int argc, char *argv[]) {
     }
     if (c >= '0' && c <= '9') {  // Jeu avec une couleur numérique
       game_play_one_move(g, c - 48);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
+      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
       printf(
           "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
@@ -125,7 +136,9 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  if (game_is_over(g) && game_nb_moves_cur(g) <= game_nb_moves_max(g)) {  // Affiche si le jeu est gagné ou non
+  if (game_is_over(g) &&
+      game_nb_moves_cur(g) <=
+          game_nb_moves_max(g)) {  // Affiche si le jeu est gagné ou non
     printf("BRAVO\n");
   } else {
     printf("DOMMAGE\n");

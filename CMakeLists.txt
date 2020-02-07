@@ -9,6 +9,9 @@ add_library(game game_io.c game.c)
 add_executable(recolor_text recolor_text.c)
 target_link_libraries(recolor_text game)
 
+add_executable(recolor_solve recolor_solve.c)
+target_link_libraries(recolor_solve game)
+
 add_executable(test_game_slascostes test_game_slascostes.c)
 target_link_libraries(test_game_slascostes game)
 
@@ -23,6 +26,7 @@ target_link_libraries(test_game_vsamson game)
 
 include(CTest)
 enable_testing()
+
 
 add_test(test_game_new ./test_game_slascostes game_new)
 add_test(test_game_nb_moves_max ./test_game_slascostes game_nb_moves_max)
@@ -39,8 +43,10 @@ add_test(test_game_set_max_moves ./test_game_emolere game_set_max_moves)
 add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
 add_test(test_game_restart ./test_game_emolere game_restart)
 add_test(test_game_new_empty_ext ./test_game_emolere game_new_empty_ext)
+add_test(test_game_load ./test_game_emolere game_load)
 
 add_test(test_game_new_empty ./test_game_vsamson game_new_empty)
 add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_color)
 add_test(test_game_delete ./test_game_vsamson game_delete)
 add_test(test_game_height ./test_game_vsamson game_height)
+add_test(test_game_save ./test_game_vsamson game_save)
