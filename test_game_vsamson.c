@@ -175,7 +175,7 @@ bool test_game_save() {
     game_delete(g3);
     game_delete(g4);
   }
-  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) || game_nb_moves_max(g3) != game_nb_moves_max(g4)) {
+  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) || game_nb_moves_max(g3) != game_nb_moves_max(g4)||game_is_wrapping(g3)!=game_is_wrapping(g4)){
     game_delete(g3);
     game_delete(g4);
     return false;
