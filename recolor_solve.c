@@ -14,7 +14,7 @@ void NB_SOL(){
 
     return NULL;
 }
-void NB_SOL(){
+void FIND_MIN(){
 
     return NULL;
 }
