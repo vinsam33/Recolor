@@ -129,19 +129,39 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
 }
 
 bool test_game_load(){
-  game g = game_load("default_game.rec.txt"); // Wrapping en true
+  color cells[144] = {
+      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
+      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
+      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
+      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
+      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
+      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+  // test avec version wrapping
+  game g2 = game_new_ext(12, 12, cells, 10, true);
+  if (g2 == NULL) {
+    game_delete(g2);
+    return false;
+  }
+  game_save(g2, "default_game.rec.txt");  // sauvegarde la partie directement au debut
+  game g = game_load("default_game.rec.txt");  // charge la partie et on verifie que l'on a bien sauvegardé
+  if (g == NULL) {
+    game_delete(g2);
+    game_delete(g);
+  }
   if ("default_game.rec.txt"==NULL){
     fprintf(stderr, "Null pointer\n");
     exit(EXIT_FAILURE);
   }
   FILE * f = fopen("default_game.rec.txt","r");
   if (f == NULL){
+    game_delete(g2);
     game_delete(g);
     exit(EXIT_FAILURE);
   }
   char *s = malloc(sizeof (char)*MAXLINELEN);
   if(s==NULL){
     fprintf(stderr, "Null pointer\n");
+    game_delete(g2);
     game_delete(g);
     fclose(f);
     exit(EXIT_FAILURE);
@@ -162,6 +182,7 @@ bool test_game_load(){
 
   if(game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
     free(s);
+    game_delete(g2);
     game_delete(g);
     fclose(f);
     return false;
@@ -183,6 +204,7 @@ bool test_game_load(){
       if (game_cell_current_color(g, x, y) != cells[y * w + x]){
         free(s);
         free(cells);
+        game_delete(g2);
         game_delete(g);
         fclose(f);
         return false;
@@ -191,22 +213,45 @@ bool test_game_load(){
   }
   free(s);
   free(cells);
+  game_delete(g2);
   game_delete(g);
   fclose(f);
-  game g2 = game_load("horizontal_game2N.rec.txt"); // Wrapping en false
+
+  color cells[144] = {
+      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
+      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
+      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
+      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
+      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
+      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+  // test avec version non wrapping
+  game g3 = game_new_ext(12, 12, cells, 10, false);
+  if (g3 == NULL) {
+    game_delete(g3);
+    return false;
+  }
+  game_save(g3, "default_game.rec.txt");  // sauvegarde la partie directement au debut
+  game g4 = game_load("default_game.rec.txt");  // charge la partie et on verifie que l'on a bien sauvegardé
+  if (g4 == NULL) {
+    game_delete(g3);
+    game_delete(g4);
+  }
+  game g4 = game_load("horizontal_game2N.rec.txt"); // Wrapping en false
   if ("horizontal_game2N.rec.txt"==NULL){
     fprintf(stderr, "Null pointer\n");
     exit(EXIT_FAILURE);
   }
   FILE * f2 = fopen("horizontal_game2N.rec.txt","r");
   if (f2 == NULL){
-    game_delete(g2);
+    game_delete(g3);
+    game_delete(g4); 
     exit(EXIT_FAILURE);
   }
   char *s2 = malloc(sizeof (char)*MAXLINELEN);
   if(s2==NULL){
     fprintf(stderr, "Null pointer\n");
-    game_delete(g2);
+    game_delete(g3);
+    game_delete(g4); 
     fclose(f2);
     exit(EXIT_FAILURE);
   }
@@ -224,9 +269,10 @@ bool test_game_load(){
   bool wrapping2 = true;
   if (d2=='N') wrapping2 = false;
 
-  if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
+  if(game_is_wrapping(g4) != wrapping2 || game_height(g4) != h2 || game_width(g4) != w2 || game_nb_moves_max(g4) != nb_max2){
     free(s2);
-    game_delete(g2);
+    game_delete(g3);
+    game_delete(g4); 
     fclose(f2);
     return false;
   }
@@ -244,10 +290,11 @@ bool test_game_load(){
   }
   for (uint x=0; x < w2; x++){
     for (uint y=0; y < h2; y++){
-      if (game_cell_current_color(g2, x, y) != cells2[y * w2 + x]){
+      if (game_cell_current_color(g4, x, y) != cells2[y * w2 + x]){
         free(s2);
         free(cells2);
-        game_delete(g2);
+        game_delete(g3);
+        game_delete(g4); 
         fclose(f2);
         return false;
       }
@@ -255,7 +302,8 @@ bool test_game_load(){
   }
   free(s2);
   free(cells2);
-  game_delete(g2);
+  game_delete(g3);
+  game_delete(g4); 
   fclose(f2);
   return true;
 }
