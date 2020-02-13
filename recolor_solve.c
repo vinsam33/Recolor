@@ -55,7 +55,7 @@ void FIND_MIN(){
     return NULL;
 }
 int main(int argc, char* argv[]){
-     if(argc!=){
+     if(argc!=4){
         fprintf(stderr,"recolor_solve FIND_ONE|NB_SOL|FIND_MIN <nom_fichier_pb> <prefix_fichier_sol>\n");
         exit(EXIT_FAILURE);
     }
