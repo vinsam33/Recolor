@@ -59,5 +59,6 @@ int main(int argc, char* argv[]){
         fprintf(stderr,"recolor_solve FIND_ONE|NB_SOL|FIND_MIN <nom_fichier_pb> <prefix_fichier_sol>\n");
         exit(EXIT_FAILURE);
     }
-    game jeu = load_game(argv[2]);
+    game g = load_game(argv[2]);
+
 }
