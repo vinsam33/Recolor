@@ -19,7 +19,7 @@ color* FIND_ONE(cgame g){
         fprintf(stderr, "Problem allocation memory \n");
         exit(EXIT_FAILURE);
     }
-    //uint max_col = recuppe de lacolo
+    //uint max_col = si on a une fonction qui genere le max de couleur.pour l'instant je vois pas trop.
 
     time_t temps;
     srand((unsigned) time(&temps));
@@ -30,7 +30,7 @@ color* FIND_ONE(cgame g){
     for(uint i=0; i < nb_moves_max; i++){
         // j'utilise do while parce que je pense qu'il faut au moins jouer une fois
         do {
-            genere_solution= rand () % (max_col+1); // pour l'instant je vois pas trop.
+            genere_solution= rand () % (max_col+1);
         } while (genere_solution == cell_cur);
         game_play_one_move(g, genere_solution);
         cell_cur = genere_solution;
@@ -55,7 +55,7 @@ void FIND_MIN(){
     return NULL;
 }
 int main(int argc, char* argv[]){
-     if(argc!=5){
+     if(argc!=){
         fprintf(stderr,"recolor_solve FIND_ONE|NB_SOL|FIND_MIN <nom_fichier_pb> <prefix_fichier_sol>\n");
         exit(EXIT_FAILURE);
     }
