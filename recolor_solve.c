@@ -63,12 +63,21 @@ int main(int argc, char* argv[]){
     if(strcmp(argv[1],"FIND_ONE")==0){          
         char file_name[FILE_SIZE];
         cgame solutions = FIND_ONE(g,0);
-        sprintf(my_file, "%s.sol", argv[3]);// si une solution a été trouvé, on enregistre la solution dans le fichier
+        sprintf(file_name, "%s.sol", argv[3]);// si une solution a été trouvé, on enregistre la solution dans le fichier
         if(NB_SOL()>0){ // à revoir pour le type de retour de la fonction
             game_save(solutions, file_name);
         }
         else {
             my_file = NULL;
+            char file_name[strlen(argv[3])];
+            sprintf(file_name, "%s.sol", argv[3]);
+            my_file = fopen(file_name, "w");
+            if( !my_file){
+                fprintf(stderr, "recolor_solve: impossible d'ouvrir le fichier pour FIND_ONE \n");
+                exit(EXIT_FAILURE);
+            }
+            fprintf(my_file, "NO SOLUTION");
+            fclose(my_file);
 
         }
 }
