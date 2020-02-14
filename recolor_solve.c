@@ -19,7 +19,7 @@ color* FIND_ONE(cgame g){
         fprintf(stderr, "Problem allocation memory \n");
         exit(EXIT_FAILURE);
     }
-  uint max_col = ... // si on a une fonction qui genere le max de couleur.pour l'instant je vois pas trop.
+    uint max_col = ... // si on a une fonction qui genere le max de couleur.pour l'instant je vois pas trop.
     time_t temps;
     srand((unsigned) time(&temps));
 
