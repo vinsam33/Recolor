@@ -5,9 +5,9 @@
 #include "string.h"
 #include "time.h"
 
-#define TAILLE_DU_FICHIER 100
-typedef enum e_fonctions { FIND_ONE, NB_SOL, FIND_MIN }fonction;
-
+#define FILE_SIZE 300
+typedef enum { FIND_ONE, NB_SOL, FIND_MIN }e_fonctions;
+FILE* my_file = NULL;
 //fonction qui permet de trouver une solution
 
 color* FIND_ONE(cgame g){
@@ -19,8 +19,7 @@ color* FIND_ONE(cgame g){
         fprintf(stderr, "Problem allocation memory \n");
         exit(EXIT_FAILURE);
     }
-    //uint max_col = si on a une fonction qui genere le max de couleur.pour l'instant je vois pas trop.
-
+  uint max_col = ... // si on a une fonction qui genere le max de couleur.pour l'instant je vois pas trop.
     time_t temps;
     srand((unsigned) time(&temps));
 
@@ -28,7 +27,7 @@ color* FIND_ONE(cgame g){
     game_restart(g);
 
     for(uint i=0; i < nb_moves_max; i++){
-        // j'utilise do while parce que je pense qu'il faut au moins jouer une fois
+        // j'utilise do while parce que je pense qu'il faut jouer au moins une fois
         do {
             genere_solution= rand () % (max_col+1);
         } while (genere_solution == cell_cur);
@@ -40,7 +39,7 @@ color* FIND_ONE(cgame g){
             break;
         }
     }
-    if(! game_is_over(g) ){
+    if(!game_is_over(g) ){
         goto NEW_GENERATE;
     
         return solutions;
@@ -59,6 +58,17 @@ int main(int argc, char* argv[]){
         fprintf(stderr,"recolor_solve FIND_ONE|NB_SOL|FIND_MIN <nom_fichier_pb> <prefix_fichier_sol>\n");
         exit(EXIT_FAILURE);
     }
-    game g = load_game(argv[2]);
+    cgame g = load_game(argv[2]);
 
+    if(strcmp(argv[1],"FIND_ONE")==0){          
+        char file_name[FILE_SIZE];
+        cgame solutions = FIND_ONE(g,0);
+        sprintf(my_file, "%s.sol", argv[3]);// si une solution a été trouvé, on enregistre la solution dans le fichier
+        if(NB_SOL()>0){ // à revoir pour le type de retour de la fonction
+            game_save(solutions, file_name);
+        }
+        else {
+            my_file = NULL;
+
+        }
 }
