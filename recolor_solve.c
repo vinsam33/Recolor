@@ -4,8 +4,9 @@
 #include "game_io.h"
 #include "string.h"
 #include "time.h"
+#include <math.h>
 
-#define FILE_SIZE 300
+/*#define FILE_SIZE 300
 typedef enum { FIND_ONE, NB_SOL, FIND_MIN }e_fonctions;
 FILE* my_file = NULL;
 //fonction qui permet de trouver une solution
@@ -44,40 +45,34 @@ color* FIND_ONE(cgame g){
     
         return solutions;
     }
-}
-void NB_SOL(){
-
-    return NULL;
-}
+}*/
+void NB_SOL();
 void FIND_MIN(){
 
     return NULL;
 }
+
 int main(int argc, char* argv[]){
-     if(argc!=4){
-        fprintf(stderr,"recolor_solve FIND_ONE|NB_SOL|FIND_MIN <nom_fichier_pb> <prefix_fichier_sol>\n");
+    if(argc !=4){
+        fprintf(stderr,"error");
+        return EXIT_FAILURE;
+    }
+    game g = game_load(argv[2]);
+    if (g==NULL){
+        fprintf(stderr,"ERROR : load %s",argv[2]);
         exit(EXIT_FAILURE);
     }
-    cgame g = load_game(argv[2]);
-
-    if(strcmp(argv[1],"FIND_ONE")==0){          
-        char file_name[FILE_SIZE];
-        cgame solutions = FIND_ONE(g,0);
-        sprintf(file_name, "%s.sol", argv[3]);// si une solution a été trouvé, on enregistre la solution dans le fichier
-        if(NB_SOL()>0){ // à revoir pour le type de retour de la fonction
-            game_save(solutions, file_name);
-        }
-        else {
-            my_file = NULL;
-            char file_name[strlen(argv[3])];
-            sprintf(file_name, "%s.sol", argv[3]);
-            my_file = fopen(file_name, "w");
-            if( !my_file){
-                fprintf(stderr, "recolor_solve: impossible d'ouvrir le fichier pour FIND_ONE \n");
-                exit(EXIT_FAILURE);
-            }
-            fprintf(my_file, "NO SOLUTION");
-            fclose(my_file);
-
-        }
+    if (strcmp(argv[1],"FIND_ONE")==0){
+        FIND_ONE();
+    }else if(strcmp(argv[1],"NB_SOL")==0){
+        uint cpt =0 ;
+        NB_SOL(g,game_cell_current_color(g,0,0),argv[3],10,1);
+          
+    }else if (strcmp(argv[1],"FIND_MIN")==0){
+        FIND_MIN();
+            
+    }
+    game_delete(g);
+    
+    return EXIT_SUCCESS;
 }
