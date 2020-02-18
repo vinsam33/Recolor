@@ -47,10 +47,104 @@ color* FIND_ONE(cgame g){
     }
 }*/
 void NB_SOL();
-void FIND_MIN(){
 
-    return NULL;
-}
+void FIND_MIN (char* fichier_pb, char* fichier_sol){
+  if (fichier_pb == NULL || fichier_sol==NULL){
+    fprintf(stderr, "NULL pointer");
+    exit(EXIT_FAILURE);
+  }
+  FIND_ONE (fichier_pb, fichier_sol); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
+  FILE *f = fopen(fichier_sol, "r");  // Open fichier_sol only in read to verify if there are solutions
+  if (f == NULL) {
+    fprintf(stderr, "error f\n");
+    exit(EXIT_FAILURE);
+  }
+  char *s = malloc(sizeof(char) * MAXLINELEN);
+  if (s == NULL) {
+    fprintf(stderr, "Null pointer\n");
+    fclose(f);
+    exit(EXIT_FAILURE);
+  }
+  color *cells = malloc(sizeof(color) * MAXLINELEN);
+  int i = 0;
+  s = fgets(s, MAXLINELEN, f);
+  char *d = strtok(s, " \n");
+  if (d=="N"){
+    d = strtok(NULL, " \n");
+    if (d=="O"){
+      fprintf(stderr,"No solution in this game");
+      free(d); 
+      free(s);
+      fclose(f);
+      exit(EXIT_FAILURE);
+    }
+  }
+  printf("They are solution(s)"); //// So apply the function
+  cells[i] = d ;
+  i++ ;
+  while (fgets(s, MAXLINELEN, f) != NULL) {
+    char *tok = strtok(s, " \n");
+    while (tok != NULL) {
+      cells[i] = tok;
+      i++;
+      tok = strtok(NULL, " \n");
+    }
+  }
+  free(d);
+  free(s);
+  fclose(f);
+  game g = game_load("fichier_pb");
+  uint cpt = 0;
+  color *t = malloc(game_nb_moves_max * sizeof(color));
+  uint x=-1;
+  color c = 5;
+  uint nbmax = i-1;
+  MIDDLE;
+  while (cpt != 32){
+    while (x+1 <= game_nb_moves_max(g)){
+      srand(time(NULL));
+      c = rand() % 16;
+      game_play_one_move(g, c);
+      x++;
+      t[x] = c;
+      if (game_is_over(g)){
+        if (x+1 < nb_max){
+          nb_max = x+1;
+          game_nb_moves_max(g) = nb_max; //
+          free(cells); 
+          color *cells = malloc(sizeof(color) * nb_max);
+          for (uint u=0; u<x+1; u++){
+            cells[u]=t[u];
+          }
+          cpt=0; 
+          game_restart(g); 
+          goto MIDDLE; 
+        }
+        else{
+          cpt++;
+          game_restart(g); 
+          goto MIDDLE; 
+        }
+      }
+    }
+    x = -1;
+    game_restart(g); 
+    goto MIDDLE; 
+  } 
+  x=0; 
+  FILE *f = fopen(fichier_sol, "w"); 
+  if (f==NULL){
+    fprintf(stderr, "NULL pointer"); 
+    exit(EXIT_FAILURE); 
+  }
+  while (x<nb_max){
+    fprintf(f, "%c", cells[x]); 
+  }
+  fclose(f); 
+  free(cells); 
+  free(t); 
+  game_delete(g); 
+}  
 
 int main(int argc, char* argv[]){
     if(argc !=4){
