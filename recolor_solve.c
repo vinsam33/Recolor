@@ -46,6 +46,52 @@ color* FIND_ONE(cgame g){
         return solutions;
     }
 }*/
+
+void FIND_ONE(char * game_curr, char * sol, uint nb_color){
+    if(game_curr == NULL || sol == NULL){
+        fprintf(stderr, "Pointer is null\n");
+        exit(EXIT_FAILURE);
+    }
+    game g = game_load(game_curr);
+    FILE *f = fopen(sol,"w");
+    if(f == NULL){
+        fprintf(stderr, "Pointer is null\n");
+        exit(EXIT_FAILURE);
+    }
+    if(NB_SOL(g,game_curr,nb_color) == 0){
+        fprintf(f,"NO SOLUTION\n");
+        return;
+    }
+    uint nb_max = game_nb_moves_max(g);
+    uint * t_sol = malloc(nb_max*sizeof(uint));
+    if(t_sol == NULL){
+        fprintf(stderr, "Problem allocation memory\n");
+        exit(EXIT_FAILURE);
+    }
+    srand(time(NULL));
+    uint i = 0;
+    while(game_is_over(g) != true){
+        if(i == nb_max-1){
+            game_restart(g);
+            i = 0;
+        }
+        t_sol[i] = rand() %nb_color;
+        i++;
+        game_play_move_one(g,t_sol[i]);
+    }
+    for(uint j=0 ; j<i ; j++){
+        if(j != i){
+            fprintf(f,"%d ",t_sol[j]);
+        }
+        else{
+            fprintf(f,"%d\n",t_sol[j]);
+        }
+    }
+    free(t_sol);
+    fclose(f);
+    game_delete(g);
+}
+
 void NB_SOL();
 void FIND_MIN(){
 
