@@ -94,7 +94,45 @@ void FIND_ONE(char * game_curr, char * sol, uint nb_color){
     game_delete(g);
 }
 
-void NB_SOL();
+void save_nbsol (game g,char * file,uint cpt){
+    if (g == NULL||file == NULL){
+        exit(EXIT_FAILURE);
+    }
+    FILE * f =fopen(file, "w");
+    if (f == NULL){
+        exit(EXIT_FAILURE);
+    }
+    fprintf(f,"NB_SOL = %u\n",cpt);
+    fclose(f);
+    
+}
+uint NB_SOL_AUX(game g,uint nbcolors,game g2){
+    color last_color = game_cell_current_color(g2,0,0);
+    uint cpt = 0;
+    if (game_is_over(g2)){
+        return 1;
+    }
+    if(game_nb_moves_cur(g2) >= game_nb_moves_max(g2)){
+        return 0;
+    }
+    
+    for (color i = 0; i < nbcolors;i++){
+        if( i != last_color ){
+            g2=game_copy(g);
+            game_play_one_move(g2,i);
+            cpt = cpt + NB_SOL_AUX(g2,nbcolors,g2);
+            game_delete(g2);
+        }
+    } 
+    return cpt;
+}
+void NB_SOL(game g, char * file, uint nbcolors){
+    game g2 = game_copy(g);
+    uint cpt = NB_SOL_AUX(g,nbcolors,g2);
+    save_nbsol(g,strcat(file,".nbsol"),cpt);
+    printf("nb_sol =%u\n",cpt);
+}
+
 
 void FIND_MIN (char* fichier_pb, char* fichier_sol){
   /*if (fichier_pb == NULL || fichier_sol==NULL){
@@ -205,8 +243,7 @@ int main(int argc, char* argv[]){
     if (strcmp(argv[1],"FIND_ONE")==0){
         FIND_ONE();
     }else if(strcmp(argv[1],"NB_SOL")==0){
-        uint cpt =0 ;
-        NB_SOL(g,game_cell_current_color(g,0,0),argv[3],10,1);
+        NB_SOL(g,argv[2],5); 
           
     }else if (strcmp(argv[1],"FIND_MIN")==0){
         FIND_MIN(argv[2], argv[3]);
