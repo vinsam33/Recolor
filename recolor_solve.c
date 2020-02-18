@@ -6,6 +6,8 @@
 #include "time.h"
 #include <math.h>
 
+#define MAXLINELEN 4096
+
 /*#define FILE_SIZE 300
 typedef enum { FIND_ONE, NB_SOL, FIND_MIN }e_fonctions;
 FILE* my_file = NULL;
@@ -93,10 +95,102 @@ void FIND_ONE(char * game_curr, char * sol, uint nb_color){
 }
 
 void NB_SOL();
-void FIND_MIN(){
 
-    return NULL;
-}
+void FIND_MIN (char* fichier_pb, char* fichier_sol){
+  /*if (fichier_pb == NULL || fichier_sol==NULL){
+    fprintf(stderr, "NULL pointer");
+    exit(EXIT_FAILURE);
+  }*/
+  FIND_ONE (fichier_pb, fichier_sol); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
+  FILE *f = fopen(fichier_sol, "r");  // Open fichier_sol only in read to verify if there are solutions
+  if (f == NULL) {
+    fprintf(stderr, "error f\n");
+    exit(EXIT_FAILURE);
+  }
+  char *s = malloc(sizeof(char) * MAXLINELEN);
+  if (s == NULL) {
+    fprintf(stderr, "Null pointer\n");
+    fclose(f);
+    exit(EXIT_FAILURE);
+  }
+  color *cells = malloc(sizeof(color) * MAXLINELEN);
+  int i = 0;
+  s = fgets(s, MAXLINELEN, f);
+  char *d = strtok(s, " \n");
+  char w=*d; 
+  if (w=="N"){
+    d = strtok(NULL, " \n");
+    w=d; 
+    if (w=="O"){
+      fprintf(stderr,"No solution in this game");
+      free(d); 
+      free(s);
+      fclose(f);
+      exit(EXIT_FAILURE);
+    }
+  }
+  printf("They are solution(s)"); //// So apply the function
+  cells[i] = d ;
+  i++ ;
+  while (fgets(s, MAXLINELEN, f) != NULL) {
+    char *tok = strtok(s, " \n");
+    while (tok != NULL) {
+      cells[i] = tok;
+      i++;
+      tok = strtok(NULL, " \n");
+    }
+  }
+  free(d);
+  free(s);
+  fclose(f);
+  game g = game_load("fichier_pb");
+  uint cpt = 0;
+  color *t = malloc(game_nb_moves_max(g) * sizeof(color));
+  uint x=-1;
+  color c = 5;
+  uint nbmax = i-1;
+  while (cpt != 32){
+    while (x+1 <= game_nb_moves_max(g)){
+      srand(time(NULL));
+      c = rand() % 16;
+      game_play_one_move(g, c);
+      x++;
+      t[x] = c;
+      if (game_is_over(g)){
+        if (x+1 < nbmax){
+          nbmax = x+1;
+          game_set_max_moves(g, nbmax);//
+          free(cells); 
+          color *cells = malloc(sizeof(color) * nbmax);
+          for (uint u=0; u<x+1; u++){
+            cells[u]=t[u];
+          }
+          cpt=0; 
+          game_restart(g); 
+        }
+        else{
+          cpt++;
+          game_restart(g); 
+        }
+      }
+    }
+    x = -1;
+    game_restart(g); 
+  } 
+  x=0; 
+  FILE *f2 = fopen(fichier_sol, "w"); 
+  if (f2==NULL){
+    fprintf(stderr, "NULL pointer"); 
+    exit(EXIT_FAILURE); 
+  }
+  while (x<nbmax){
+    fprintf(f2, "%c", cells[x]); 
+  }
+  fclose(f2); 
+  free(cells); 
+  free(t); 
+  game_delete(g); 
+}  
 
 int main(int argc, char* argv[]){
     if(argc !=4){
@@ -115,7 +209,7 @@ int main(int argc, char* argv[]){
         NB_SOL(g,game_cell_current_color(g,0,0),argv[3],10,1);
           
     }else if (strcmp(argv[1],"FIND_MIN")==0){
-        FIND_MIN();
+        FIND_MIN(argv[2], argv[3]);
             
     }
     game_delete(g);
