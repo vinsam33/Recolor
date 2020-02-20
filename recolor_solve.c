@@ -49,8 +49,54 @@ color* FIND_ONE(cgame g){
     }
 }*/
 
+
+uint nb_colors (game g){
+  uint i=0; 
+  color *tab = malloc (sizeof(color)*16);
+  color c;
+  for (uint x=0; x < game_width(g); x++){
+    for(uint y=0; y < game_height(g); y++){
+      c = game_cell_current_color(g,x,y);
+      uint a=0; 
+      for (a=0; a < i; a++){
+        if (tab[a]==c){
+          break; 
+        }
+        if(a==i){
+          tab[i]=c; 
+          i++; 
+        }
+      }
+    }
+  }
+  return i; 
+}
+
+
+color *colors_present (game g){
+  uint i =0;
+  color *tab = malloc (sizeof(color)*nb_colors[g]);
+  color c;
+  for (uint x=0; x < game_width(g); x++){
+    for(uint y=0; y < game_height(g); y++){
+      c = game_cell_current_color(g,x,y);
+      uint a=0; 
+      for (a=0; a < i; a++){
+        if (tab[a]==c){
+          break; 
+        }
+        if(a==i){
+          tab[i]=c; 
+          i++; 
+        }
+      }
+    }
+  }
+  return tab; 
+}
+
 void FIND_ONE(char * game_curr, char * sol, uint nb_color){
-    if(game_curr == NULL || sol == NULL){
+    /*if(game_curr == NULL || sol == NULL){
         fprintf(stderr, "Pointer is null\n");
         exit(EXIT_FAILURE);
     }
@@ -91,7 +137,8 @@ void FIND_ONE(char * game_curr, char * sol, uint nb_color){
     }
     free(t_sol);
     fclose(f);
-    game_delete(g);
+    game_delete(g);*/
+    return; 
 }
 
 void save_nbsol (game g,char * file,uint cpt){
@@ -126,20 +173,20 @@ uint NB_SOL_AUX(game g,uint nbcolors,game g2){
     } 
     return cpt;
 }
-void NB_SOL(game g, char * file, uint nbcolors){
+uint NB_SOL(game g, char * file, uint nbcolors){
     game g2 = game_copy(g);
     uint cpt = NB_SOL_AUX(g,nbcolors,g2);
     save_nbsol(g,strcat(file,".nbsol"),cpt);
     printf("nb_sol =%u\n",cpt);
+    return cpt; 
 }
-
 
 void FIND_MIN (char* fichier_pb, char* fichier_sol){
   /*if (fichier_pb == NULL || fichier_sol==NULL){
     fprintf(stderr, "NULL pointer");
     exit(EXIT_FAILURE);
   }*/
-  FIND_ONE (fichier_pb, fichier_sol); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
+  /*FIND_ONE (fichier_pb, fichier_sol, 5); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
   FILE *f = fopen(fichier_sol, "r");  // Open fichier_sol only in read to verify if there are solutions
   if (f == NULL) {
     fprintf(stderr, "error f\n");
@@ -227,7 +274,8 @@ void FIND_MIN (char* fichier_pb, char* fichier_sol){
   fclose(f2); 
   free(cells); 
   free(t); 
-  game_delete(g); 
+  game_delete(g); */
+  return; 
 }  
 
 int main(int argc, char* argv[]){
@@ -241,7 +289,7 @@ int main(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
     if (strcmp(argv[1],"FIND_ONE")==0){
-        FIND_ONE();
+        FIND_ONE(argv[2], argv[3],5);
     }else if(strcmp(argv[1],"NB_SOL")==0){
         NB_SOL(g,argv[2],5); 
           
