@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
 
   else {
     bool state;  // wrapping
-    int h;       // height
-    int w;       // width
+    int h=1;       // height
+    int w=1;       // width
     int nb;      // nb_colors
     if (strcmp(argv[1], "yes") == 0) {
       state = true;
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     printf("pour load: ./recolor_text fichier_load.rec\n");
     exit(EXIT_FAILURE);
   }*/
-  printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+  printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g),
          game_nb_moves_max(g));
   affichage_grille(g);
   printf("Jouer un coup: (");
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     }
     if (c == 'r') {  // redémarre le jeu
       game_restart(g);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),
+      printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
       affichage_grille(g);
       printf("Jouer un coup: (");
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
     }
     if (c >= '0' && c <= '9') {  // Jeu avec une couleur numérique
       game_play_one_move(g, c - 48);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g), game_nb_moves_max(g));
+      printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
       printf(
           "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
     }
     if (c >= 'A' && c <= 'F') {  // Jeu avec une couleur alphabétique
       game_play_one_move(g, c - 55);
-      printf("nb coups joués : %d ; nb coups max : %d\n", game_nb_moves_cur(g),game_nb_moves_max(g));
+      printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g),game_nb_moves_max(g));
       affichage_grille(g);
       printf(
           "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "

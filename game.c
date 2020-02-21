@@ -27,7 +27,7 @@ void game_set_cell_init(game g, uint x, uint y, color c) {
     fprintf(stderr, "Error: do not game null\n");
     exit(EXIT_FAILURE);
   }
-  if ((x < game_width(g)) && (y < game_height(g)) && (0 <= c)) {
+  if ((x < game_width(g)) && (y < game_height(g))) {
     g->tab[x][y] = c;
   }
 }
@@ -103,16 +103,14 @@ void game_play_one_move(game g, color c) {
     fprintf(stderr, "g can't be null\n");
     game_delete(g);
     exit(EXIT_FAILURE);
-  }if(c < 0 || c > 15){
+  }if(c > 15){
     game_delete(g);
     exit(EXIT_FAILURE);
   }
   color first_case = game_cell_current_color(g, 0, 0);
   g->nb_curr++;
   if (first_case != c) {
-    if (0 <= c ){
       remplissage(g, first_case, c, 0, 0);
-    }
   }
 }
 

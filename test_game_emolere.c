@@ -57,11 +57,6 @@ bool test_game_play_one_move(color c) {
 
   game ga = game_new_empty_ext(12, 12, false);
   game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 aprÃ¨s avoir jouÃ© un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
-  if (c <= 0) {
-    fprintf(stderr, "Error : invalid game\n\n");
-    game_delete(ga);
-    return false;
-  }
   for (unsigned int y = 0; y < game_height(ga); y++) {
     for (unsigned int x = 0; x < game_width(ga); x++) {
       if (game_cell_current_color(ga, x, y) != c) {
@@ -135,10 +130,7 @@ bool test_game_load(){
     exit(EXIT_FAILURE);
   }
   FILE * f = fopen("default_game.rec.txt","r");
-  if (f == NULL){
-    game_delete(g);
-    exit(EXIT_FAILURE);
-  }
+  
   char *s = malloc(sizeof (char)*MAXLINELEN);
   if(s==NULL){
     fprintf(stderr, "Null pointer\n");
@@ -158,7 +150,7 @@ bool test_game_load(){
 
   d = strtok(NULL, " \n");
   bool wrapping = true;
-  if (d=='N') wrapping = false;
+  wrapping = d;
 
   if(game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
     free(s);
@@ -199,10 +191,7 @@ bool test_game_load(){
     exit(EXIT_FAILURE);
   }
   FILE * f2 = fopen("horizontal_game2N.rec.txt","r");
-  if (f2 == NULL){
-    game_delete(g2);
-    exit(EXIT_FAILURE);
-  }
+  
   char *s2 = malloc(sizeof (char)*MAXLINELEN);
   if(s2==NULL){
     fprintf(stderr, "Null pointer\n");
@@ -222,7 +211,7 @@ bool test_game_load(){
 
   d2 = strtok(NULL, " \n");
   bool wrapping2 = true;
-  if (d2=='N') wrapping2 = false;
+  wrapping2 = d;
 
   if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
     free(s2);

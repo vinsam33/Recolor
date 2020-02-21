@@ -149,7 +149,7 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color, color color_possible[])
   srand(time(NULL));
   uint i = 0;
   while(game_is_over(g) != true){
-      if(i > nb_max){
+      if(i == nb_max){
           game_restart(g);
           i = 0;
       }
@@ -165,10 +165,10 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color, color color_possible[])
   }
   for(uint j=0 ; j<i ; j++){
       if(j != i){
-          fprintf(f,"%d ",t_sol[j]);
+          fprintf(f,"%u ",t_sol[j]);
       }
       else{
-          fprintf(f,"%d\n",t_sol[j]);
+          fprintf(f,"%u\n",t_sol[j]);
       }
   }
   free(t_sol);
