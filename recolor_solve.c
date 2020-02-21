@@ -156,7 +156,7 @@ void NB_SOL(game g, char* file, uint nbcolors) {
 }
 
 void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
-  /*if(game_curr == NULL || sol == NULL){
+  if(game_curr == NULL || sol == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
   }
@@ -166,7 +166,7 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
   }
-  if(NB_SOL(g,game_curr,nb_color) == 0){
+  if(NB_SOL_AUX(g,nb_colors(g)) == 0){
       fprintf(f,"NO SOLUTION\n");
       return;
   }
@@ -185,7 +185,7 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
       }
       t_sol[i] = rand() %nb_color;
       i++;
-      game_play_move_one(g,t_sol[i]);
+      game_play_one_move(g,t_sol[i]);
   }
   for(uint j=0 ; j<i ; j++){
       if(j != i){
@@ -197,8 +197,7 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
   }
   free(t_sol);
   fclose(f);
-  game_delete(g);*/
-  return;
+  game_delete(g);
 }
 
 void FIND_MIN(char* fichier_pb, char* fichier_sol) {
