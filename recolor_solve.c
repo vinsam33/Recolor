@@ -166,12 +166,14 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
   }
-  if(NB_SOL_AUX(g,nb_colors(g)) == 0){
+  if(NB_SOL_AUX(g,nb_color) == 0){
       fprintf(f,"NO SOLUTION\n");
+      fclose(f);
+      game_delete(g);
       return;
   }
   uint nb_max = game_nb_moves_max(g);
-  uint * t_sol = malloc(nb_max*sizeof(uint));
+  color * t_sol = malloc(nb_max*sizeof(color));
   if(t_sol == NULL){
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
@@ -308,7 +310,7 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   if (strcmp(argv[1], "FIND_ONE") == 0) {
-    FIND_ONE(argv[2], argv[3], 5);
+    FIND_ONE(argv[2], argv[3], nb_colors(g));
   } else if (strcmp(argv[1], "NB_SOL") == 0) {
     NB_SOL(g, argv[2], nb_colors(g));
 
