@@ -8,42 +8,6 @@
 
 #define MAXLINELEN 4096
 
-/*#define FILE_SIZE 300
-typedef enum { FIND_ONE, NB_SOL, FIND_MIN }e_fonctions;
-FILE* my_file = NULL;
-//fonction qui permet de trouver une solution
-
-color* FIND_ONE(cgame g){
-    const uint nb_moves_max = nb_move_max(g);
-    color cell_cur = game_cell_current_color(g, 0, 0);
-    uint genere_solution;
-    color* solutions= malloc(nb_moves_max* sizeof(color));
-    if( solutions == NULL){
-        fprintf(stderr, "Problem allocation memory \n");
-        exit(EXIT_FAILURE);
-    }
-    uint max_col = ... // si on a une fonction qui genere le max de couleur.pour
-l'instant je vois pas trop. time_t temps; srand((unsigned) time(&temps));
-
-    NEW_GENERATE:
-    game_restart(g);
-
-    for(uint i=0; i < nb_moves_max; i++){
-        // j'utilise do while parce que je pense qu'il faut jouer au moins une
-fois do { genere_solution= rand () % (max_col+1); } while (genere_solution ==
-cell_cur); game_play_one_move(g, genere_solution); cell_cur = genere_solution;
-        solutions[i] = genere_solution;
-
-        if( game_is_over(g) ){
-            break;
-        }
-    }
-    if(!game_is_over(g) ){
-        goto NEW_GENERATE;
-
-        return solutions;
-    }
-}*/
 /**
  * @brief give number max color in the game
  * @return number max color
@@ -68,9 +32,11 @@ uint nb_colors(game g) {
       }
     }
   }
+  free(tab);
   printf("color = %u\n", i);
   return i;
 }
+
 /**
  * @brief give colors present at least one time.
  * @return colors present
@@ -115,6 +81,7 @@ void save_nbsol(game g, char* file, uint cpt) {
   fprintf(f, "NB_SOL = %u\n", cpt);
   fclose(f);
 }
+
 /**
  * @brief this function counts the number of possible solutions in a game by
  *browsing the grid if the game is winner.
@@ -142,6 +109,7 @@ uint NB_SOL_AUX(game g, uint nbcolors) {
   }
   return cpt;
 }
+
 /**
  * @brief this fonction call NB_SOL_AUX and save_nbsol
  * return number of possible solution when you win.
@@ -155,7 +123,7 @@ void NB_SOL(game g, char* file, uint nbcolors) {
   printf("nb_sol = %u\n", cpt);
 }
 
-void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
+void FIND_ONE(char* game_curr, char* sol, uint nb_color, color color_possible[]) {
   if(game_curr == NULL || sol == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
@@ -181,13 +149,19 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
   srand(time(NULL));
   uint i = 0;
   while(game_is_over(g) != true){
-      if(i == nb_max-1){
+      if(i == nb_max){
           game_restart(g);
           i = 0;
       }
-      t_sol[i] = rand() %nb_color;
-      i++;
+      color last_color = game_cell_current_color(g,0,0);
+      uint x = rand()%nb_color;
+      t_sol[i] = color_possible[x];
+      while (t_sol[i] == last_color){
+        x = rand()%nb_color;
+        t_sol[i] = color_possible[x];
+      }
       game_play_one_move(g,t_sol[i]);
+      i++;
   }
   for(uint j=0 ; j<i ; j++){
       if(j != i){
@@ -310,7 +284,7 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   if (strcmp(argv[1], "FIND_ONE") == 0) {
-    FIND_ONE(argv[2], argv[3], nb_colors(g));
+    FIND_ONE(argv[2], argv[3], nb_colors(g), colors_present(g));
   } else if (strcmp(argv[1], "NB_SOL") == 0) {
     NB_SOL(g, argv[2], nb_colors(g));
 
