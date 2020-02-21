@@ -125,10 +125,6 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
 
 bool test_game_load(){
   game g = game_load("default_game.rec.txt"); // Wrapping en true
-  if ("default_game.rec.txt"==NULL){
-    fprintf(stderr, "Null pointer\n");
-    exit(EXIT_FAILURE);
-  }
   FILE * f = fopen("default_game.rec.txt","r");
   
   char *s = malloc(sizeof (char)*MAXLINELEN);
@@ -150,7 +146,7 @@ bool test_game_load(){
 
   d = strtok(NULL, " \n");
   bool wrapping = true;
-  wrapping = d;
+  if (d=='NO') wrapping = false;
 
   if(game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
     free(s);
@@ -186,10 +182,6 @@ bool test_game_load(){
   game_delete(g);
   fclose(f);
   game g2 = game_load("horizontal_game2N.rec.txt"); // Wrapping en false
-  if ("horizontal_game2N.rec.txt"==NULL){
-    fprintf(stderr, "Null pointer\n");
-    exit(EXIT_FAILURE);
-  }
   FILE * f2 = fopen("horizontal_game2N.rec.txt","r");
   
   char *s2 = malloc(sizeof (char)*MAXLINELEN);
@@ -211,7 +203,7 @@ bool test_game_load(){
 
   d2 = strtok(NULL, " \n");
   bool wrapping2 = true;
-  wrapping2 = d;
+  if (d=='NO') wrapping2 = false;
 
   if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
     free(s2);
