@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.6)
 
 project(projet_techno C)
 
-set(CMAKE_C_FLAGS "-std=c99 -g -Wall  --coverage")
+set(CMAKE_C_FLAGS "-std=c99 -Wall") 
+set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG --coverage")
+set(CMAKE_C_FLAGS_RELEASE "-O3") 
 
 add_library(game game_io.c game.c)
 

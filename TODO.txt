@@ -10,6 +10,7 @@ Vincent SAMSON :
                       game_delete
                       game_is_wrapping
                       game_width
+                      game_save
 
 Elhadj Mamadou DIALLO :
 
@@ -35,6 +36,7 @@ Emeric MOLERE :
                       game_play_one_move
                       game_restart
                       game_new_ext
+                      game_load
 
 Sylavin LASCOSTES :
 
