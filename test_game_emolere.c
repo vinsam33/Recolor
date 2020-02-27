@@ -146,9 +146,9 @@ bool test_game_load(){
 
   d = strtok(NULL, " \n");
   bool wrapping = true;
-  if (d=='N') wrapping = false;
-
-  if(game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
+  if (*d=='N') wrapping=false;
+  
+  if (game_is_wrapping(g) != wrapping || game_height(g) != h || game_width(g) != w || game_nb_moves_max(g) != nb_max){
     free(s);
     game_delete(g);
     fclose(f);
@@ -203,7 +203,7 @@ bool test_game_load(){
 
   d2 = strtok(NULL, " \n");
   bool wrapping2 = true;
-  if (d2=='N') wrapping2 = false;
+  if (*d=='N') wrapping2=false;  
 
   if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
     free(s2);
