@@ -3,7 +3,7 @@
 #include <string.h>
 #include "game.h"
 #include "game_io.h"
-
+#include "recolor_solve.h"
 #define MAXLINELEN 4096
 /**
  *@brief : teste la fonction  game_new_empty.
@@ -194,6 +194,73 @@ bool test_game_save() {
   game_delete(g4);
   return true;
 }
+uint nb_colors(game g) {
+  uint i = 0;
+  color* tab = malloc(sizeof(color) * 16);
+  color c;
+  for (uint x = 0; x < game_width(g); x++) {
+    for (uint y = 0; y < game_height(g); y++) {
+      c = game_cell_current_color(g, x, y);
+      uint a = 0;
+      for (a = 0; a < i; a++) {
+        if (tab[a] == c) {
+          break;
+        }
+      }
+      if (a == i) {
+        tab[i] = c;
+        i++;
+      }
+    }
+  }
+  free(tab);
+  printf("color = %u\n", i);
+  return i;
+}
+
+uint NB_SOL_AUX(game g, uint nbcolors) {
+  color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
+  uint cpt = 0;// actual number solution
+  if (game_is_over(g)) {//if I win at the first movement.
+    return 1;
+  }
+  if (game_nb_moves_cur(g) >= game_nb_moves_max(g)) {//if I lose the game, the solution is 0.
+    return 0;
+  }
+
+  for (color i = 0; i < nbcolors; i++) {
+    if (i != last_color) {
+      game g2 = game_copy(g);//copy the game (more detail in game.c for this function).
+      game_play_one_move(g2, i);//move a color (more detail in game for this function).
+      cpt = cpt + NB_SOL_AUX(g2, nbcolors);//restart the game and add 1 more solution if I win. 
+      game_delete(g2);
+    }
+  }
+  return cpt;//it's the number of solution.
+}
+
+
+bool test_nb_sol(){
+  color cells[144] = {
+      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
+      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
+      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
+      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
+      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
+      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+  game g = game_new_ext(12,12,cells,12,false);
+  if (g == NULL){
+    game_delete(g);
+    return false;
+  }
+  game_save(g,"test");
+  
+  if (NB_SOL_AUX(g,nb_colors(g)) != 156){
+    game_delete(g);
+    return false;
+  }
+  return true;
+}
 
 int main(void) {  // start tests.
   printf("----------------Start test_new_empty----------------\n\n");
@@ -244,6 +311,12 @@ int main(void) {  // start tests.
   } else {
     fprintf(stderr, "EXECUTING OF save IS : FAILURE\n\n ");
   }
-
+  printf("----------------Start test_nb_sol----------------\n\n");
+  bool nb_sol = test_nb_sol();
+  if (nb_sol == true) {
+    fprintf(stderr, "EXECUTING OF nb_sol IS : SUCCESS\n\n");
+  } else {
+    fprintf(stderr, "EXECUTING OF nb_sol IS : FAILURE\n\n ");
+  }
   return EXIT_SUCCESS;
 }
