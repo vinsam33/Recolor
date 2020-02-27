@@ -5,10 +5,11 @@
 #include "game_io.h"
 #include "string.h"
 #include "time.h"
+#include "recolor_solve.h"
 
 #define MAXLINELEN 4096
 
-uint max (game g){
+uint max(game g){
   if (g==NULL){
     exit(EXIT_FAILURE);
   }
@@ -174,13 +175,17 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
       }
     printf("%d ",t_sol[i]);
     
+    
     game_play_one_move(g,t_sol[i]);
     last_color = game_cell_current_color(g,0,0);
     if (game_is_over(g) == true){
+      printf("\nLa solution est : ");
       for (uint j = 0 ; j< i + 1; j++){
         if (j == i){
+          printf("%d\n",t_sol[j]);          
           fprintf(f,"%d",t_sol[j]);//border line
         }else{
+          printf("%d ",t_sol[j]);
           fprintf(f,"%d ",t_sol[j]);
         }
 
