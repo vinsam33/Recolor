@@ -4,7 +4,7 @@
 #include "game.h"
 #include "game_io.h"
 #include "recolor_solve.h"
-#define MAXLINELEN 4096
+
 /**
  *@brief : teste la fonction  game_new_empty.
  *@return false s'il y a une erreur ou si la couleur n'est pas 0 ,sinon true.
@@ -253,8 +253,15 @@ bool test_nb_sol(){
     game_delete(g);
     return false;
   }
-  game_save(g,"test");
-  
+  if (game_is_over(g)==true && game_nb_moves_cur(g)==0 && NB_SOL_AUX(g,nb_colors(g)) != 1){
+    game_delete(g);
+    return false;
+  } 
+
+  if (game_nb_moves_cur(g)>=game_nb_moves_max(g)&& NB_SOL_AUX(g,nb_colors(g)) != 0){
+    game_delete(g);
+    return false;
+  } 
   if (NB_SOL_AUX(g,nb_colors(g)) != 156){
     game_delete(g);
     return false;
