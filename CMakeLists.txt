@@ -54,3 +54,4 @@ add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_colo
 add_test(test_game_delete ./test_game_vsamson game_delete)
 add_test(test_game_height ./test_game_vsamson game_height)
 add_test(test_game_save ./test_game_vsamson game_save)
+add_test(test_nb_sol ./test_game_vsamson nb_sol)
