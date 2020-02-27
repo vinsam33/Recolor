@@ -4,6 +4,7 @@ Vincent SAMSON :
            test_game_cell_current_color
            test_game_delete
            test_game_height
+           test_game_save
            test_nb_sol
 
     fonction game.c : game_new_empty
@@ -32,6 +33,7 @@ Emeric MOLERE :
            test_game_play_one_move
            test_game_restart
            test_game_new_empty_ext
+           test game_load
 
     fonction game.c : game_set_max_moves
                       game_play_one_move
