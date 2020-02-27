@@ -5,7 +5,6 @@
 #include "game_io.h"
 #include "string.h"
 #include "time.h"
-#include "recolor_solve.h"
 
 #define MAXLINELEN 4096
 
@@ -63,23 +62,27 @@ color* colors_present(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * nb_colors(g));
   color c;
+  bool is_in = false;
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
       c = game_cell_current_color(g, x, y);
       uint a = 0;
-      for (a = 0; a < i; a++) {
+      is_in = false;
+      for (a = 0; a <= i; a++) {
         if (tab[a] == c) {
+          is_in = true;
           break;
         }
-        if (a == i) {
-          tab[i] = c;
-          i++;
-        }
+      }
+      if(!(is_in)){
+        tab[i] = c;
+        i++;
       }
     }
   }
   return tab;
 }
+
 //-----------------------------------------------------------------------NB_SOL-------------------------------------------------
 /**
  *@brief save and print the result
@@ -140,7 +143,7 @@ void NB_SOL(game g, char* file, uint nbcolors) {
   printf("nb_sol = %u\n", cpt);
 }
 //-----------------------------------------------------------------------------------------FIND_ONE-------------------------------------------------------
-void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
+/*void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
   if(game_curr == NULL || sol == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
@@ -201,6 +204,59 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color) {
     game_restart(g);
     i=0;
     goto Continue;
+  }
+  free(t_sol);
+  fclose(f);
+  game_delete(g);
+}*/
+
+void FIND_ONE(char* game_curr, char* sol, uint nb_color, color color_possible[]) {
+  if(game_curr == NULL || sol == NULL){
+      fprintf(stderr, "Pointer is null\n");
+      exit(EXIT_FAILURE);
+  }
+  game g = game_load(game_curr);
+  FILE *f = fopen(sol,"w");
+  if(f == NULL){
+      fprintf(stderr, "Pointer is null\n");
+      exit(EXIT_FAILURE);
+  }
+  if(NB_SOL_AUX(g,nb_color) == 0){
+      fprintf(f,"NO SOLUTION\n");
+      fclose(f);
+      game_delete(g);
+      return;
+  }
+  uint nb_max = game_nb_moves_max(g);
+  color * t_sol = malloc(nb_max*sizeof(color));
+  if(t_sol == NULL){
+      fprintf(stderr, "Problem allocation memory\n");
+      exit(EXIT_FAILURE);
+  }
+  srand(time(NULL));
+  uint i = 0;
+  while(game_is_over(g) != true){
+      if(i == nb_max){
+          game_restart(g);
+          i = 0;
+      }
+      color last_color = game_cell_current_color(g,0,0);
+      uint x = rand()%nb_color;
+      t_sol[i] = color_possible[x];
+      while (t_sol[i] == last_color){
+        x = rand()%nb_color;
+        t_sol[i] = color_possible[x];
+      }
+      game_play_one_move(g,t_sol[i]);
+      i++;
+  }
+  for(uint j=0 ; j<i ; j++){
+      if(j != i-1){
+          fprintf(f,"%d ",t_sol[j]);
+      }
+      else{
+          fprintf(f,"%d\n",t_sol[j]);
+      }
   }
   free(t_sol);
   fclose(f);
@@ -318,7 +374,8 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   if (strcmp(argv[1], "FIND_ONE") == 0) {
-    FIND_ONE(argv[2], argv[3], max(g));
+    FIND_ONE(argv[2],argv[3],nb_colors(g),colors_present(g));
+    //FIND_ONE(argv[2], argv[3], max(g));
   } else if (strcmp(argv[1], "NB_SOL") == 0) {
     NB_SOL(g, argv[2], max(g));
 
