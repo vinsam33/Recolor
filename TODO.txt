@@ -4,6 +4,7 @@ Vincent SAMSON :
            test_game_cell_current_color
            test_game_delete
            test_game_height
+           test_nb_sol
 
     fonction game.c : game_new_empty
                       game_cell_current_color
