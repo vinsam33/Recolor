@@ -42,7 +42,7 @@ void save_nbsol(game g, char* file, uint cpt);
  * g is the game
  * this fonction was called by NB_SOL
  **/
-uint NB_SOL_AUX(game g, uint nbcolors);
+uint nb_sol_aux(game g, uint nbcolors);
 
 
 /**
@@ -52,7 +52,7 @@ uint NB_SOL_AUX(game g, uint nbcolors);
  * file is the name of game load.
  * nbcolors is the maximum number of colors in the game.
  **/
-void NB_SOL(game g, char* file, uint nbcolors);
+void nb_sol(game g, char* file, uint nbcolors);
 
 /**
  * @brief this function find and give a solution to win the game.
@@ -61,5 +61,9 @@ void NB_SOL(game g, char* file, uint nbcolors);
  * sol is the solution file.
  * nb_color is the max number color in the game.  
 **/
-void FIND_ONE(char* game_curr, char* sol, uint nb_color);
+void find_one(char* game_curr, char* sol, uint nb_color);
+
+void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn);
+void find_min(game g, char* fichier_sol, color color_possible[]);
+
 #endif  // RECOLOR_SOLVE_H__

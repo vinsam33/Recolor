@@ -194,51 +194,6 @@ bool test_game_save() {
   game_delete(g4);
   return true;
 }
-uint nb_colors(game g) {
-  uint i = 0;
-  color* tab = malloc(sizeof(color) * 16);
-  color c;
-  for (uint x = 0; x < game_width(g); x++) {
-    for (uint y = 0; y < game_height(g); y++) {
-      c = game_cell_current_color(g, x, y);
-      uint a = 0;
-      for (a = 0; a < i; a++) {
-        if (tab[a] == c) {
-          break;
-        }
-      }
-      if (a == i) {
-        tab[i] = c;
-        i++;
-      }
-    }
-  }
-  free(tab);
-  printf("color = %u\n", i);
-  return i;
-}
-
-uint NB_SOL_AUX(game g, uint nbcolors) {
-  color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
-  uint cpt = 0;// actual number solution
-  if (game_is_over(g)) {//if I win at the first movement.
-    return 1;
-  }
-  if (game_nb_moves_cur(g) >= game_nb_moves_max(g)) {//if I lose the game, the solution is 0.
-    return 0;
-  }
-
-  for (color i = 0; i < nbcolors; i++) {
-    if (i != last_color) {
-      game g2 = game_copy(g);//copy the game (more detail in game.c for this function).
-      game_play_one_move(g2, i);//move a color (more detail in game for this function).
-      cpt = cpt + NB_SOL_AUX(g2, nbcolors);//restart the game and add 1 more solution if I win. 
-      game_delete(g2);
-    }
-  }
-  return cpt;//it's the number of solution.
-}
-
 
 bool test_nb_sol(){
   color cells[144] = {
@@ -253,16 +208,16 @@ bool test_nb_sol(){
     game_delete(g);
     return false;
   }
-  if (game_is_over(g)==true && game_nb_moves_cur(g)==0 && NB_SOL_AUX(g,nb_colors(g)) != 1){
+  if (game_is_over(g)==true && game_nb_moves_cur(g)==0 && nb_sol_aux(g,nb_colors(g)) != 1){
     game_delete(g);
     return false;
   } 
 
-  if (game_nb_moves_cur(g)>=game_nb_moves_max(g)&& NB_SOL_AUX(g,nb_colors(g)) != 0){
+  if (game_nb_moves_cur(g)>=game_nb_moves_max(g)&& nb_sol_aux(g,nb_colors(g)) != 0){
     game_delete(g);
     return false;
   } 
-  if (NB_SOL_AUX(g,nb_colors(g)) != 156){
+  if (nb_sol_aux(g,nb_colors(g)) != 156){
     game_delete(g);
     return false;
   }
