@@ -208,20 +208,26 @@ bool test_nb_sol(){
     game_delete(g);
     return false;
   }
-  if (game_is_over(g)==true && game_nb_moves_cur(g)==0 && nb_sol_aux(g,nb_colors(g)) != 1){
-    game_delete(g);
-    return false;
-  } 
+  char file[20]= "test_nb_sol";
+  nb_sol(g,file,max(g));
+  FILE *f = fopen(file,"r");
+ 
+  int c ;
+  fscanf(f, "NB_SOL = %d", &c);
+  fclose(f);
+  //printf("%d\n", c);
 
-  if (game_nb_moves_cur(g)>=game_nb_moves_max(g)&& nb_sol_aux(g,nb_colors(g)) != 0){
+	game_delete(g);
+
+	if (c != 156){
+		return false;
+	}
+    /*
+  if(strcmp(file,"NB_SOL = 156")){ //il n'a pas l'air de marcher. 
     game_delete(g);
-    return false;
-  } 
-  if (nb_sol_aux(g,nb_colors(g)) != 156){
-    game_delete(g);
-    return false;
-  }
-  return true;
+    return true;
+  }*/
+	return true;
 }
 
 int main(void) {  // start tests.
