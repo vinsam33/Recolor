@@ -265,44 +265,42 @@ void FIND_ONE(char* game_curr, char* sol, uint nb_color, color color_possible[])
 
 //---------------------------------------------------------------------------------------------FIND_MIN----------------------------------------------------------------
 
-uint FIND_MIN_AUX(game g, uint nbcolors,  color color_possible[], uint nb_max , uint *tab, uint *tabn, uint nb_solution) {
-  color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
+void FIND_MIN_AUX(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn) {
   if (game_is_over(g)) {//if I win at the first movement.
-    if(game_nb_moves_curr(g)<nb_max){
-      nb_max=game_nb_moves_curr(g); 
-      for (uint z=0; z<game_nb_moves_curr(g); z++){
+    if(game_nb_moves_cur(g) < *nb_max){
+      *nb_max = game_nb_moves_cur(g); 
+      for (uint z=0; z < game_nb_moves_cur(g); z++){
         tabn[z]=tab[z];
       }
     }
-    FIND_MIN_AUX(g, nbcolors, color_possible, nb_max, tab, tabn, nb_solution);
+    return;
   }
 
-  if(game_nb_moves_curr(g)>nb_max){
-    game_restart(g);
-    FIND_MIN_AUX(g, nbcolors, color_possible, nb_max, tab, tabn, nb_solution);
+  if(game_nb_moves_cur(g) >= *nb_max){
+    return;
   }
-  
+  color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
   color c = 0; 
   for (uint i = 0; i < nbcolors; i++){
     if (color_possible[i] != last_color) {
       c = color_possible[i]; 
       game g2 = game_copy(g);//copy the game (more detail in game.c for this function).
       game_play_one_move(g2, c);//move a color (more detail in game for this function).
-      tab[i] = c;
-      FIND_MIN_AUX(g2, nbcolors, nb_max, color_possible, tab, tabn, nb_solution);//restart the game and add 1 more solution if I win. 
+      tab[game_nb_moves_cur(g)] = c;
+      FIND_MIN_AUX(g2, nbcolors, color_possible, nb_max, tab, tabn);//restart the game and add 1 more solution if I win. 
       game_delete(g2);
     }
   }
-  return tabn; 
+  return; 
 }
 
-void FIND_MIN (char* fichier_pb, char* fichier_sol, color color_possible[]){
+void FIND_MIN(char* fichier_pb, char* fichier_sol, color color_possible[]){
   if (fichier_pb == NULL || fichier_sol==NULL){
     fprintf(stderr, "NULL pointer");
     exit(EXIT_FAILURE);
   }
-  game g = game_load("fichier_pb"); 
-  uint nb_max = game_nb_moves_max(g); 
+  game g = game_load(fichier_pb); 
+  uint nb_max = game_nb_moves_max(g)+1; 
   uint *tab = malloc(nb_max*sizeof(uint)); 
   if (tab==NULL){
     fprintf(stderr, "Alloc Error"); 
@@ -313,122 +311,124 @@ void FIND_MIN (char* fichier_pb, char* fichier_sol, color color_possible[]){
     fprintf(stderr, "Alloc Error"); 
     exit(EXIT_FAILURE); 
   }
-  uint nbcolors = nb_colors(g); 
-  uint nb_solution = NB_SOL_AUX(g, nbcolors);
+  uint nbcolors = nb_colors(g);
   FILE *f = fopen(fichier_sol,"w");
   if(f == NULL){
     fprintf(stderr, "Pointer is null\n");
     exit(EXIT_FAILURE);
   }
-  if (nb_solution == 0){
+  FIND_MIN_AUX(g, nbcolors, color_possible, &nb_max, tab, tabn);
+  if (nb_max > game_nb_moves_max(g))
+  {
     fprintf(f,"NO SOLUTION\n");
-    fclose(f);
-    free(tab); 
-    free(tabn); 
-    game_delete(g);
-    return;
   }
-  uint *t = FIND_MIN_AUX(g,nbcolors, color_possible, nb_max, tab, tabn, nb_solution);
-  for(uint j=0 ; j<nb_max ; j++){
-    if(j != nb_max-1){
-      fprintf(f,"%u ",t[j]);
-    }
-    else{
-      fprintf(f,"%u\n",t[j]);
+  else
+  {
+    for(uint j=0 ; j < nb_max ; j++){
+      if(j != nb_max-1){
+        fprintf(f,"%u ",tabn[j]);
+      }
+      else{
+        fprintf(f,"%u\n",tabn[j]);
+      }
     }
   }
+  fclose(f);
 }
-  /*game g = game_load(fichier_pb); 
-  FIND_ONE (fichier_pb, fichier_sol,nb_colors(g)); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
-  FILE *f = fopen(fichier_sol, "r"); // Open fichier_sol only in read to verify if there are solutions
-  if (f == NULL) {
-    fprintf(stderr, "error f\n");
-    exit(EXIT_FAILURE);
-  }
-  char *s = malloc(sizeof(char) * MAXLINELEN);
-  if (s == NULL) {
-    fprintf(stderr, "Null pointer\n");
-    fclose(f);
-    exit(EXIT_FAILURE);
-  }
-  color *cells = malloc(sizeof(color) * MAXLINELEN);
-  int i = 0;
-  s = fgets(s, MAXLINELEN, f);
-  char *d = strtok(s, " \n");
-  if (d=="N"){
-    d = strtok(NULL, " \n");
-    if (d=="O"){
-      fprintf(stderr,"No solution in this game");
-      free(d); 
-      free(s);
+
+/*
+{
+    game g = game_load(fichier_pb); 
+    FIND_ONE (fichier_pb, fichier_sol,nb_colors(g)); // Call FIND_ONE to know if there are solutions, if not it's not necessary to apply this function
+    FILE *f = fopen(fichier_sol, "r"); // Open fichier_sol only in read to verify if there are solutions
+    if (f == NULL) {
+      fprintf(stderr, "error f\n");
+      exit(EXIT_FAILURE);
+    }
+    char *s = malloc(sizeof(char) * MAXLINELEN);
+    if (s == NULL) {
+      fprintf(stderr, "Null pointer\n");
       fclose(f);
       exit(EXIT_FAILURE);
     }
-  }
-  printf("They are solution(s)"); //// So apply the function
-  cells[i] = d ;
-  i++ ;
-  while (fgets(s, MAXLINELEN, f) != NULL) {
-    char *tok = strtok(s, " \n");
-    while (tok != NULL) {
-      cells[i] = tok;
-      i++;
-      tok = strtok(NULL, " \n");
-    }
-  }
- free(d);
- free(s);
- fclose(f);
- game g = game_load("fichier_pb");
- uint cpt = 0;
- color *t = malloc(game_nb_moves_max(g) * sizeof(color));
- int x=-1;
- color c = 5;
- uint nbmax = i-1;
- MIDDLE:
- while (cpt != 32){
-  while (x+1 <= game_nb_moves_max(g)){
-    srand(time(NULL));
-    c = rand() % 16;
-    game_play_one_move(g, c);
-    x++;
-    t[x] = c;
-    if (game_is_over(g)){
-      if (x+1 < nb_max){
-        nb_max = x+1;
-        game_nb_moves_max(g) = nb_max; //
-        free(cells); 
-        color *cells = malloc(sizeof(color) * nb_max);
-        for (uint u=0; u<x+1; u++){
-          cells[u]=t[u];
-        }
-        cpt=0; 
-        game_restart(g); 
-        goto MIDDLE; 
-      }else{
-        cpt++;
-        game_restart(g); 
-        goto MIDDLE; 
+    color *cells = malloc(sizeof(color) * MAXLINELEN);
+    int i = 0;
+    s = fgets(s, MAXLINELEN, f);
+    char *d = strtok(s, " \n");
+    if (d=="N"){
+      d = strtok(NULL, " \n");
+      if (d=="O"){
+        fprintf(stderr,"No solution in this game");
+        free(d); 
+        free(s);
+        fclose(f);
+        exit(EXIT_FAILURE);
       }
     }
-  }  
-  x = -1;
-  game_restart(g); 
-  goto MIDDLE; 
-} 
-x=0; 
-FILE *f = fopen(fichier_sol, "w"); 
-if (f==NULL){
-  fprintf(stderr, "NULL pointer"); 
-  exit(EXIT_FAILURE); 
-}while (x<nb_max){
-  fprintf(f, "%c", cells[x]); 
-}
-fclose(f); 
-free(cells); 
-free(t); 
-game_delete(g); }*/
-
+    printf("They are solution(s)"); //// So apply the function
+    cells[i] = d ;
+    i++ ;
+    while (fgets(s, MAXLINELEN, f) != NULL) {
+      char *tok = strtok(s, " \n");
+      while (tok != NULL) {
+        cells[i] = tok;
+        i++;
+        tok = strtok(NULL, " \n");
+      }
+    }
+  free(d);
+  free(s);
+  fclose(f);
+  game g = game_load("fichier_pb");
+  uint cpt = 0;
+  color *t = malloc(game_nb_moves_max(g) * sizeof(color));
+  int x=-1;
+  color c = 5;
+  uint nbmax = i-1;
+  MIDDLE:
+  while (cpt != 32){
+    while (x+1 <= game_nb_moves_max(g)){
+      srand(time(NULL));
+      c = rand() % 16;
+      game_play_one_move(g, c);
+      x++;
+      t[x] = c;
+      if (game_is_over(g)){
+        if (x+1 < nb_max){
+          nb_max = x+1;
+          game_nb_moves_max(g) = nb_max; //
+          free(cells); 
+          color *cells = malloc(sizeof(color) * nb_max);
+          for (uint u=0; u<x+1; u++){
+            cells[u]=t[u];
+          }
+          cpt=0; 
+          game_restart(g); 
+          goto MIDDLE; 
+        }else{
+          cpt++;
+          game_restart(g); 
+          goto MIDDLE; 
+        }
+      }
+    }  
+    x = -1;
+    game_restart(g); 
+    goto MIDDLE; 
+  } 
+  x=0; 
+  FILE *f = fopen(fichier_sol, "w"); 
+  if (f==NULL){
+    fprintf(stderr, "NULL pointer"); 
+    exit(EXIT_FAILURE); 
+  }while (x<nb_max){
+    fprintf(f, "%c", cells[x]); 
+  }
+  fclose(f); 
+  free(cells); 
+  free(t); 
+  game_delete(g); }
+}*/
 
 
 int main(int argc, char* argv[]) {
@@ -449,7 +449,7 @@ int main(int argc, char* argv[]) {
 
   } else if (strcmp(argv[1], "FIND_MIN") == 0) {
     //FIND_MIN(argv[2], argv[3]);
-    FIND_MIN (argv[2],argv[3], colors_present(g)); 
+    FIND_MIN(argv[2],argv[3], colors_present(g)); 
   }else{ 
     fprintf(stderr,"ERROR: FILE OR  FUNCTION NAME INCORRECT\n");
     exit(EXIT_FAILURE);
