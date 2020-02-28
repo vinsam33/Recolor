@@ -7,6 +7,8 @@ set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG --coverage")
 set(CMAKE_C_FLAGS_RELEASE "-O3") 
 
 add_library(game game_io.c game.c)
+add_library(solve solve.c)
+
 
 add_executable(recolor_text recolor_text.c)
 target_link_libraries(recolor_text game)
@@ -24,7 +26,8 @@ add_executable(test_game_emolere test_game_emolere.c)
 target_link_libraries(test_game_emolere game)
 
 add_executable(test_game_vsamson test_game_vsamson.c)
-target_link_libraries(test_game_vsamson game)
+target_link_libraries(test_game_vsamson game solve)
+
 
 include(CTest)
 enable_testing()
@@ -43,15 +46,16 @@ add_test(test_game_is_over ./test_game_elhdiallo game_is_over)
 add_test(test_game_is_wrapping ./test_game_elhdiallo game_is_wrapping)
 add_test(test_game_width ./test_game_elhdiallo game_width)
 
-add_test(test_game_set_max_moves ./test_game_emolere game_set_max_moves)
-add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
-add_test(test_game_restart ./test_game_emolere game_restart)
-add_test(test_game_new_empty_ext ./test_game_emolere game_new_empty_ext)
-add_test(test_game_load ./test_game_emolere game_load)
-
 add_test(test_game_new_empty ./test_game_vsamson game_new_empty)
 add_test(test_game_cell_current_color ./test_game_vsamson game_cell_current_color)
 add_test(test_game_delete ./test_game_vsamson game_delete)
 add_test(test_game_height ./test_game_vsamson game_height)
 add_test(test_game_save ./test_game_vsamson game_save)
 add_test(test_nb_sol ./test_game_vsamson nb_sol)
+
+add_test(test_game_set_max_moves ./test_game_emolere game_set_max_moves)
+add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
+add_test(test_game_restart ./test_game_emolere game_restart)
+add_test(test_game_new_empty_ext ./test_game_emolere game_new_empty_ext)
+add_test(test_game_load ./test_game_emolere game_load)
+
