@@ -20,7 +20,7 @@ uint max(game g){
       }
     }
   }
-  printf("nb_color = %u\n",c+1);
+  //printf("nb_color = %u\n",c+1);
   return c+1;
 }
 
@@ -49,7 +49,7 @@ uint nb_colors(game g) {
     }
   }
   free(tab);
-  printf("color = %u\n", i);
+  //printf("color = %u\n", i);
   return i;
 }
 
@@ -140,7 +140,7 @@ uint nb_sol_aux(game g, uint nbcolors) {
 void nb_sol(game g, char* file, uint nbcolors) {
   uint cpt = nb_sol_aux(g, nbcolors);//call recursif nb_sol_aux.
   save_nbsol(g, strcat(file, ".nbsol"), cpt);//save the posible number of solution. 
-  printf("nb_sol = %u\n", cpt);
+  //printf("nb_sol = %u\n", cpt);
 }
 //-----------------------------------------------------------------------------------------find_one-------------------------------------------------------
 
