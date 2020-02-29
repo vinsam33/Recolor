@@ -202,30 +202,35 @@ bool test_nb_sol(){
       2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
       1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};    
   game g = game_new_ext(12,12,cells,12,false);
   if (g == NULL){
     game_delete(g);
     return false;
-  }/*
+  }
   char file[20]= "test_nb_sol";
+  char str1[10];
   nb_sol(g,file,max(g));
   FILE *f = fopen(file,"r");
-  if(strcmp(f,"NB_SOL = 156")==1){ //il n'a pas l'air de marcher. 
+  int sol;
+  //rewind(f);
+  fscanf(f,"%s = %u",str1,&sol);
+  printf("%s = %u\n",str1,sol);
+  fclose(f);
+  if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ 
+    printf("ce n'est pas NB_SOL\n");
     game_delete(g);
     return false;
   }
+  if(sol !=156){
+    printf("c'est pas 156 mais %u\n",sol);
+    game_delete(g);
+    return false;
+  } 
   
-  fclose(f);
   game_delete(g);
 	return true;
-  */
- if (nb_sol_aux(g,max(g))!=156){
-   game_delete(g);
-   return false;
- }
- game_delete(g;
- return true;)
+
 }
 
 int main(void) {  // start tests.
