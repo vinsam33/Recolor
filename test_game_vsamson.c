@@ -215,7 +215,7 @@ bool test_nb_sol(){
   int sol;
   //rewind(f);
   fscanf(f,"%s = %u",str1,&sol);
-  printf("%s = %u\n",str1,sol);
+  //printf("%s = %u\n",str1,sol);
   fclose(f);
   if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ 
     printf("ce n'est pas NB_SOL\n");
