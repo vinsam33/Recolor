@@ -194,7 +194,11 @@ bool test_game_save() {
   game_delete(g4);
   return true;
 }
-
+/**
+ * @brief test if nb_sol is correct or not and if the save is correct or not.
+ * @return true if the number of solution is correct and if the number and the sentense are correct.
+ * @return false else.
+ */
 bool test_nb_sol(){
   color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
@@ -208,21 +212,21 @@ bool test_nb_sol(){
     game_delete(g);
     return false;
   }
-  char file[20]= "test_nb_sol";
+  char file[20]= "test_nb_sol";//file 
   char str1[10];
-  nb_sol(g,file,max(g));
+  nb_sol(g,file,max(g));//function
   FILE *f = fopen(file,"r");
   int sol;
   //rewind(f);
-  fscanf(f,"%s = %u",str1,&sol);
+  fscanf(f,"%s = %u",str1,&sol);//extract sentense and number.
   //printf("%s = %u\n",str1,sol);
   fclose(f);
-  if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ 
+  if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ //test is the file is "NB_SOL" or not
     printf("ce n'est pas NB_SOL\n");
     game_delete(g);
     return false;
   }
-  if(sol !=156){
+  if(sol !=156){//test if the sol is 156
     printf("c'est pas 156 mais %u\n",sol);
     game_delete(g);
     return false;
