@@ -257,12 +257,12 @@ for (uint x = 0; x < game_width(g); x++) {
     return false;
   }
   game_save(g2, "test2.rec");  // sauvegarde la partie directement au debut
-  FILE *f2 = fopen("test2.rec", "r");
-  if (f2 == NULL) {
+  FILE *f_2 = fopen("test2.rec", "r");
+  if (f_2 == NULL) {
     fprintf(stderr, "NULL pointer");
     exit(EXIT_FAILURE);
-  }char wrap2[2];
-  fscanf(f,"%u %u %u %s\n",game_width(g2), game_height(g2), game_nb_moves_max(g2),&wrap2);
+  }char wrapi[2];
+  fscanf(f_2,"%u %u %u %s\n",game_width(g2), game_height(g2), game_nb_moves_max(g2),&wrapi);
   //printf("%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),wrap);
   if (game_width(g2)!= 12){
     printf("erreur game_width is %u et non 12\n",game_width(g2));
@@ -279,7 +279,7 @@ for (uint x = 0; x < game_width(g); x++) {
     game_delete(g2);
     return false;
   }
-  if((game_is_wrapping(g2) == false )&& (wrap == "S")){
+  if((game_is_wrapping(g2)==true )&& (wrapi == "N")){
     printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g2));
     game_delete(g2);
     return false;
@@ -287,8 +287,8 @@ for (uint x = 0; x < game_width(g); x++) {
 
 for (uint i = 0; i < game_width(g2); i++) {
     for (uint j = 0; j < game_height(g2); j++) {
-        if (game_cell_current_color(g2,i,j)!= cells[j * game_width(g2) + i]){
-          printf("erreur coordonée i = %u j = %u , %u et non %u\n",i,j,cells[j * game_width(g2) + i],game_cell_current_color(g2,i,j));
+        if (game_cell_current_color(g,i,j)!= cells[j * game_width(g2) + i]){
+          printf("erreur coordonée x = %u y = %u , %u et non %u\n",i,j,cells[j * game_width(g) + i],game_cell_current_color(g,i,j));
           game_delete(g2);
           return false;
         }
