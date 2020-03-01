@@ -17,13 +17,13 @@ add_executable(recolor_solve recolor_solve.c)
 target_link_libraries(recolor_solve game)
 
 add_executable(test_game_slascostes test_game_slascostes.c)
-target_link_libraries(test_game_slascostes game)
+target_link_libraries(test_game_slascostes game solve)
 
 add_executable(test_game_elhdiallo test_game_elhdiallo.c)
-target_link_libraries(test_game_elhdiallo game)
+target_link_libraries(test_game_elhdiallo game solve)
 
 add_executable(test_game_emolere test_game_emolere.c)
-target_link_libraries(test_game_emolere game)
+target_link_libraries(test_game_emolere game solve)
 
 add_executable(test_game_vsamson test_game_vsamson.c)
 target_link_libraries(test_game_vsamson game solve)
