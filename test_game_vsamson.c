@@ -319,30 +319,40 @@ bool test_game_save(){
     return false;
   }
   game_save(g, "test.rec");  // sauvegarde la partie directement au debut
-  FILE *f = fopen("test.rec", "w");
+  FILE *f = fopen("test.rec", "r");
   if (f == NULL) {
     fprintf(stderr, "NULL pointer");
+    fclose(f);
+    game_delete(g);
     exit(EXIT_FAILURE);
   }char wrap[2];
-  fscanf(f,"%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),&wrap);
-  //printf("%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),wrap);
-  if (game_width(g)!= 12){
-    printf("erreur game_width is %u et non 12\n",game_width(g));
+  uint w1;
+  uint h1;
+  uint nx1;
+  fscanf(f,"%u %u %u %s\n",&h1,&w1,&nx1,wrap);
+  printf("g:\n");
+  printf("%u %u %u %s\n",h1,w1,nx1,wrap);
+  if (h1!= 12){
+    printf("erreur game_height is %u et non 12\n",game_width(g));
+    fclose(f);
     game_delete(g);
     return false;
   }
-  if(game_height(g)!=12){
-    printf("erreur game_height is %u et non 12\n",game_height(g));
+  if(w1!=12){
+    printf("erreur game_width is %u et non 12\n",game_height(g));
+    fclose(f);
     game_delete(g);
     return false;
   }
-  if(game_nb_moves_max(g)!=10){
+  if(nx1!=10){
     printf("erreur game_nb_max is %u et non 10\n",game_nb_moves_max(g));
+    fclose(f);
     game_delete(g);
     return false;
   }
-  if((game_is_wrapping(g)==true )&& (wrap == "N")){
+  if((wrap==true )&& (wrap == "N")){
     printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g));
+    fclose(f);
     game_delete(g);
     return false;
   }
@@ -351,12 +361,14 @@ for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
         if (game_cell_current_color(g,x,y)!= cells[y * game_width(g) + x]){
           printf("erreur coordonée x = %u y = %u , %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
+          fclose(f);
           game_delete(g);
           return false;
         }
         //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
       }
   }
+  fclose(f);
   game_delete(g);
 
 
@@ -366,44 +378,56 @@ for (uint x = 0; x < game_width(g); x++) {
     return false;
   }
   game_save(g2, "test2.rec");  // sauvegarde la partie directement au debut
-  FILE *f_2 = fopen("test2.rec", "w");
+  FILE *f_2 = fopen("test2.rec", "r");
   if (f_2 == NULL) {
     fprintf(stderr, "NULL pointer");
+    fclose(f_2);
+    game_delete(g2);
     exit(EXIT_FAILURE);
   }char wrapi[2];
-  fscanf(f_2,"%u %u %u %s\n",game_width(g2), game_height(g2), game_nb_moves_max(g2),&wrapi);
-  //printf("%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),wrap);
-  if (game_width(g2)!= 12){
-    printf("erreur game_width is %u et non 12\n",game_width(g2));
+  uint w;
+  uint h;
+  uint nx;
+  fscanf(f_2,"%u %u %u %s\n",&h, &w, &nx,wrapi);
+  printf("g2\n");
+  printf("%u %u %u %s\n",h, w,nx,wrapi);
+  if (h != 12){
+    printf("erreur game_height is %u et non 12\n",h);
+    fclose(f_2);
     game_delete(g2);
     return false;
   }
-  if(game_height(g2)!=12){
-    printf("erreur game_height is %u et non 12\n",game_height(g2));
+  if(w!=12){
+    printf("erreur game_width is %u et non 12\n",w);
+    fclose(f_2);
     game_delete(g2);
     return false;
   }
-  if(game_nb_moves_max(g2)!=10){
-    printf("erreur game_nb_max is %u et non 10\n",game_nb_moves_max(g2));
+  if(nx!=10){
+    printf("erreur game_nb_max is %u et non 10\n",nx);
+    fclose(f_2);
     game_delete(g2);
     return false;
   }
-  if((game_is_wrapping(g2)==true )&& (wrapi == "N")){
-    printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g2));
+  if((game_is_wrapping(g2)==false )&& (wrapi == "N")){
+    printf("erreur malloc");
+    fclose(f_2);
     game_delete(g2);
     return false;
   }
 
 for (uint i = 0; i < game_width(g2); i++) {
     for (uint j = 0; j < game_height(g2); j++) {
-        if (game_cell_current_color(g,i,j)!= cells[j * game_width(g2) + i]){
-          printf("erreur coordonée x = %u y = %u , %u et non %u\n",i,j,cells[j * game_width(g) + i],game_cell_current_color(g,i,j));
+        if (game_cell_current_color(g2,i,j)!= cells[j * game_width(g2) + i]){
+          printf("erreur coordonée x = %u y = %u , %u et non %u\n",i,j,cells[j * game_width(g) + i],game_cell_current_color(g2,i,j));
+          fclose(f_2);
           game_delete(g2);
           return false;
         }
         //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
       }
   }
+  fclose(f_2);
   game_delete(g2);
 
 
