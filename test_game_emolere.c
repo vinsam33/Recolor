@@ -1,10 +1,16 @@
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "game.h"
 #include "game_io.h"
-#include "game_io.h"
+#include "recolor_solve.h"
+
 
 #define MAXLINELEN 4096
+
+
+/// Test Game set max moves : 
 
 bool test_game_set_max_moves(uint max) {
   game g = game_new_empty_ext(12, 12, false); 
@@ -24,9 +30,11 @@ bool test_game_set_max_moves(uint max) {
   return true;
 }
 
+/// Test Game play one move :
+
 bool test_game_play_one_move(color c) {
   
-  /** VÃ©rification play_one_move en wrapping = true **/
+  /** Verification play_one_move en wrapping = true **/
 
   //Initialisation d'une grille de jeu spÃ©ciale test wrapping :
   color cells[144] = {
@@ -53,7 +61,7 @@ bool test_game_play_one_move(color c) {
   }
   game_delete(g);
 
-  /** VÃ©rification play_one_move en wrapping = false **/
+  /** Verification play_one_move en wrapping = false **/
 
   game ga = game_new_empty_ext(12, 12, false);
   game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 aprÃ¨s avoir jouÃ© un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
@@ -68,6 +76,8 @@ bool test_game_play_one_move(color c) {
   game_delete(ga);
   return true;
 }
+
+/// Test game restart : 
 
 bool test_game_restart() {
   color cells[144] = {
@@ -99,6 +109,8 @@ bool test_game_restart() {
   return true;
 }
 
+/// Test Game new empty ext :  
+
 bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
   game g = game_new_empty_ext(width, height, wrapping);
   if (game_is_wrapping(g)!=wrapping){
@@ -122,6 +134,8 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
   game_delete(g); 
   return true;
 }
+
+/// Test Game load : 
 
 bool test_game_load(){
   game g = game_load("default_game.rec.txt"); // Wrapping en true
@@ -203,7 +217,7 @@ bool test_game_load(){
 
   d2 = strtok(NULL, " \n");
   bool wrapping2 = true;
-  if (*d=='N') wrapping2=false;  
+  if (*d2=='N') wrapping2=false;  
 
   if(game_is_wrapping(g2) != wrapping2 || game_height(g2) != h2 || game_width(g2) != w2 || game_nb_moves_max(g2) != nb_max2){
     free(s2);
@@ -241,11 +255,89 @@ bool test_game_load(){
   return true;
 }
 
+
+/// Test nb_colors et colors_present : 
+
+bool test_nb_colors(){
+  color cells[10] = {
+    0, 0, 1, 2, 3, 
+    4, 5, 0, 3, 1}; //6 couleurs : [0,1,2,3,4,5]
+  game g = game_new_ext(5, 2, cells, 5, true); 
+  uint cpt = nb_colors(g); 
+  if(cpt!=6){
+    return false;
+  }
+  color *colors_possible = colors_present(g);
+  if ((colors_possible[0] ==1) && (colors_possible[1] ==2) && (colors_possible[2] ==3) && (colors_possible[3] ==4) && (colors_possible[4] == 5) && (colors_possible[5]== 0)){
+    return true; 
+  }
+  return false; 
+}
+
+/// Test find min : 
+
+bool test_find_min(game g,char *f_sol){
+  uint nbcolors=nb_colors(g); 
+  color *color_possible = colors_present(g);
+  find_min(g, f_sol);
+  FILE *f = fopen(f_sol,"r");
+  char *s = malloc(sizeof (char)*MAXLINELEN);
+  if(s==NULL){
+    fprintf(stderr, "Null pointer\n");
+    game_delete(g);
+    fclose(f);
+    return false;
+  }
+  s = fgets(s, MAXLINELEN, f);
+  char *solf = malloc(game_nb_moves_max(g)*sizeof(char)); 
+  uint i = 0;
+  char *d = strtok(s, " \n");
+  solf[i]= atoi(d);
+  i++;
+  while (fgets(s, MAXLINELEN, f) != NULL){
+    char *tok = strtok(s, " \n");
+    while (tok != NULL){
+      int n = atoi(tok);
+      solf[i] = n;
+      i++;
+      tok = strtok(NULL, " \n");
+    }
+  }
+  /*uint z=0; 
+  game g2 = game_copy(g); 
+  for (z=0; z<i-1; z++){
+    game_play_one_move(g2, solf[z]); 
+    if (game_is_over(g2)){
+      return false; 
+    }
+  }
+  game_play_one_move(g2, solf[z]); 
+  if(!game_is_over(g2)){
+    return false; 
+  }*/
+  uint *tab = malloc(i*sizeof(uint)); 
+  if (tab==NULL){
+    fprintf(stderr, "Alloc Error"); 
+    exit(EXIT_FAILURE); 
+  }
+  uint *tabn = malloc(i*sizeof(uint)); 
+  if (tabn==NULL){
+    fprintf(stderr, "Alloc Error"); 
+    exit(EXIT_FAILURE); 
+  }
+  uint cpt =0;
+  uint nbmax = i-1;
+  find_min_aux(g, nbcolors, &color_possible[nbcolors], &nbmax , tab, tabn, cpt);
+  if (cpt!=0) return false;
+  return true; 
+}
+
+
 /*** ***** MAIN ***** ***/
 
 int main(void) {
-  
-  printf("-- Start test of game_set_max_moves --\n");
+
+  printf("\n-- Start test of game_set_max_moves --\n");
   bool Agree = test_game_set_max_moves(12);
   if (Agree) {
     fprintf(stderr, "Execution of game_set_max_moves : Success\n\n");
@@ -262,7 +354,7 @@ int main(void) {
     fprintf(stderr, "Execution of game_play_one_move : Failuren\n");
     return EXIT_FAILURE;
   }
-  
+
   printf("--Start test of game_restart --\n");
   Agree = test_game_restart();
   if (Agree) {
@@ -274,7 +366,8 @@ int main(void) {
   
   printf("-- Start test of game_new_empty_ext --\n");
   Agree = test_game_new_empty_ext(12, 12, false);
-  if (Agree) {
+  bool Agree2 = test_game_new_empty_ext(12, 12, true);
+  if (Agree && Agree2) {
     fprintf(stderr, "Execution of game_new_empty_ext : Success\n\n");
   } else {
     fprintf(stderr, "Execution of game_new_empty_ext : Failure\n\n");
@@ -289,5 +382,44 @@ int main(void) {
     fprintf(stderr, "Execution of game_load : Failure\n\n");
     return EXIT_FAILURE; 
   }
+
+  printf("-- Start test of nb_colors and colors_present --\n"); 
+  Agree = test_nb_colors(); 
+  if (Agree) {
+    fprintf(stderr, "Execution of game_load : Success\n\n");
+  } else{
+    fprintf(stderr, "Execution of game_load : Failure\n\n");
+    return EXIT_FAILURE; 
+  }
+
+  printf("-- Start test of find_min --\n");
+  game g = game_load("default_game.rec.txt");
+  Agree = test_find_min(g, "f_sol.sol"); 
+  if (Agree) {
+    fprintf(stderr, "Execution of game_load : Success\n\n");
+  } else{
+    fprintf(stderr, "Execution of game_load : Failure\n\n");
+    return EXIT_FAILURE; 
+  }
+
+  /*printf(" -- Start 1000 tests \n"); 
+  uint i =0; 
+  while (i<1000){
+    bool A= test_game_set_max_moves(12);
+    if (!A) return EXIT_FAILURE; 
+    A= test_game_play_one_move(BLUE);
+    if (!A) return EXIT_FAILURE; 
+    A = test_game_restart();
+    if (!A) return EXIT_FAILURE; 
+    A = test_game_new_empty_ext(12, 12, false);
+    if (!A) return EXIT_FAILURE; 
+    A = test_game_load(); 
+    if (!A) return EXIT_FAILURE; 
+    A = test_nb_colors(); 
+    if (!A) return EXIT_FAILURE; 
+    i++;
+  }
+  printf(" -- 1000 tests succed \n");
+  */
   return EXIT_SUCCESS;
 }
