@@ -58,4 +58,5 @@ add_test(test_game_play_one_move ./test_game_emolere game_play_one_move)
 add_test(test_game_restart ./test_game_emolere game_restart)
 add_test(test_game_new_empty_ext ./test_game_emolere game_new_empty_ext)
 add_test(test_game_load ./test_game_emolere game_load)
+add_test(test_nb_colors ./test_game_emolere nb_colors)
 
