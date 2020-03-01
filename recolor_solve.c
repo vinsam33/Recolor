@@ -62,8 +62,8 @@ color* colors_present(game g) {
   color* tab = malloc(sizeof(color) * nb_colors(g));
   color c;
   bool is_in = false;
-  for (uint x = 0; x < game_width(g); x++) {
-    for (uint y = 0; y < game_height(g); y++) {
+  for (uint y = 0; y < game_height(g); y++) {
+    for (uint x = 0; x < game_width(g); x++) {
       c = game_cell_current_color(g, x, y);
       uint a = 0;
       is_in = false;
@@ -292,7 +292,8 @@ void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max ,
   return; 
 }
 
-void find_min(game g, char* fichier_sol, color color_possible[]){
+
+void find_min(game g, char* fichier_sol/*, color color_possible[]*/){
   if (g == NULL || fichier_sol==NULL){
     fprintf(stderr, "NULL pointer");
     exit(EXIT_FAILURE);
@@ -315,6 +316,7 @@ void find_min(game g, char* fichier_sol, color color_possible[]){
     exit(EXIT_FAILURE);
   }
   uint cpt =0;
+  color *color_possible = colors_present(g);
   find_min_aux(g, nbcolors, color_possible, &nb_max, tab, tabn, cpt);
   if (nb_max > game_nb_moves_max(g))
   {
@@ -447,7 +449,7 @@ int main(int argc, char* argv[]) {
 
   } else if (strcmp(argv[1], "FIND_MIN") == 0) {
     //find_min(argv[2], argv[3]);
-    find_min(g,argv[3], colors_present(g)); 
+    find_min(g,argv[3]/*, colors_present(g)*/); 
   }else{ 
     fprintf(stderr,"ERROR: FILE OR  FUNCTION NAME INCORRECT\n");
     exit(EXIT_FAILURE);

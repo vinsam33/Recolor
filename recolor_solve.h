@@ -28,10 +28,10 @@ uint nb_colors(game g);
 
 /**
  * @brief give tab present color in the game
- * @return number tab present color
+ * @return tab present color
  * g is the game.
  **/
-uint colors_present(game g);
+color *colors_present(game g);
 
 /**
  *@brief save and print the result
@@ -70,6 +70,6 @@ void nb_sol(game g, char* file, uint nbcolors);
 void find_one(char* game_curr, char* sol, uint nb_color);
 
 void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn, uint cpt);
-void find_min(game g, char* fichier_sol, color color_possible[]);
+void find_min(game g, char* fichier_sol);
 
 #endif  // RECOLOR_SOLVE_H__
