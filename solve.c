@@ -24,11 +24,7 @@ uint max(game g){
   return c+1;
 }
 
-/**
- * @brief give number max color in the game
- * @return number max color
- * g is the game.
- **/
+
 uint nb_colors(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * 16);
@@ -53,11 +49,7 @@ uint nb_colors(game g) {
   return i;
 }
 
-/**
- * @brief give colors present at least one time.
- * @return colors present
- * g is the game.
- **/
+
 color* colors_present(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * nb_colors(g));
@@ -84,12 +76,7 @@ color* colors_present(game g) {
 }
 
 //-----------------------------------------------------------------------nb_sol-------------------------------------------------
-/**
- *@brief save and print the result
- * g is the game
- * file is the file in order to convert to 'file'.nbsol
- * cpt is number of solution
- **/
+
 void save_nbsol(game g, char* file, uint cpt) {
   if (g == NULL || file == NULL) {
     exit(EXIT_FAILURE);
@@ -102,13 +89,7 @@ void save_nbsol(game g, char* file, uint cpt) {
   fclose(f);
 }
 
-/**
- * @brief this function counts the number of possible solutions in a game by
- *browsing the grid if the game is winner.
- * @return the number of solution if you win else 0 solution .
- * g is the game
- * this fonction was called by nb_sol
- **/
+
 uint nb_sol_aux(game g, uint nbcolors) {
   color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
   uint cpt = 0;// actual number solution
@@ -130,13 +111,7 @@ uint nb_sol_aux(game g, uint nbcolors) {
   return cpt;//it's the number of solution.
 }
 
-/**
- * @brief this fonction call nb_sol_aux and save_nbsol
- * return number of possible solution when you win.
- * g is the game.
- * file is the name of game load.
- * nbcolors is the maximum number of colors in the game.
- **/
+
 void nb_sol(game g, char* file, uint nbcolors) {
   uint cpt = nb_sol_aux(g, nbcolors);//call recursif nb_sol_aux.
   save_nbsol(g, strcat(file, ".nbsol"), cpt);//save the posible number of solution. 
