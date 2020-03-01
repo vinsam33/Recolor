@@ -268,10 +268,10 @@ bool test_nb_colors(){
     return false;
   }
   color *colors_possible = colors_present(g);
-  if ((colors_possible[0] ==1) && (colors_possible[1] ==2) && (colors_possible[2] ==3) && (colors_possible[3] ==4) && (colors_possible[4] == 5) && (colors_possible[5]== 0)){
-    return true; 
+  if ((colors_possible[0] !=0) || (colors_possible[1] !=1) || (colors_possible[2] !=2) || (colors_possible[3] !=3) || (colors_possible[4] != 4) || (colors_possible[5] != 5)){
+    return false; 
   }
-  return false; 
+  return true; 
 }
 
 /// Test find min : 
@@ -386,9 +386,9 @@ int main(void) {
   printf("-- Start test of nb_colors and colors_present --\n"); 
   Agree = test_nb_colors(); 
   if (Agree) {
-    fprintf(stderr, "Execution of game_load : Success\n\n");
+    fprintf(stderr, "Execution of b_colors and colors_present : Success\n\n");
   } else{
-    fprintf(stderr, "Execution of game_load : Failure\n\n");
+    fprintf(stderr, "Execution of b_colors and colors_present : Failure\n\n");
     return EXIT_FAILURE; 
   }
 
@@ -396,9 +396,9 @@ int main(void) {
   game g = game_load("default_game.rec.txt");
   Agree = test_find_min(g, "f_sol.sol"); 
   if (Agree) {
-    fprintf(stderr, "Execution of game_load : Success\n\n");
+    fprintf(stderr, "Execution of find_min : Success\n\n");
   } else{
-    fprintf(stderr, "Execution of game_load : Failure\n\n");
+    fprintf(stderr, "Execution of find_min : Failure\n\n");
     return EXIT_FAILURE; 
   }
 
