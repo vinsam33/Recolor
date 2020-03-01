@@ -251,10 +251,10 @@ void find_one(game g, char* sol, uint nb_color, color color_possible[]) {
   }
   for(uint j=0 ; j<i ; j++){
       if(j != i-1){
-          fprintf(f,"%d ",t_sol[j]);
+          fprintf(f,"%u ",t_sol[j]);
       }
       else{
-          fprintf(f,"%d\n",t_sol[j]);
+          fprintf(f,"%u\n",t_sol[j]);
       }
   }
   free(t_sol);

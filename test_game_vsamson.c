@@ -212,18 +212,18 @@ bool test_nb_sol(){
     game_delete(g);
     return false;
   }
-  char file[20]= "test_nb_sol";//file 
-  char str1[10];
+  char file[13]= "test_nb_sol";//file 
+  char str1[13];
   nb_sol(g,file,max(g));//function
   FILE *f = fopen(file,"r");
-  if(f==NULL){
+  /*if(!f){
     fclose(f);
     game_delete(g);
     return false;
-  }
+  }*/
   int sol;
   //rewind(f);
-  fscanf(f,"%s = %u",str1,&sol);//extract sentense and number.
+  fscanf(f,"%7s = %d",str1,&sol);//extract sentense and number.
   //printf("%s = %u\n",str1,sol);
   fclose(f);
   if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ //test is the file has written wel at th beginning  "NB_SOL" or not.
@@ -232,7 +232,7 @@ bool test_nb_sol(){
     return false;
   }
   if(sol !=156){//test if the sol is 156 in the file.
-    printf("c'est pas 156 mais %u\n",sol);
+    printf("c'est pas 156 mais %d\n",sol);
     game_delete(g);
     return false;
   } 
@@ -292,8 +292,8 @@ int main(void) {  // start tests.
     fprintf(stderr, "EXECUTING OF save IS : FAILURE\n\n ");
   }
   printf("----------------Start test_nb_sol----------------\n\n");
-  bool nb_sol = test_nb_sol();
-  if (nb_sol == true) {
+  bool nb_sol_test = test_nb_sol();
+  if (nb_sol_test == true) {
     fprintf(stderr, "EXECUTING OF nb_sol IS : SUCCESS\n\n");
   } else {
     fprintf(stderr, "EXECUTING OF nb_sol IS : FAILURE\n\n ");
