@@ -97,7 +97,7 @@ void save_nbsol(game g, char* file, uint cpt) {
   if (f == NULL) {
     exit(EXIT_FAILURE);
   }
-  //fprintf(f, "NB_SOL = %u\n", cpt);
+  fprintf(f, "NB_SOL = %u\n", cpt);
   fclose(f);
 }
 
@@ -139,7 +139,7 @@ uint nb_sol_aux(game g, uint nbcolors) {
 void nb_sol(game g, char* file, uint nbcolors) {
   uint cpt = nb_sol_aux(g, nbcolors);//call recursif nb_sol_aux.
   save_nbsol(g, strcat(file, ".nbsol"), cpt);//save the posible number of solution. 
-  printf("nb_sol = %u\n", cpt);
+  //printf("nb_sol = %u\n", cpt);
 }
 //-----------------------------------------------------------------------------------------find_one-------------------------------------------------------
 /*void find_one(char* game_curr, char* sol, uint nb_color) {
