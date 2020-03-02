@@ -41,7 +41,7 @@ Emeric MOLERE :
                       game_new_ext
                       game_load
 
-Sylavin LASCOSTES :
+Sylvain LASCOSTES :
 
     test : test_game_new
            test_game_nb_moves_max
