@@ -175,7 +175,7 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
       while (last_color == t_sol[i]){//if last_color = t_sol[i].
         t_sol[i] = rand()%nb_color;
       }
-    printf("%d ",t_sol[i]);
+    //printf("%d ",t_sol[i]);
     
     
     game_play_one_move(g,t_sol[i]);
@@ -184,10 +184,10 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
       printf("\nLa solution est : ");
       for (uint j = 0 ; j< i + 1; j++){
         if (j == i){
-          printf("%d\n",t_sol[j]);          
+          //printf("%d\n",t_sol[j]);          
           fprintf(f,"%d",t_sol[j]);//border line
         }else{
-          printf("%d ",t_sol[j]);
+          //printf("%d ",t_sol[j]);
           fprintf(f,"%d ",t_sol[j]);
         }
 
@@ -199,7 +199,7 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
 
   }
   if(i >= nb_max && game_is_over(g)==false){//restart the game.
-    printf("pas gagne on recommence\n");
+    //printf("pas gagne on recommence\n");
     game_restart(g);
     i=0;
     goto Continue;
