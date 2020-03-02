@@ -39,6 +39,8 @@ add_test(test_game_new ./test_game_slascostes game_new)
 add_test(test_game_nb_moves_max ./test_game_slascostes game_nb_moves_max)
 add_test(test_game_copy ./test_game_slascostes game_copy)
 add_test(test_game_new_ext ./test_game_slascostes game_new_ext)
+add_test(test_find_one ./test_game_slascostes find_one)
+
 
 add_test(test_nb_moves_cur ./test_game_elhdiallo nb_moves_cur)
 add_test(test_game_set_cell_init ./test_game_elhdiallo game_set_cell_init)
