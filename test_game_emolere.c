@@ -279,11 +279,21 @@ bool test_nb_colors(){
 bool test_find_min(game g,char *f_sol){
   uint nbcolors=nb_colors(g); 
   color *color_possible = colors_present(g);
-  find_min(g, f_sol);
+  if (color_possible == NULL){
+    fprintf(stderr, "Alloc Error");
+    return false;
+  }
   
+  find_min(g, f_sol);
   FILE *f = fopen(f_sol,"r");
   uint z=0; 
   color *solf = malloc(sizeof(color)*MAXLINELEN);
+  if (solf == NULL){
+    fprintf(stderr, "Alloc Error");
+    free(color_possible);
+    return false;
+  }
+
   game g2 = game_copy(g); 
   while(!feof(f)){
       fscanf(f,"%u",&solf[z]);
@@ -294,6 +304,7 @@ bool test_find_min(game g,char *f_sol){
     game_play_one_move(g2,solf[i]);
       if (game_is_over(g2)){
         free(solf);
+        free(color_possible);
         fclose(f);
         return false; 
       }
@@ -301,19 +312,24 @@ bool test_find_min(game g,char *f_sol){
   game_play_one_move(g2, solf[i]); 
   if(!game_is_over(g2)){
     free(solf);
+    free(color_possible);
     fclose(f);
     return false; 
   }
+  free(solf);
   fclose(f);
   uint *tab = malloc(i*sizeof(uint)); 
   if (tab==NULL){
     fprintf(stderr, "Alloc Error"); 
-    exit(EXIT_FAILURE); 
+    free(color_possible);
+    return false; 
   }
   uint *tabn = malloc(i*sizeof(uint)); 
   if (tabn==NULL){
-    fprintf(stderr, "Alloc Error"); 
-    exit(EXIT_FAILURE); 
+    fprintf(stderr, "Alloc Error");
+    free(color_possible);
+    free(tab); 
+    return false; 
   }
   uint cpt =0;
   uint nbmax = i;
@@ -321,10 +337,12 @@ bool test_find_min(game g,char *f_sol){
   if (cpt!=0){
     free(tab);
     free(tabn);
+    free(color_possible);
     return false;
   }
   free(tab); 
   free(tabn);
+  free(color_possible);
   return true; 
 }
 
@@ -391,7 +409,7 @@ int main(void) {
   printf("-- Start test of find_min --\n");
   game g = game_load("testemolere/default_game.rec.txt");
   Agree = test_find_min(g, "testemolere/default_game.sol"); 
-  if (Agree && Agree2) {
+  if (Agree) {
     fprintf(stderr, "Execution of find_min : Success\n\n");
   } else{
     fprintf(stderr, "Execution of find_min : Failure\n\n");
