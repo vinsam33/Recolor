@@ -20,7 +20,7 @@ uint max(game g){
       }
     }
   }
-  printf("nb_color = %u\n",c+1);
+  //printf("nb_color = %u\n",c+1);
   return c+1;
 }
 
@@ -97,7 +97,7 @@ void save_nbsol(game g, char* file, uint cpt) {
   if (f == NULL) {
     exit(EXIT_FAILURE);
   }
-  fprintf(f, "NB_SOL = %u\n", cpt);
+  //fprintf(f, "NB_SOL = %u\n", cpt);
   fclose(f);
 }
 
