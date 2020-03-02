@@ -142,7 +142,7 @@ void nb_sol(game g, char* file, uint nbcolors) {
   //printf("nb_sol = %u\n", cpt);
 }
 //-----------------------------------------------------------------------------------------find_one-------------------------------------------------------
-void find_one(char* game_curr, char* sol, uint nb_color) {
+/*void find_one(char* game_curr, char* sol, uint nb_color) {
   if(game_curr == NULL || sol == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
@@ -207,9 +207,9 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
   free(t_sol);
   fclose(f);
   game_delete(g);
-}
+}*/
 
-/*void find_one(game g, char* sol, uint nb_color, color color_possible[]) {
+void find_one(game g, char* sol, uint nb_color, color color_possible[]) {
   if(g == NULL || sol == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
@@ -258,7 +258,7 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
   }
   free(t_sol);
   fclose(f);
-}*/
+}
 
 //---------------------------------------------------------------------------------------------find_min----------------------------------------------------------------
 
@@ -448,8 +448,8 @@ int main(int argc, char* argv[]) {
     nb_sol(g, argv[3], max(g));
 
   } else if (strcmp(argv[1], "FIND_MIN") == 0) {
-    //find_min(argv[2], argv[3]);
-    find_min(g,strcat(argv[3],".sol")/*, colors_present(g)*/); 
+    find_min(argv[2], argv[3]);
+    //find_min(g,strcat(argv[3],".sol")/*, colors_present(g)*/); 
   }else{ 
     fprintf(stderr,"ERROR: FILE OR  FUNCTION NAME INCORRECT\n");
     exit(EXIT_FAILURE);
