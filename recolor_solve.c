@@ -442,14 +442,14 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   if (strcmp(argv[1], "FIND_ONE") == 0) {
-    //find_one(g,strcat(argv[3],".sol"),nb_colors(g),colors_present(g));
-    find_one(argv[2], argv[3], max(g));
+    find_one(g,strcat(argv[3],".sol"),nb_colors(g),colors_present(g));
+    //find_one(argv[2], argv[3], max(g));
   } else if (strcmp(argv[1], "NB_SOL") == 0) {
     nb_sol(g, argv[3], max(g));
 
   } else if (strcmp(argv[1], "FIND_MIN") == 0) {
-    find_min(argv[2], argv[3]);
-    //find_min(g,strcat(argv[3],".sol")/*, colors_present(g)*/); 
+    //find_min(argv[2], argv[3]);
+    find_min(g,strcat(argv[3],".sol")/*, colors_present(g)*/); 
   }else{ 
     fprintf(stderr,"ERROR: FILE OR  FUNCTION NAME INCORRECT\n");
     exit(EXIT_FAILURE);
