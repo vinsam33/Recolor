@@ -70,6 +70,7 @@ color* colors_present(game g) {
       }
     }
   }
+  free(tab);
   return tab;
 }
 
