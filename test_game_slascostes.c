@@ -157,15 +157,19 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
   return true;
 }
 
-/*bool test_find_one(){
-  game g = game_load("test.rec");
+bool test_find_one(char* game_curr, char* sol){
+  if(game_curr == NULL || sol == NULL){
+      fprintf(stderr, "Pointer is null\n");
+      return false;
+  }
+  game g = game_load(game_curr);
   if(g == NULL){
     fprintf(stderr,"Error loading game\n");
     game_delete(g);
     return false;
   }
-  find_one(g,strcat("test_find_one",".sol"),nb_colors(g));
-  FILE  *f = fopen("test_find_one.sol","r");
+  find_one(g,sol,nb_colors(g),colors_present(g));
+  FILE  *f = fopen(sol,"r");
   if(f == NULL){
     fprintf(stderr,"Pointer is null\n");
     game_delete(g);
@@ -176,7 +180,8 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
     color *solution = malloc(sizeof(color)*MAXLINELEN);
     uint i = 0;
     while(!feof(f)){
-      fscanf(f,"%u",solution[i]);
+      fscanf(f,"%u",&solution[i]);
+      i++;
     }
     for (uint j=0 ; j<i ; j++){
       game_play_one_move(g,solution[j]);
@@ -207,7 +212,7 @@ bool test_game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,
       return false;
     }
   }
-}*/
+}
 
 void usage(int argc, char *argv[]) {
   fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
@@ -237,8 +242,8 @@ int main(int argc, char *argv[]) {
     ok = test_game_copy();
   else if (strcmp("game_new_ext", argv[1]) == 0)
     ok = test_game_new_ext(11,11,cells,11,false);
-  /*else if (strcmp("FIND_ONE", argv[1]) == 0)
-    ok = test_find_one();*/
+  else if (strcmp("FIND_ONE", argv[1]) == 0)
+    ok = test_find_one("default_game.rec","default_game.sol");
   else {
     fprintf(stderr, "Error: test \"%s\" not found!\n", argv[1]);
     exit(EXIT_FAILURE);
