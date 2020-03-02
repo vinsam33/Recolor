@@ -48,7 +48,6 @@ uint nb_colors(game g) {
   return i;
 }
 
-
 color* colors_present(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * nb_colors(g));
@@ -175,7 +174,8 @@ void find_one(game g, char* sol, uint nb_color, color color_possible[]) {
 void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn, uint cpt) {
   if (game_is_over(g)) {//if I win at the first movement.
     if(game_nb_moves_cur(g) < *nb_max){
-      *nb_max = game_nb_moves_cur(g); 
+      *nb_max = game_nb_moves_cur(g);
+      cpt=0;
       for (uint z=0; z < game_nb_moves_cur(g); z++){
         tabn[z]=tab[z];
         cpt++;
@@ -215,24 +215,31 @@ void find_min(game g, char* fichier_sol){
   }
   uint *tabn = malloc(nb_max*sizeof(uint)); 
   if (tabn==NULL){
-    fprintf(stderr, "Alloc Error"); 
+    fprintf(stderr, "Alloc Error");
+    free(tab); 
     exit(EXIT_FAILURE); 
   }
   uint nbcolors = nb_colors(g);
   FILE *f = fopen(fichier_sol,"w");
   if(f == NULL){
     fprintf(stderr, "Pointer is null\n");
+    free(tabn);
+    free(tab);
     exit(EXIT_FAILURE);
   }
-  uint cpt=0;
+  uint cpt =0;
   color *color_possible = colors_present(g);
+  if (color_possible == NULL){
+    free(tab);
+    free(tabn);
+    fclose(f);
+    exit(EXIT_FAILURE);
+  }
   find_min_aux(g, nbcolors, color_possible, &nb_max, tab, tabn, cpt);
-  if (nb_max > game_nb_moves_max(g))
-  {
+  if (nb_max > game_nb_moves_max(g)){
     fprintf(f,"NO SOLUTION\n");
   }
-  else
-  {
+  else{
     for(uint j=0 ; j < nb_max ; j++){
       if(j != nb_max-1){
         fprintf(f,"%u ",tabn[j]);
@@ -242,6 +249,10 @@ void find_min(game g, char* fichier_sol){
       }
     }
   }
+  free(tab);
+  free(tabn);
+  free(color_possible);
   fclose(f);
 }
+
 
