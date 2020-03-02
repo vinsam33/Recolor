@@ -276,24 +276,16 @@ bool test_nb_colors(){
 
 /// Test find min : 
 
-bool test_find_min(game g,char *f_sol){
-  uint nbcolors=nb_colors(g); 
-  color *color_possible = colors_present(g);
-  if (color_possible == NULL){
-    fprintf(stderr, "Alloc Error");
-    return false;
-  }
-  
+bool test_find_min(char *f_pb,char *f_sol){ 
+  game g = game_load(f_pb);
   find_min(g, f_sol);
   FILE *f = fopen(f_sol,"r");
   uint z=0; 
   color *solf = malloc(sizeof(color)*MAXLINELEN);
   if (solf == NULL){
     fprintf(stderr, "Alloc Error");
-    free(color_possible);
     return false;
   }
-
   game g2 = game_copy(g); 
   while(!feof(f)){
       fscanf(f,"%u",&solf[z]);
@@ -304,7 +296,6 @@ bool test_find_min(game g,char *f_sol){
     game_play_one_move(g2,solf[i]);
       if (game_is_over(g2)){
         free(solf);
-        free(color_possible);
         fclose(f);
         return false; 
       }
@@ -312,40 +303,42 @@ bool test_find_min(game g,char *f_sol){
   game_play_one_move(g2, solf[i]); 
   if(!game_is_over(g2)){
     free(solf);
-    free(color_possible);
     fclose(f);
     return false; 
   }
   free(solf);
   fclose(f);
-  uint *tab = malloc(i*sizeof(uint)); 
-  if (tab==NULL){
-    fprintf(stderr, "Alloc Error"); 
-    free(color_possible);
-    return false; 
-  }
-  uint *tabn = malloc(i*sizeof(uint)); 
-  if (tabn==NULL){
-    fprintf(stderr, "Alloc Error");
-    free(color_possible);
-    free(tab); 
-    return false; 
-  }
-  uint cpt =0;
-  uint nbmax = i;
-  find_min_aux(g, nbcolors, &color_possible[nbcolors], &nbmax , tab, tabn, cpt);
-  if (cpt!=0){
-    free(tab);
-    free(tabn);
-    free(color_possible);
-    return false;
-  }
-  free(tab); 
-  free(tabn);
-  free(color_possible);
-  return true; 
+  return true;
 }
 
+uint nb_max_min (game g, char *f_sol){
+  find_min(g, f_sol);
+  uint nbmax = game_nb_moves_max(g);
+  FILE *f = fopen(f_sol,"r");
+  uint z=0; 
+  color *solf = malloc(sizeof(color)*nbmax);
+  if (solf == NULL){
+    fprintf(stderr, "Alloc Error");
+    return false;
+  }
+  while(!feof(f)){
+      fscanf(f,"%u",&solf[z]);
+      z++;
+  }
+  free(solf);
+  fclose(f);
+  return z;
+}
+
+bool test_find_min2(char *f_pb, char *f_sol){
+  game g = game_load(f_pb);
+  uint nbcolors=nb_colors(g);  
+  uint nbmax  = nb_max_min(g, f_sol); 
+  game_set_max_moves(g, nbmax); 
+  if (nb_sol_aux(g, nbcolors)==0) return true; 
+  return false; 
+}
+  
 
 /*** ***** MAIN ***** ***/
 
@@ -407,14 +400,23 @@ int main(void) {
   }
 
   printf("-- Start test of find_min --\n");
-  game g = game_load("testemolere/default_game.rec.txt");
-  Agree = test_find_min(g, "testemolere/default_game.sol"); 
+  Agree = test_find_min("testemolere/default_game.rec.txt", "testemolere/default_game.sol"); 
   if (Agree) {
     fprintf(stderr, "Execution of find_min : Success\n\n");
   } else{
     fprintf(stderr, "Execution of find_min : Failure\n\n");
     return EXIT_FAILURE; 
   }
+
+  /*printf("-- Start test of find_min2 --\n");
+  Agree = test_find_min2("testemolere/default_game.rec.txt", "testemolere/default_game.sol");
+  if (Agree) {
+    fprintf(stderr, "Execution of find_min : Success\n\n");
+  } else{
+    fprintf(stderr, "Execution of find_min : Failure\n\n");
+    return EXIT_FAILURE; 
+  }*/
+
 
   /*printf(" -- Start 1000 tests \n"); 
   uint i =0; 
