@@ -181,7 +181,7 @@ void find_one(char* game_curr, char* sol, uint nb_color) {
     game_play_one_move(g,t_sol[i]);
     last_color = game_cell_current_color(g,0,0);
     if (game_is_over(g) == true){
-      printf("\nLa solution est : ");
+      //printf("\nLa solution est : ");
       for (uint j = 0 ; j< i + 1; j++){
         if (j == i){
           //printf("%d\n",t_sol[j]);          
