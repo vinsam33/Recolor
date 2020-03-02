@@ -32,10 +32,10 @@ uint max(game g){
 uint nb_colors(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * 16);
-  color c;
+  //color c;
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
-      c = game_cell_current_color(g, x, y);
+     color  c = game_cell_current_color(g, x, y);
       uint a = 0;
       for (a = 0; a < i; a++) {
         if (tab[a] == c) {
@@ -60,11 +60,11 @@ uint nb_colors(game g) {
 color* colors_present(game g) {
   uint i = 0;
   color* tab = malloc(sizeof(color) * nb_colors(g));
-  color c;
+  //color c;
   bool is_in = false;
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
-      c = game_cell_current_color(g, x, y);
+      color c = game_cell_current_color(g, x, y);
       uint a = 0;
       is_in = false;
       for (a = 0; a <= i; a++) {
@@ -108,22 +108,22 @@ void save_nbsol(game g, char* file, uint cpt) {
  * g is the game
  * this fonction was called by nb_sol
  **/
-uint nb_sol_aux(game g, uint nbcolors, uint * cpt) {
+uint nb_sol_aux(game g, uint nbcolors) {
+  uint cpt = 0;
   color last_color = game_cell_current_color(g, 0, 0);//last color for don't repeat.
   // actual number solution
   if (game_is_over(g)) {//if I win at the first movement.
-    *cpt += 1;
-    return ;
+    return 1 ;
   }
   if (game_nb_moves_cur(g) >= game_nb_moves_max(g)) {//if I lose the game, the solution is 0.
-    return ;
+    return 0 ;
   }
 
   for (color i = 0; i < nbcolors; i++) {
     if (i != last_color) {
       game g2 = game_copy(g);//copy the game (more detail in game.c for this function).
       game_play_one_move(g2, i);//move a color (more detail in game for this function).
-      nb_sol_aux(g2, nbcolors,cpt);//restart the game and add 1 more solution if I win. 
+      cpt =cpt + nb_sol_aux(g2, nbcolors);//restart the game and add 1 more solution if I win. 
       game_delete(g2);
     }
   }
@@ -138,8 +138,7 @@ uint nb_sol_aux(game g, uint nbcolors, uint * cpt) {
  * nbcolors is the maximum number of colors in the game.
  **/
 void nb_sol(game g, char* file, uint nbcolors) {
-  uint cpt =0;
-  nb_sol_aux(g, nbcolors,&cpt);//call recursif nb_sol_aux.
+  uint cpt = nb_sol_aux(g, nbcolors);//call recursif nb_sol_aux.
   save_nbsol(g, strcat(file, ".nbsol"), cpt);//save the posible number of solution. 
   //printf("nb_sol = %u\n", cpt);
 }
@@ -220,8 +219,8 @@ void find_one(game g, char* sol, uint nb_color, color color_possible[]) {
   if(f == NULL){
       fprintf(stderr, "Pointer is null\n");
       exit(EXIT_FAILURE);
-  }uint cpt=0;
-  if(nb_sol_aux(g,nb_color,&cpt) == 0){
+  }
+  if(nb_sol_aux(g,nb_color) == 0){
       fprintf(f,"NO SOLUTION\n");
       fclose(f);
       game_delete(g);
