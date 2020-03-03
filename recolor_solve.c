@@ -79,6 +79,7 @@ color* colors_present(game g) {
       }
     }
   }
+  free(tab);
   return tab;
 }
 
@@ -343,7 +344,7 @@ void find_min(game g, char* fichier_sol){
   }
   free(tab);
   free(tabn);
-  free(color_possible);
+  //free(color_possible);
   fclose(f);
 }
 
