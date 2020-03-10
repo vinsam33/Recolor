@@ -65,9 +65,9 @@ color* colors_present(game g) {
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
       color c = game_cell_current_color(g, x, y);
-      uint a = 0;
+      uint a;
       is_in = false;
-      for (a = 0; a <= i; a++) {
+      for (a = 0; a < i; a++) {
         if (tab[a] == c) {
           is_in = true;
           break;
@@ -140,6 +140,7 @@ uint nb_sol_aux(game g, uint nbcolors) {
 void nb_sol(game g, char* file, uint nbcolors) {
   uint cpt = nb_sol_aux(g, nbcolors);//call recursif nb_sol_aux.
   save_nbsol(g, strcat(file, ".nbsol"), cpt);//save the posible number of solution. 
+  //free(g);
   //printf("nb_sol = %u\n", cpt);
 }
 //-----------------------------------------------------------------------------------------find_one-------------------------------------------------------
@@ -362,7 +363,7 @@ int main(int argc, char* argv[]) {
     find_one(g,strcat(argv[3],".sol"),nb_colors(g),colors_present(g));
     //find_one(argv[2], argv[3], max(g));
   } else if (strcmp(argv[1], "NB_SOL") == 0) {
-    nb_sol(g, argv[3], max(g));
+    nb_sol(g, argv[3], nb_colors(g));
 
   } else if (strcmp(argv[1], "FIND_MIN") == 0) {
     find_min(g,strcat(argv[3],".sol")); 
