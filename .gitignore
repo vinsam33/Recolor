@@ -1,2 +1,5 @@
 *.o
 build/
+1/
+data/
+.vscode/

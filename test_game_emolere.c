@@ -4,7 +4,7 @@
 #include <string.h>
 #include "game.h"
 #include "game_io.h"
-#include "recolor_solve.h"
+#include "solve.h"
 
 
 #define MAXLINELEN 4096

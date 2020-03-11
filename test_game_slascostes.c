@@ -5,7 +5,7 @@
 #include <string.h>
 #include "game.h"
 #include "game_io.h"
-#include "recolor_solve.h"
+#include "solve.h"
 
 #define MAXLINELEN 4096
 
@@ -168,7 +168,7 @@ bool test_find_one(char* game_curr, char* sol){
     game_delete(g);
     return false;
   }
-  find_one(g,sol,nb_colors(g),colors_present(g));
+  find_one(g,sol,nb_colors(g));
   FILE  *f = fopen(sol,"r");
   if(f == NULL){
     fprintf(stderr,"Pointer is null\n");

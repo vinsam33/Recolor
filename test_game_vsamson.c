@@ -3,7 +3,7 @@
 #include <string.h>
 #include "game.h"
 #include "game_io.h"
-#include "recolor_solve.h"
+#include "solve.h"
 
 /**
  *@brief : teste la fonction  game_new_empty.
@@ -350,7 +350,7 @@ bool test_game_save(){
     game_delete(g);
     return false;
   }
-  if((wrap==true )&& (wrap == "N")){
+  if(strcmp(wrap, "N") == 0){
     printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g));
     fclose(f);
     game_delete(g);
@@ -409,7 +409,7 @@ for (uint x = 0; x < game_width(g); x++) {
     game_delete(g2);
     return false;
   }
-  if((game_is_wrapping(g2)==false )&& (wrapi == "N")){
+  if((game_is_wrapping(g2) == false ) && strcmp(wrapi, "S") == 0){
     printf("erreur malloc");
     fclose(f_2);
     game_delete(g2);

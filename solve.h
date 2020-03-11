@@ -4,7 +4,6 @@
 #include "game.h"
 #include <stdbool.h>
 
-
 /**
  * @file recolor_solve.h
  *
@@ -67,7 +66,7 @@ void nb_sol(game g, char* file, uint nbcolors);
  * sol is the solution file.
  * nb_color is the max number color in the game.  
 **/
-void find_one(game g, char* sol, uint nb_color, color color_possible[]);
+void find_one(game g, char* sol, uint nb_color);
 
 void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn, uint cpt);
 void find_min(game g, char* fichier_sol);
