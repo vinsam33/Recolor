@@ -320,16 +320,15 @@ bool test_game_save(){
   }
   game_save(g, "test.rec");  // sauvegarde la partie directement au debut
   FILE *f = fopen("test.rec", "r");
-  if (f == NULL) {
+  if (!f) {
     fprintf(stderr, "NULL pointer");
-    fclose(f);
     game_delete(g);
     exit(EXIT_FAILURE);
   }char wrap[2];
   uint w1;
   uint h1;
   uint nx1;
-  fscanf(f,"%u %u %u %s\n",&h1,&w1,&nx1,wrap);
+  fscanf(f,"%2u %2u %2u %1s\n",&h1,&w1,&nx1,wrap);
   //printf("g:\n");
   //printf("%u %u %u %s\n",h1,w1,nx1,wrap);
   if (h1!= 12){
@@ -379,16 +378,15 @@ for (uint x = 0; x < game_width(g); x++) {
   }
   game_save(g2, "test2.rec");  // sauvegarde la partie directement au debut
   FILE *f_2 = fopen("test2.rec", "r");
-  if (f_2 == NULL) {
+  if (!f_2) {
     fprintf(stderr, "NULL pointer");
-    fclose(f_2);
     game_delete(g2);
     exit(EXIT_FAILURE);
   }char wrapi[2];
   uint w;
   uint h;
   uint nx;
-  fscanf(f_2,"%u %u %u %s\n",&h, &w, &nx,wrapi);
+  fscanf(f_2,"%2u %2u %2u %1s\n",&h, &w, &nx,wrapi);
   //printf("g2\n");
   //printf("%u %u %u %s\n",h, w,nx,wrapi);
   if (h != 12){
