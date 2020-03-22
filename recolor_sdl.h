@@ -1,4 +1,4 @@
-// SDL2 Model by aurelien.esnard@u-bordeaux.fr
+
 
 #ifndef MODEL_H
 #define MODEL_H
@@ -21,7 +21,7 @@ typedef struct Env_t Env;
 
 /* **************************************************************** */
      
-#define APP_NAME "SDL2 Demo"
+#define APP_NAME "Recolor-tdm3-g"
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 600
 #define DELAY 100

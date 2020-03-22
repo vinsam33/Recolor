@@ -5,7 +5,9 @@
 #include <SDL_ttf.h>    // required to use TTF fonts     
 #include <stdio.h>
 #include <stdbool.h>
-#include "model.h"
+#include "recolor_sdl.h"
+#include "game.h"
+#include "game_io.h"
           
 /* **************************************************************** */
      

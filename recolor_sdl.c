@@ -1,5 +1,3 @@
-// SDL2 Demo by aurelien.esnard@u-bordeaux.fr
-
 #include <SDL.h>
 #include <SDL_image.h>  // required to load transparent texture from PNG
 #include <SDL_ttf.h>    // required to use TTF fonts     
@@ -7,23 +5,110 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "model.h"
+#include "recolor_sdl.h"
+#include "time.h"
+#include "game.h"
+#include "game_io.h"
 
 /* **************************************************************** */
+#define FONT "Arial.ttf"
+#define FONTSIZE 36
+#define BORDER 20
+//typedef uint color;
+
+/* **************************************************************** */
+
      
 struct Env_t {  
 
   /* PUT YOUR VARIABLES HERE */
+  game g ;
+  SDL_Color *colors;
+  
+
+
+
 
 }; 
      
 /* **************************************************************** */
      
-Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
-{  
-  Env * env = malloc(sizeof(struct Env_t));
+Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
 
-  /* PUT YOUR CODE HERE TO INIT TEXTURES, ... */
+  Env * env = malloc(sizeof(struct Env_t));
+  PRINT("Move a cell with  mouse.\n");
+  PRINT("Press 'q' if you want to stop the game and to save or press 'r' to restart the game !\n");
+  PRINT("Good luck.\n");
+
+
+    /* Init colors */
+  env->colors=malloc(16*sizeof(SDL_Color));
+  env->colors[0]= (SDL_Color){255,0,0,0};//red
+  env->colors[1]= (SDL_Color){0,255,0,0};//green
+  env->colors[2]= (SDL_Color){0,0,255,0};//blue
+  env->colors[3]= (SDL_Color){255,255,0,0};//yellow
+  env->colors[4]= (SDL_Color){255,165,0,0};//orange
+  env->colors[5]= (SDL_Color){238,130,238};//violet
+  env->colors[6]= (SDL_Color){255,192,203};//pink
+  env->colors[7]= (SDL_Color){128,128,128,0};//grey
+  env->colors[8]= (SDL_Color){0,255,255,0};//cyan
+  env->colors[9]=(SDL_Color){139,69,19,0};//brown
+  env->colors[10]= (SDL_Color){128,0,0,0};//bordeaux red
+  env->colors[11]= (SDL_Color){0,0,0,0};//black
+  env->colors[12]= (SDL_Color){255,255,255,0};//white or 
+  env->colors[13]= (SDL_Color){245,245,220,0};//beige
+  env->colors[14]= (SDL_Color){0,100,0,0};//dark green
+  env->colors[15]= (SDL_Color){210,105,30,0};//chocolate
+  /* init text using arial font */
+ // SDL_Color color = {0,0,255,255};
+  TTF_Font *font = TTF_OpenFont(FONT,FONTSIZE);
+  if(!font){
+    ERROR("TTF_OpenFont: %s\n",FONT);
+  }
+  TTF_SetFontStyle(font,TTF_STYLE_NORMAL);
+  //SDL_Surface * surf = TTF_RenderText_Blended(font,"Recolor",color);
+  //env->text = SDL_CreateTextureFromSurface(ren, surf);
+  //SDL_FreeSurface(surf);
+  TTF_CloseFont(font);
+   
+  /* init game  que l'on mettra en argument*/
+    // with argument
+  
+  if(argc !=2 && argc != 5){
+   color cells[144] = {
+      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
+      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
+      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
+      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
+      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
+      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
+    env->g = game_new(cells, 12);
+
+
+ }else if (argc == 2){
+    env->g = game_load(argv[1]);
+  }else{
+    bool state=atoi(argv[1]);  // wrapping
+    int h= atoi(argv[2]);       // height
+    int w= atoi(argv[3]);       // width
+    int nb= atoi(argv[4]);      // nb_colors
+
+    color * cells = malloc((w * h) * sizeof(color));
+    if (cells == NULL) {
+      fprintf(stderr, "Problem allocation memory\n");
+      exit(EXIT_FAILURE);
+    }
+    
+    srand(time(NULL));  // initialisation de rand
+    //color cells[w*h];
+    for (uint i = 0; i < w * h; i++) {
+    cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
+                               // largeur * hauteur avec des couleurs aléatoires
+    env->g = game_new_ext(w, h, cells, 12, state);
+    }
+ }
+  
+    
 
   return env;
 }
@@ -32,6 +117,9 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
      
 void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
 {
+  
+
+  
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
 }
      
@@ -55,6 +143,8 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
 void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
 {
   /* PUT YOUR CODE HERE TO CLEAN MEMORY */
+  free(env->colors);
+  game_delete(env->g);
 
   free(env);
 }
