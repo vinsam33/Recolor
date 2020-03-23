@@ -117,6 +117,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
      
 void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
 {
+  //int w,h;
   
 
   
@@ -127,12 +128,25 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
      
      
 bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
-{     
+{
+
+  int w,h;
+  SDL_GetWindowSize(win, &w, &h);
 
   if (e->type == SDL_QUIT) {
     return true;
   }
+  else if (e->type == SDL_MOUSEBUTTONDOWN){
+     SDL_Point mouse;
+     SDL_GetMouseState(&mouse.x, &mouse.y);
 
+  }else if (e->type == SDL_KEYDOWN){
+    switch (e->key.keysym.sym){
+      case SDLK_r: game_restart(env->g); break;
+      case SDLK_q:
+      case SDLK_ESCAPE: return true; break;
+    }
+  }
   /* PUT YOUR CODE HERE TO PROCESS EVENTS */
   
   return false; 
