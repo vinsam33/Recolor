@@ -48,8 +48,8 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   env->colors[2]= (SDL_Color){0,0,255,0};//blue
   env->colors[3]= (SDL_Color){255,255,0,0};//yellow
   env->colors[4]= (SDL_Color){255,165,0,0};//orange
-  env->colors[5]= (SDL_Color){238,130,238};//violet
-  env->colors[6]= (SDL_Color){255,192,203};//pink
+  env->colors[5]= (SDL_Color){238,130,238,0};//violet
+  env->colors[6]= (SDL_Color){255,192,203,0};//pink
   env->colors[7]= (SDL_Color){128,128,128,0};//grey
   env->colors[8]= (SDL_Color){0,255,255,0};//cyan
   env->colors[9]=(SDL_Color){139,69,19,0};//brown
@@ -116,10 +116,25 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
 /* **************************************************************** */
      
 void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
-{
-  //int w,h;
-  
-
+{ 
+  SDL_Rect rect;
+  int w,h,x,y;
+  uint c;
+  uint rect.x, rect.y=0;
+  SDL_GetWindowSize(win, &w, &h);
+  rect.w = w/game_width(env->g);  //largeur d'une case
+  rect.h = (h-(h/20))/game_height(env->g); 
+  for (uint b=0; b<game_height(env->g); b++){
+    for (uint a=0; a<game_width(env->g); a++){
+      c=game_cell_current_color(env->g, a, b);
+      SDL_SetRenderDrawColor(ren, env->color[c][0], env->color[c][1], env->color[c][2], env->color[c][3]);
+      SDL_RenderFillRect(ren, &rect);
+      rect.x = rect.x + rect.w;
+      rect.w = rect.w + rect.w;
+    }
+    rect.y = rect.y + rect.h;
+    rect.h = rect.h + (rect.h)+(h/20);
+  }
   
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
 }
