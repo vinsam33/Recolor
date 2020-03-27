@@ -13,7 +13,7 @@
 /* **************************************************************** */
 #define FONT "Arial.ttf"
 #define FONTSIZE 36
-#define BORDER 20
+#define BANDEAU 20
 //typedef uint color;
 
 /* **************************************************************** */
@@ -124,11 +124,11 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   uint h_windows = h;
   uint w_windows = w;
   w = w/game_width(env->g);
-  h = (h-(h/20))/game_height(env->g); 
-  rect.w = w; //largeur d'une case
+  h = (h-(h/BANDEAU))/game_height(env->g); //Equiliber of height
+  rect.w = w; //Case width
   rect.h = h;
   rect.x = 0;
-  rect.y = h-(h/20);
+  rect.y = h_windows/BANDEAU;
   for (uint b=0; b<game_height(env->g); b++){
     for (uint a=0; a<game_width(env->g); a++){
       c=game_cell_current_color(env->g, a, b);
@@ -150,15 +150,15 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   SDL_SetRenderDrawColor(ren, 128, 128, 128, 0);
   SDL_RenderFillRect(ren, &rect);*/
   uint x = 0;
-  for (uint a=h/20; a<game_width(env->g); a++){
+  for (uint a=0; a<game_width(env->g); a++){
     SDL_SetRenderDrawColor(ren,0,0,0,255);
-    SDL_RenderDrawLine(ren,x,0,x,h_windows);
+    SDL_RenderDrawLine(ren,x,h_windows/BANDEAU,x,h_windows);
     x = x + w; 
   }
-  uint y = 0;
-  for (uint b=h/20; b<game_height(env->g); b++){
+  uint y = h_windows/BANDEAU;
+  for (uint b=0; b<game_height(env->g); b++){
     SDL_SetRenderDrawColor(ren,0,0,0,255);
-    SDL_RenderDrawLine(ren,h/20,y,w_windows,y);
+    SDL_RenderDrawLine(ren,0,y,w_windows,y);
     y = y + h; 
   }
 
