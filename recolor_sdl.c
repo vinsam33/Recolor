@@ -121,6 +121,8 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   int w,h;
   uint c;
   SDL_GetWindowSize(win, &w, &h);
+  uint h_windows = h;
+  uint w_windows = w;
   w = w/game_width(env->g);
   h = h/game_height(env->g); 
   rect.w = w; //largeur d'une case
@@ -141,7 +143,19 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
     rect.y = rect.y + h;
     rect.h = rect.h + h;
   }
-  
+  uint x = 0;
+  for (uint a=0; a<=game_width(env->g); a++){
+    SDL_SetRenderDrawColor(ren,0,0,0,255);
+    SDL_RenderDrawLine(ren,x,0,x,h_windows);
+    x = x + w; 
+  }
+  uint y = 0;
+  for (uint b=0; b<=game_height(env->g); b++){
+    SDL_SetRenderDrawColor(ren,0,0,0,255);
+    SDL_RenderDrawLine(ren,0,y,w_windows,y);
+    y = y + h; 
+  }
+
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
 }
      
