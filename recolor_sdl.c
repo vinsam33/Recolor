@@ -120,14 +120,16 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   SDL_Rect rect;
   int w,h,x,y;
   uint c;
-  uint rect.x, rect.y=0;
+  rect.x=0;
+  rect.y=0;
   SDL_GetWindowSize(win, &w, &h);
   rect.w = w/game_width(env->g);  //largeur d'une case
   rect.h = (h-(h/20))/game_height(env->g); 
   for (uint b=0; b<game_height(env->g); b++){
     for (uint a=0; a<game_width(env->g); a++){
       c=game_cell_current_color(env->g, a, b);
-      SDL_SetRenderDrawColor(ren, env->color[c][0], env->color[c][1], env->color[c][2], env->color[c][3]);
+      SDL_Color color =  env->colors[c];
+      SDL_SetRenderDrawColor(ren, color.r, color.g,color.b, color.a);
       SDL_RenderFillRect(ren, &rect);
       rect.x = rect.x + rect.w;
       rect.w = rect.w + rect.w;

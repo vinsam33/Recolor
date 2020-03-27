@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="1.88"/>
+    <errors>
+        <error id="duplicateExpression" severity="style" msg="Same expression on both sides of &apos;&amp;&apos;." verbose="Finding the same expression on both sides of an operator is suspicious and might indicate a cut and paste or logic error. Please examine this code carefully to determine if it is correct." cwe="398">
+            <location file="main.c" line="18"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;is_in&apos; is assigned a value that is never used." verbose="Variable &apos;is_in&apos; is assigned a value that is never used." cwe="563">
+            <location file="solve.c" line="65"/>
+            <symbol>is_in</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;c&apos; is assigned a value that is never used." verbose="Variable &apos;c&apos; is assigned a value that is never used." cwe="563">
+            <location file="solve.c" line="286"/>
+            <symbol>c</symbol>
+        </error>
+        <error id="resourceLeak" severity="error" msg="Resource leak: f" verbose="Resource leak: f" cwe="775">
+            <location file="test_game_emolere.c" line="287"/>
+            <symbol>f</symbol>
+        </error>
+        <error id="resourceLeak" severity="error" msg="Resource leak: f" verbose="Resource leak: f" cwe="775">
+            <location file="test_game_emolere.c" line="322"/>
+            <symbol>f</symbol>
+        </error>
+        <error id="invalidscanf" severity="warning" msg="fscanf() without field width limits can crash with huge input data." verbose="fscanf() without field width limits can crash with huge input data. Add a field width specifier to fix this problem.\012\012Sample program that can crash:\012\012#include &lt;stdio.h&gt;\012int main()\012{\012    char c[5];\012    scanf(&quot;%s&quot;, c);\012    return 0;\012}\012\012Typing in 5 or more characters may make the program crash. The correct usage here is &apos;scanf(&quot;%4s&quot;, c);&apos;, as the maximum field width does not include the terminating null byte.\012Source: http://linux.die.net/man/3/scanf\012Source: http://www.opensource.apple.com/source/xnu/xnu-1456.1.26/libkern/stdio/scanf.c" cwe="119">
+            <location file="test_game_slascostes.c" line="202"/>
+        </error>
+        <error id="nullPointerRedundantCheck" severity="warning" msg="Either the condition &apos;f==NULL&apos; is redundant or there is possible null pointer dereference: f." verbose="Either the condition &apos;f==NULL&apos; is redundant or there is possible null pointer dereference: f." cwe="476">
+            <location file="test_game_slascostes.c" line="176" info="Null pointer dereference"/>
+            <location file="test_game_slascostes.c" line="173" info="Assuming that condition &apos;f==NULL&apos; is not redundant"/>
+            <symbol>f</symbol>
+        </error>
+        <error id="nullPointer" severity="error" msg="Null pointer dereference" verbose="Null pointer dereference" cwe="476">
+            <location file="test_game_slascostes.c" line="176" info="Null pointer dereference"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &apos;test_find_min2&apos; is never used." verbose="The function &apos;test_find_min2&apos; is never used." cwe="561">
+            <location file="test_game_emolere.c" line="333"/>
+            <symbol>test_find_min2</symbol>
+        </error>
+        <error id="missingInclude" severity="information" msg="Cppcheck cannot find all the include files (use --check-config for details)" verbose="Cppcheck cannot find all the include files. Cppcheck can check the code without the include files found. But the results will probably be more accurate if all the include files are found. Please check your project&apos;s include directories and add all of them as include directories for Cppcheck. To see what files Cppcheck cannot find use --check-config."/>
+    </errors>
+</results>
