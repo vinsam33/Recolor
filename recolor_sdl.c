@@ -124,11 +124,12 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   uint h_windows = h;
   uint w_windows = w;
   w = w/game_width(env->g);
-  h = (h-(h/BANDEAU))/game_height(env->g); //Equiliber of height
+  h = (h-(h/BANDEAU))/game_height(env->g); //delimitation of the blindfold and the height of the game
   rect.w = w; //Case width
-  rect.h = h;
+  rect.h = h; //Case height
   rect.x = 0;
   rect.y = h_windows/BANDEAU;
+  /** Course of the game and graphic formatting **/
   for (uint b=0; b<game_height(env->g); b++){
     for (uint a=0; a<game_width(env->g); a++){
       c=game_cell_current_color(env->g, a, b);
@@ -149,12 +150,16 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   rect.h= h;
   SDL_SetRenderDrawColor(ren, 128, 128, 128, 0);
   SDL_RenderFillRect(ren, &rect);*/
+  
+  /** Delimitation of Boxes **/
+  //Vertical
   uint x = 0;
   for (uint a=0; a<game_width(env->g); a++){
     SDL_SetRenderDrawColor(ren,0,0,0,255);
     SDL_RenderDrawLine(ren,x,h_windows/BANDEAU,x,h_windows);
     x = x + w; 
   }
+  //Horizontal
   uint y = h_windows/BANDEAU;
   for (uint b=0; b<game_height(env->g); b++){
     SDL_SetRenderDrawColor(ren,0,0,0,255);
