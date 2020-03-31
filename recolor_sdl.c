@@ -24,6 +24,7 @@ struct Env_t {
   /* PUT YOUR VARIABLES HERE */
   game g ;
   SDL_Color *colors;
+  SDL_Texture *text;
   
 
 
@@ -167,6 +168,25 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
     y = y + h; 
   }
 
+ /* char move[60];
+  SDL_Color col ={0,0,0,0};
+  fprintf(move,"%u / %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+  if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)){
+    fprintf(move,"DOMAGE => %u / %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+  }else if (game_is_over(env->g)){
+    fprintf(move,"BRAVO");
+  }
+  SDL_Surface *surf = TTF_RenderText_Blended(env->g,move,col);
+  env->text= SDL_CreateTextureFromSurface(ren,surf);
+  SDL_FreeSurface(surf);
+  SDL_Rect pos;
+  pos.x=w-rect.w;
+  pos.y=2*BANDEAU +h *game_height(env->g);
+*/
+
+
+
+
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
 }
      
@@ -188,7 +208,7 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
       w = w/game_width(env->g);
       h = (h-(h/BANDEAU))/game_height(env->g);
       uint x = (mouse.x- BANDEAU )/w;
-      uint y = (mouse.y - BANDEAU)/h;
+      uint y = (mouse.y - 3*BANDEAU)/h;
       color c = game_cell_current_color(env->g,x,y);
       if (x< game_width(env->g)&& y < game_height(env->g)){ // sinon affiche "probleme size"
         game_play_one_move(env->g,c);
@@ -214,7 +234,7 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   /* PUT YOUR CODE HERE TO CLEAN MEMORY */
   free(env->colors);
   game_delete(env->g);
-
+  SDL_DestroyTexture(env->text);
   free(env);
 }
      
