@@ -117,7 +117,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
-  SDL_Surface * surf = TTF_RenderText_Blended(font, "Hello World", color); // blended rendering for ultra nice text
+  SDL_Surface * surf = TTF_RenderText_Blended(font, "Nb moves curr :", color); // blended rendering for ultra nice text
   env->text = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
   TTF_CloseFont(font);
@@ -180,30 +180,47 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
     y = y + h; 
   }
 
-  /*char move[60];
+  char move[60];
   //char * move = malloc(60*sizeof(char));
   SDL_Color col ={0,0,0,0};
-  fprintf(move,"%u / %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+  sprintf(move,"Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
   if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)){
-    fprintf(move,"DOMAGE => %u / %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+    sprintf(move,"DOMAGE => Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
   }else if (game_is_over(env->g)){
-    fprintf(move,"BRAVO");
+    sprintf(move,"BRAVO => Win in : %u",game_nb_moves_cur(env->g));
   }
-  SDL_Surface *surf = TTF_RenderText_Blended(env->g,move,col);
+  TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+  if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+  TTF_SetFontStyle(font, TTF_STYLE_BOLD); 
+  SDL_Surface *surf = TTF_RenderText_Blended(font,move,col);
   env->text= SDL_CreateTextureFromSurface(ren,surf);
-  SDL_FreeSurface(surf);
+  SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
   SDL_Rect pos;
   pos.x=2*w;
   pos.y=BANDEAU/2; //+h *game_height(env->g);
-  free(move);*/
 
-  /* render text texture */
+  SDL_RenderCopy(ren, env->text, NULL, &pos);
+  SDL_FreeSurface(surf);
+  TTF_CloseFont(font);
+
+  /* render text texture 
   rect.w=4*rect.w;
   rect.h=4*rect.h;
   SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
-  rect.x = 3*w;
+  rect.x = 2*w;
   rect.y = BANDEAU/2; 
   SDL_RenderCopy(ren, env->text, NULL, &rect);
+
+
+  SDL_Color color = { 0, 0, 0, 0 }; //blue color in RGBA 
+  TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+  if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+  TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+  SDL_Surface * surf = TTF_RenderText_Blended(font, "Nb moves curr :", color); // blended rendering for ultra nice text
+  env->text = SDL_CreateTextureFromSurface(ren, surf);
+  SDL_FreeSurface(surf);
+  TTF_CloseFont(font);*/
+    
 
 
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
