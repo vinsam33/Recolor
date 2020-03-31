@@ -27,10 +27,6 @@ struct Env_t {
   SDL_Texture *text;
   int argc;
   char **argv;
-  
-
-
-
 
 }; 
      
@@ -99,14 +95,12 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
     srand(time(NULL));  // initialisation de rand
     //color cells[w*h];
     for (uint i = 0; i < w * h; i++) {
-    cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
+      cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
                                // largeur * hauteur avec des couleurs aléatoires
-    env->g = game_new_ext(w, h, cells, 12, state);
+      env->g = game_new_ext(w, h, cells, 12, state);
     }
+    free(cells);
  }
-
-
-
   return env;
 }
      
@@ -258,7 +252,6 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   }
   free(env->argv);
   free(env);
-  free(env->g);
 }
      
 /* **************************************************************** */
