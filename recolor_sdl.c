@@ -213,10 +213,10 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
      SDL_GetMouseState(&mouse.x, &mouse.y);
       w = w/game_width(env->g);
       h = (h-BANDEAU)/game_height(env->g);
-      uint x = (mouse.x- BANDEAU )/w;
-      uint y = (mouse.y - 3*BANDEAU)/h;
-      color c = game_cell_current_color(env->g,x,y);
-      if (x< game_width(env->g) && y < game_height(env->g)){ // sinon affiche "probleme size"
+      uint x = (mouse.x)/w; //case width
+      uint y = (mouse.y - BANDEAU)/h; //case height
+      if (x < game_width(env->g) && y < game_height(env->g)){ 
+        color c = game_cell_current_color(env->g,x,y);
         game_play_one_move(env->g,c);
       }
       
