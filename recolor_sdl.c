@@ -11,8 +11,8 @@
 #include "game_io.h"
 
 /* **************************************************************** */
-#define FONT "Arial.ttf"
-#define FONTSIZE 36
+#define FONT "Calibri.ttf"
+#define FONTSIZE 12
 #define BANDEAU 20
 //typedef uint color;
 
@@ -60,9 +60,11 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   env->colors[13]= (SDL_Color){245,245,220,0};//beige
   env->colors[14]= (SDL_Color){0,100,0,0};//dark green
   env->colors[15]= (SDL_Color){210,105,30,0};//chocolate
+  
+  
   /* init text using arial font */
  // SDL_Color color = {0,0,255,255};
-  TTF_Font *font = TTF_OpenFont(FONT,FONTSIZE);
+  /*TTF_Font *font = TTF_OpenFont(FONT,FONTSIZE);
   if(!font){
     ERROR("TTF_OpenFont: %s\n",FONT);
   }
@@ -72,8 +74,9 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   //SDL_FreeSurface(surf);
   TTF_CloseFont(font);
    
-  /* init game  que l'on mettra en argument*/
+  //init game  que l'on mettra en argument */
     // with argument
+  
   
   if(argc !=2 && argc != 5){
    color cells[144] = {
@@ -108,7 +111,16 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
     env->g = game_new_ext(w, h, cells, 12, state);
     }
  }
-  
+
+  /* init text texture using Arial font */
+  SDL_Color color = { 0, 0, 0, 0 }; /* blue color in RGBA */
+  TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+  if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+  TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+  SDL_Surface * surf = TTF_RenderText_Blended(font, "Hello World", color); // blended rendering for ultra nice text
+  env->text = SDL_CreateTextureFromSurface(ren, surf);
+  SDL_FreeSurface(surf);
+  TTF_CloseFont(font);
     
 
   return env;
@@ -168,7 +180,8 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
     y = y + h; 
   }
 
- /* char move[60];
+  /*char move[60];
+  //char * move = malloc(60*sizeof(char));
   SDL_Color col ={0,0,0,0};
   fprintf(move,"%u / %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
   if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)){
@@ -180,11 +193,17 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   env->text= SDL_CreateTextureFromSurface(ren,surf);
   SDL_FreeSurface(surf);
   SDL_Rect pos;
-  pos.x=w-rect.w;
-  pos.y=2*BANDEAU +h *game_height(env->g);
-*/
+  pos.x=2*w;
+  pos.y=BANDEAU/2; //+h *game_height(env->g);
+  free(move);*/
 
-
+  /* render text texture */
+  rect.w=4*rect.w;
+  rect.h=4*rect.h;
+  SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
+  rect.x = 3*w;
+  rect.y = BANDEAU/2; 
+  SDL_RenderCopy(ren, env->text, NULL, &rect);
 
 
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
@@ -206,11 +225,11 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
      SDL_Point mouse;
      SDL_GetMouseState(&mouse.x, &mouse.y);
       w = w/game_width(env->g);
-      h = (h-(h/BANDEAU))/game_height(env->g);
+      h = (h-BANDEAU)/game_height(env->g);
       uint x = (mouse.x- BANDEAU )/w;
       uint y = (mouse.y - 3*BANDEAU)/h;
       color c = game_cell_current_color(env->g,x,y);
-      if (x< game_width(env->g)&& y < game_height(env->g)){ // sinon affiche "probleme size"
+      if (x< game_width(env->g) && y < game_height(env->g)){ // sinon affiche "probleme size"
         game_play_one_move(env->g,c);
       }
       
