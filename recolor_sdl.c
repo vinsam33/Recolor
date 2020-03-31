@@ -180,7 +180,7 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   
   SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
   //SDL_Rect rect;
-  rect.x=2*w;
+  rect.x=w_windows/3;
   rect.y=BANDEAU/2; //+h *game_height(env->g);
 
   SDL_RenderCopy(ren, env->text, NULL, &rect);
@@ -247,10 +247,11 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   free(env->colors);
   game_delete(env->g);
   SDL_DestroyTexture(env->text);
-  for (uint i =0;i<7;i++){
+  for (uint i =0;i<env->argc;i++){
     free(env->argv[i]);
   }
   free(env->argv);
+  free(env->text);
   free(env);
 }
      
