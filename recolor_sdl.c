@@ -102,26 +102,8 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
     }
  }
 
-  
-  char move[50];
-  //char * move = malloc(60*sizeof(char));
-  SDL_Color col ={0,0,0,0};
-  TTF_Font *font = TTF_OpenFont(FONT,FONTSIZE);
-  if(!font){
-    ERROR("TTF_OpenFont: %s\n",FONT);
-  }
-  TTF_SetFontStyle(font,TTF_STYLE_NORMAL);// or TTF_STYLE_BOLD
-  if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)){
-    sprintf(move,"DOMAGE => Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
-  }else if (game_is_over(env->g)){
-    sprintf(move,"BRAVO => Win in : %u",game_nb_moves_cur(env->g));
-  }else{
-    sprintf(move,"Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
-  }
-  SDL_Surface *surf = TTF_RenderText_Blended(font,move,col);
-  env->text= SDL_CreateTextureFromSurface(ren,surf);
-  SDL_FreeSurface(surf);
-  TTF_CloseFont(font);
+
+
   return env;
 }
      
@@ -174,14 +156,41 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
     SDL_RenderDrawLine(ren,0,y,w_windows,y);
     y = y + h; 
   }
-
-//text_ movement
+  
+  
+  //char * move = malloc(60*sizeof(char));
+    // init texture using Arial and change mvmt
+  
+  char move[50];
+  SDL_Color col ={0,0,0,0};
+  TTF_Font *font = TTF_OpenFont(FONT,FONTSIZE);
+  if(!font){
+    ERROR("TTF_OpenFont: %s\n",FONT);
+  }
+  TTF_SetFontStyle(font,TTF_STYLE_NORMAL);// or TTF_STYLE_BOLD
+  
+  
+  if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)){
+    sprintf(move,"DOMAGE => Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+  }else if (game_is_over(env->g)){
+    sprintf(move,"BRAVO => Win in : %u",game_nb_moves_cur(env->g));
+  }else{
+    sprintf(move,"Nb moves curr : %u / Nb moves max : %u",game_nb_moves_cur(env->g),game_nb_moves_max(env->g));
+  }
+  SDL_Surface *surf = TTF_RenderText_Blended(font,move,col);
+  env->text= SDL_CreateTextureFromSurface(ren,surf);
+  SDL_FreeSurface(surf);
+  
   SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
   //SDL_Rect rect;
   rect.x=2*w;
   rect.y=BANDEAU/2; //+h *game_height(env->g);
 
   SDL_RenderCopy(ren, env->text, NULL, &rect);
+  TTF_CloseFont(font);
+
+ 
+
 
 
   /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
