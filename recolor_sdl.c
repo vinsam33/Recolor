@@ -39,7 +39,7 @@ struct Env_t {
 Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   Env * env = malloc(sizeof(struct Env_t));
   env->argc = argc;
-  env->argv= argv[env->argc];
+  env->argv= *argv;  //argv[env->argc];
   PRINT("Move a cell with  mouse.\n");
   PRINT("Press 'q' if you want to stop the game and to save or press 'r' to restart the game !\n");
   PRINT("Good luck.\n");
@@ -121,7 +121,7 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   uint h_windows = h;
   uint w_windows = w;
   w = w/game_width(env->g);
-  h = (h-(h/BANDEAU))/game_height(env->g); //delimitation of the blindfold and the height of the game
+  h = (h-BANDEAU)/game_height(env->g); //delimitation of the blindfold and the height of the game
   rect.w = w; //Case width
   rect.h = h; //Case height
   rect.x = 0;
@@ -229,7 +229,7 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
       case SDLK_r: game_restart(env->g); break;
       case SDLK_q:
         if(env->argc == 2){
-          game_save(env->g,env->argv[1]);
+          game_save(env->g,&env->argv[1]);
         }
         if (env->argc==5){
           game_save(env->g,"recolor_v2.rec");
@@ -253,6 +253,8 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   free(env->colors);
   game_delete(env->g);
   SDL_DestroyTexture(env->text);
+  //free(env->argc);
+  //free(env->argv);
   free(env);
 }
      
