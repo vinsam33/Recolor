@@ -247,11 +247,10 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   free(env->colors);
   game_delete(env->g);
   SDL_DestroyTexture(env->text);
-  for (uint i =0;i<env->argc;i++){
+  /*for (uint i =0;i<env->argc;i++){
     free(env->argv[i]);
-  }
-  free(env->argv);
-  free(env->text);
+  }*/
+  //free(env->argv);
   free(env);
 }
      
