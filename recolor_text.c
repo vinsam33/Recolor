@@ -4,6 +4,7 @@
 #include "game_io.h"
 #include "string.h"
 #include "time.h"
+#include "game_rand.h"
 
 void affichage_grille(game g) {
   color c;
@@ -25,7 +26,7 @@ void affichage_grille(game g) {
 
 int main(int argc, char *argv[]) {
   game g;
-  if (argc != 2 && argc != 5) {
+  if (argc != 2 && argc != 6) {
     color cells[144] = {
         0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
         1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
@@ -39,13 +40,14 @@ int main(int argc, char *argv[]) {
   }
 
   else {
+    int w;       // width
+    int h;       // height
     bool state;  // wrapping
-    int h=1;       // height
-    int w=1;       // width
+    int nb_max; //nb_max_move    
     int nb;      // nb_colors
-    if (strcmp(argv[1], "yes") == 0) {
+    if (strcmp(argv[5], "S") == 0) {
       state = true;
-    } else if (strcmp(argv[1], "no") == 0) {
+    } else if (strcmp(argv[5], "N") == 0) {
       state = false;
     } else {
       printf("Argument wrapping invalide\n");
@@ -55,27 +57,32 @@ int main(int argc, char *argv[]) {
     } else {
       h = atoi(argv[2]);
     }
-    if (atoi(argv[3]) == 0) {
+    if (atoi(argv[1]) == 0) {
       printf("Argument largeur invalide\n");
     } else {
-      w = atoi(argv[3]);
+      w = atoi(argv[1]);
     }
     if (atoi(argv[4]) == 0 || atoi(argv[4]) > 16) {
       printf("Argument nombre de couleurs invalide\n");
     } else {
       nb = atoi(argv[4]);
     }
-    color *cells = malloc((w * h) * sizeof(color));
+    if (atoi(argv[3])==0){
+      printf("Invalid mb_max_move\n");
+    }else{
+      nb_max=atoi(argv[4]);
+    }
+    /*color *cells = malloc((w * h) * sizeof(color));
     if (cells == NULL) {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
-    }
+    }*/
     srand(time(NULL));  // initialisation de rand
-    for (uint i = 0; i < w * h; i++) {
+    /*for (uint i = 0; i < w * h; i++) {
       cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
                                // largeur * hauteur avec des couleurs aléatoires
-    }
-    g = game_new_ext(w, h, cells, 12, state);
+    }*/
+    g = game_random_ext(w, h, state, nb, nb_max);
   }
   /*if (argc != 1 && argc != 2 && argc != 5) {
     printf(
@@ -101,10 +108,10 @@ int main(int argc, char *argv[]) {
       if (argc == 2) {
         game_save(g, argv[1]);  // sauvegarde du jeu quand on quitte la partie
       }
-      if (argc == 5) {
+      if (argc == 6) {
         game_save(g, "recolor_v2.rec");  // sauvegarde jeu a v2
       }
-      if (argc != 5 && argc != 2) {
+      if (argc != 6 && argc != 2) {
         game_save(g, "recolor_v1.rec");  // sauvegarde jeu a v1
       }
       break;

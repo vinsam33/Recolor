@@ -21,7 +21,7 @@ include_directories(${SDL2_ALL_INC})
 #copy arial in build
 file(COPY ${CMAKE_SOURCE_DIR}/Arial.ttf DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) 
 
-add_library(game game_io.c game.c)
+add_library(game game_io.c game.c game_rand.c)
 add_library(solve solve.c)
 
 add_executable(recolor_text recolor_text.c)

@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "recolor_sdl.h"
 #include "time.h"
 #include "game.h"
+#include "game_rand.h"
 #include "game_io.h"
+#include "recolor_sdl.h"
 
 /* **************************************************************** */
 #define FONT "Arial.ttf"
@@ -67,7 +68,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
     // with argument
   
   
-  if(argc !=2 && argc != 5){
+  if(argc !=2 && argc != 6){
    color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
       1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
@@ -81,25 +82,32 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
  }else if (argc == 2){
     env->g = game_load(argv[1]);
   }else{
-    bool state=atoi(argv[1]);  // wrapping
+    int w= atoi(argv[1]);       // width
     int h= atoi(argv[2]);       // height
-    int w= atoi(argv[3]);       // width
+    int nb_max = atoi(argv[3]);//nb_max_move
     int nb= atoi(argv[4]);      // nb_colors
+    bool state=atoi(argv[5]);  // wrapping
+    
+    if (strcmp(argv[5], "S") == 0) {
+      state = true;
+    } else if (strcmp(argv[5], "N") == 0) {
+      state = false;
+    }
 
-    color * cells = malloc((w * h) * sizeof(color));
+    /*color * cells = malloc((w * h) * sizeof(color));
     if (cells == NULL) {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
-    }
+    }*/
     
     srand(time(NULL));  // initialisation de rand
     //color cells[w*h];
-    for (uint i = 0; i < w * h; i++) {
+    /*for (uint i = 0; i < w * h; i++) {
       cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
-                               // largeur * hauteur avec des couleurs aléatoires
-      env->g = game_new_ext(w, h, cells, 12, state);
-    }
-    free(cells);
+                               // largeur * hauteur avec des couleurs aléatoires*/
+      env->g = game_random_ext(w, h, state, nb, nb_max);
+    //}
+    //free(cells);
  }
   return env;
 }
@@ -227,10 +235,10 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
         if(env->argc == 2){
           game_save(env->g,env->argv[1]);
         }
-        if (env->argc==5){
+        if (env->argc==6){
           game_save(env->g,"recolor_v2.rec");
         }
-        if (env->argc != 5 && env->argc != 2) {
+        if (env->argc != 6 && env->argc != 2) {
           game_save(env->g, "recolor_v1.rec");  // sauvegarde jeu a v1
         }
       case SDLK_ESCAPE: return true; break;
