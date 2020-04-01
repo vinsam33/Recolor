@@ -26,9 +26,13 @@ void game_set_cell_init(game g, uint x, uint y, color c) {
   if (g == NULL) {
     fprintf(stderr, "Error: do not game null\n");
     exit(EXIT_FAILURE);
+  }if(g->tab==NULL || g->init_game==NULL){
+    fprintf(stderr, "Error: do not game null\n");
+    exit(EXIT_FAILURE);
   }
   if ((x < game_width(g)) && (y < game_height(g))) {
     g->tab[x][y] = c;
+    g->init_game[x][y]=c;
   }
 }
 
