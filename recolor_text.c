@@ -45,6 +45,30 @@ int main(int argc, char *argv[]) {
     bool state;  // wrapping
     int nb_max; //nb_max_move    
     int nb;      // nb_colors
+    
+    if (atoi(argv[1]) == 0) {
+      printf("Argument largeur invalide\n");
+    } else {
+      w = atoi(argv[1]);
+    }
+    
+    if (atoi(argv[2]) == 0) {
+      printf("Argument hauteur invalide\n");
+    } else {
+      h = atoi(argv[2]);
+    }
+    if (atoi(argv[3])==0){
+      printf("Invalid mb_max_move\n");
+    }else{
+      nb_max=atoi(argv[3]);
+    }
+
+    if (atoi(argv[4]) == 0 || atoi(argv[4]) > 16) {
+      printf("Argument nombre de couleurs invalide\n");
+    } else {
+      nb = atoi(argv[4]);
+    }
+    
     if (strcmp(argv[5], "S") == 0) {
       state = true;
     } else if (strcmp(argv[5], "N") == 0) {
@@ -52,37 +76,21 @@ int main(int argc, char *argv[]) {
     } else {
       printf("Argument wrapping invalide\n");
     }
-    if (atoi(argv[2]) == 0) {
-      printf("Argument hauteur invalide\n");
-    } else {
-      h = atoi(argv[2]);
-    }
-    if (atoi(argv[1]) == 0) {
-      printf("Argument largeur invalide\n");
-    } else {
-      w = atoi(argv[1]);
-    }
-    if (atoi(argv[4]) == 0 || atoi(argv[4]) > 16) {
-      printf("Argument nombre de couleurs invalide\n");
-    } else {
-      nb = atoi(argv[4]);
-    }
-    if (atoi(argv[3])==0){
-      printf("Invalid mb_max_move\n");
-    }else{
-      nb_max=atoi(argv[4]);
-    }
-    /*color *cells = malloc((w * h) * sizeof(color));
+    
+    
+    
+    color *cells = malloc((w * h) * sizeof(color));
     if (cells == NULL) {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
-    }*/
+    }
     srand(time(NULL));  // initialisation de rand
-    /*for (uint i = 0; i < w * h; i++) {
+    for (uint i = 0; i < w * h; i++) {
       cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
                                // largeur * hauteur avec des couleurs aléatoires
-    }*/
-    g = game_random_ext(w, h, state, nb, nb_max);
+    }
+    //g = game_random_ext(w, h, state, nb, nb_max);
+    g=game_new_ext(w,h,cells,nb_max,state);
   }
   /*if (argc != 1 && argc != 2 && argc != 5) {
     printf(

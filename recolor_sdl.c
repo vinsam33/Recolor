@@ -68,7 +68,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
     // with argument
   
   
-  if(argc !=2 && argc != 6){
+  if((argc !=2 && argc != 6)|| (atoi(argv[4]) > 16)){
    color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
       1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
@@ -94,21 +94,22 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
       state = false;
     }
 
-    /*color * cells = malloc((w * h) * sizeof(color));
+    color * cells = malloc((w * h) * sizeof(color));
     if (cells == NULL) {
       fprintf(stderr, "Problem allocation memory\n");
       exit(EXIT_FAILURE);
-    }*/
+    }
     
     srand(time(NULL));  // initialisation de rand
     //color cells[w*h];
-    /*for (uint i = 0; i < w * h; i++) {
+    for (uint i = 0; i < w * h; i++) {
       cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
-                               // largeur * hauteur avec des couleurs aléatoires*/
-    env->g = game_random_ext(w, h, state, nb, nb_max);
+                               // largeur * hauteur avec des couleurs aléatoires
+      env->g = game_new_ext(w,h,cells,nb_max,state);
+    //env->g = game_random_ext(w, h, state, nb, nb_max);
 
-    //}
-    //free(cells);
+    }
+    free(cells);
  }
   return env;
 }
