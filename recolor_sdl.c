@@ -264,7 +264,7 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
 }
 
 /* **************************************************************** */
-void clean(SDL_Window* win, SDL_Render* ren, Env* env)
+void clean(SDL_Window* win, SDL_Renderer* ren, Env* env)
 {
   /* CODE TO CLEAN MEMORY */
   free(env->colors);
