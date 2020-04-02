@@ -269,17 +269,12 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
 }
 
 /* **************************************************************** */
-
-void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
+void clean(SDL_Window* win, SDL_Render* ren, Env* env)
 {
-  /* PUT YOUR CODE HERE TO CLEAN MEMORY */
+  /* CODE TO CLEAN MEMORY */
   free(env->colors);
   game_delete(env->g);
   SDL_DestroyTexture(env->text);
-  /*for (uint i =0;i<env->argc;i++){
-    free(env->argv[i]);
-  }*/
-  //free(env->argv);
   free(env);
 }
      
