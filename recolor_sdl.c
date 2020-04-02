@@ -223,7 +223,7 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
      
 bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
 {
-
+/* CODE HERE TO PROCESS EVENTS */
   int w,h;
   SDL_GetWindowSize(win, &w, &h);
 
@@ -263,7 +263,6 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
       case SDLK_ESCAPE: return true; break;
     }
   }
-  /* PUT YOUR CODE HERE TO PROCESS EVENTS */
   
   return false; 
 }
