@@ -86,20 +86,10 @@ int main(int argc, char *argv[]) {
     
     
     
-    
-    
-    /*color *cells = malloc((w * h) * sizeof(color));
-    if (cells == NULL) {
-      fprintf(stderr, "Problem allocation memory\n");
-      exit(EXIT_FAILURE);
-    }*/
+  
     srand(time(NULL));  // initialisation de rand
-    /*for (uint i = 0; i < w * h; i++) {
-      cells[i] = rand() % nb;  // On remplit un tableau de couleur de taille
-                               // largeur * hauteur avec des couleurs aléatoires
-    }*/
+
     g = game_random_ext(w, h, state, nb, nb_max);
-    //g=game_new_ext(w,h,cells,nb_max,state);
   }
   /*if (argc != 1 && argc != 2 && argc != 5) {
     printf(

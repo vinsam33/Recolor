@@ -12,7 +12,7 @@ game game_random_ext(uint width, uint height, bool is_wrapping, uint max_color,
       uint c = (uint)rand() % max_color;
       game_set_cell_init(g, x, y, c);
     }
-  //game_restart(g);
+  game_restart(g);
   game_set_max_moves(g, nb_max_moves);
   return g;
 }
