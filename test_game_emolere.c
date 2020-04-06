@@ -284,6 +284,7 @@ bool test_find_min(char *f_pb,char *f_sol){
   color *solf = malloc(sizeof(color)*MAXLINELEN);
   if (solf == NULL){
     fprintf(stderr, "Alloc Error");
+    fclose(f);
     return false;
   }
   game g2 = game_copy(g); 
@@ -319,6 +320,7 @@ uint nb_max_min (game g, char *f_sol){
   color *solf = malloc(sizeof(color)*nbmax);
   if (solf == NULL){
     fprintf(stderr, "Alloc Error");
+    fclose(f);
     return false;
   }
   while(!feof(f)){
