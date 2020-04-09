@@ -226,7 +226,7 @@ rect_2.h=15;
 SDL_SetRenderDrawColor(ren, 0,0 ,255 , 0);
 SDL_RenderFillRect(ren, &rect_2);
 SDL_QueryTexture(env->Button_Quit, NULL, NULL, &rect.w, &rect.h);
-rect.x = (rect_2.x / 2 - rect_2.w / 2+20) ;
+rect.x = (rect_2.x / 2 - rect_2.w / 2+18) ;
 rect.y = (rect_2.y / 2 - rect_2.h / 2 +12);
 SDL_RenderCopy(ren, env->Button_Quit, NULL, &rect);
 
@@ -235,13 +235,13 @@ SDL_RenderCopy(ren, env->Button_Quit, NULL, &rect);
 col_button = (SDL_Color){0, 0, 0, 0};
 rect_2.x =60; 
 rect_2.y=5;
-rect_2.w=55;
+rect_2.w=58;
 rect_2.h=15;
 SDL_SetRenderDrawColor(ren, 0,255 ,0 , 0.5);
 SDL_RenderFillRect(ren, &rect_2);
 SDL_QueryTexture(env->Button_Restart, NULL, NULL, &rect.w, &rect.h);
-rect.x = (rect_2.x / 2 - rect_2.w / 2+55) ;
-rect.y = (rect_2.y / 2 - rect_2.h / 2 +12);
+rect.x = (rect_2.x / 2 - rect_2.w / 2+58) ;
+rect.y = (rect_2.y / 2 - rect_2.h / 2 +13);
 SDL_RenderCopy(ren, env->Button_Restart, NULL, &rect);
 
 
@@ -276,9 +276,11 @@ bool process(SDL_Window *win, SDL_Renderer *ren, Env *env, SDL_Event *e) {
           game_play_one_move(env->g, c);
         }
       }
-      if (mouse.x <= 5){
+      if ((mouse.x <= 120)&&(mouse.x >60) &&(mouse.y <BANDEAU) ){
         game_restart(env->g);
-      } 
+      } if ((mouse.x <=60)&&(mouse.x>=5) &&(mouse.y <BANDEAU)){
+        return true;
+      }
     }
 
     // event with key
