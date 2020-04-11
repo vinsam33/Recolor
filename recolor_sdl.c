@@ -25,7 +25,13 @@ struct Env_t {
   int argc;
   char **argv;
   SDL_Texture *Button_Quit;
+  SDL_Texture *Button_new ;
 	SDL_Texture *Button_Restart;
+  int width;
+  int height;
+  int nb_col;
+  int nb_mov_max;
+  bool wrapping;
 };
 
 /* **************************************************************** */
@@ -81,7 +87,7 @@ Env *init(SDL_Window *win, SDL_Renderer *ren, int argc, char *argv[]) {
   } else {
     int w = atoi(argv[1]);       // width
     int h = atoi(argv[2]);       // height
-    bool state;                  // wrapping
+    bool state=false;                  // wrapping
     int nb_max = atoi(argv[3]);  // nb_max_move
     int nb;                      // nb_colors
 
@@ -107,6 +113,11 @@ Env *init(SDL_Window *win, SDL_Renderer *ren, int argc, char *argv[]) {
       state = false;
     }
 
+    env->width =w;
+    env->height =h;
+    env->nb_col =nb;
+    env->nb_mov_max = nb_max;
+    env->wrapping = state;
     // initialization of rand
 
     srand(time(NULL));
@@ -118,6 +129,7 @@ Env *init(SDL_Window *win, SDL_Renderer *ren, int argc, char *argv[]) {
 
 env->Button_Quit    = SDL_CreateTextureFromSurface(ren, TTF_RenderUTF8_Blended(button, "QUIT", (SDL_Color){255, 255, 255, 0}));
 env->Button_Restart = SDL_CreateTextureFromSurface(ren, TTF_RenderUTF8_Blended(button, "RESTART", (SDL_Color){255, 255, 255, 0}));
+env->Button_new = SDL_CreateTextureFromSurface(ren, TTF_RenderUTF8_Blended(button, "NEW", (SDL_Color){255, 255, 255, 0}));
 TTF_CloseFont(button);
 
   return env;
@@ -217,33 +229,45 @@ void render(SDL_Window *win, SDL_Renderer *ren, Env *env) { /* HERE CODE  TO REN
   //render the Buttons
  //init Button
 
-SDL_Color col_button = (SDL_Color){0, 0, 0, 0};
+col = (SDL_Color){0, 0, 0, 0};
 SDL_Rect rect_2;
 rect_2.x =5; 
 rect_2.y=5;
 rect_2.w=30;
-rect_2.h=15;
-SDL_SetRenderDrawColor(ren, 0,0 ,255 , 0);
+rect_2.h=16;
+SDL_SetRenderDrawColor(ren, rand()%255,rand()%255 ,rand()%255 , 0);
 SDL_RenderFillRect(ren, &rect_2);
 SDL_QueryTexture(env->Button_Quit, NULL, NULL, &rect.w, &rect.h);
 rect.x = (rect_2.x / 2 - rect_2.w / 2+18) ;
-rect.y = (rect_2.y / 2 - rect_2.h / 2 +12);
+rect.y = (rect_2.y / 2 - rect_2.h / 2 +13);
 SDL_RenderCopy(ren, env->Button_Quit, NULL, &rect);
 
 
 
-col_button = (SDL_Color){0, 0, 0, 0};
+
 rect_2.x =60; 
 rect_2.y=5;
 rect_2.w=58;
-rect_2.h=15;
-SDL_SetRenderDrawColor(ren, 0,255 ,0 , 0.5);
+rect_2.h=16;
+SDL_SetRenderDrawColor(ren, rand()%255,rand()%255 ,rand()%255 ,0);
 SDL_RenderFillRect(ren, &rect_2);
 SDL_QueryTexture(env->Button_Restart, NULL, NULL, &rect.w, &rect.h);
-rect.x = (rect_2.x / 2 - rect_2.w / 2+58) ;
+rect.x = (rect_2.x / 2 - rect_2.w / 2+59) ;
 rect.y = (rect_2.y / 2 - rect_2.h / 2 +13);
 SDL_RenderCopy(ren, env->Button_Restart, NULL, &rect);
 
+
+
+rect_2.x =145; 
+rect_2.y=5;
+rect_2.w=30;
+rect_2.h=16;
+SDL_SetRenderDrawColor(ren,rand()%255,rand()%255 ,rand()%255 , 0);
+SDL_RenderFillRect(ren, &rect_2);
+SDL_QueryTexture(env->Button_new, NULL, NULL, &rect.w, &rect.h);
+rect.x = (rect_2.x / 2 - rect_2.w / 2+88) ;
+rect.y = (rect_2.y / 2 - rect_2.h / 2 +13);
+SDL_RenderCopy(ren, env->Button_new, NULL, &rect);
 
 
 }
@@ -257,37 +281,58 @@ bool process(SDL_Window *win, SDL_Renderer *ren, Env *env, SDL_Event *e) {
   // get current windows size
   SDL_GetWindowSize(win, &w, &h);
   // generic events
+
   if (e->type == SDL_QUIT) {
     return true;
   }
 
+
   // events with mouse
   else if (e->type == SDL_MOUSEBUTTONDOWN) {
+    SDL_Point mouse;
+    SDL_GetMouseState(&mouse.x, &mouse.y);
     if (game_is_over(env->g) == false) {
-      SDL_Point mouse;
-      SDL_GetMouseState(&mouse.x, &mouse.y);
+
+     
       w = w / game_width(env->g);
       h = (h - BANDEAU) / game_height(env->g);
       uint x = (mouse.x) / w;  // case width
-      if (mouse.y > BANDEAU) {
+      if (mouse.y > BANDEAU + 18) {
         uint y = (mouse.y - BANDEAU) / h;  // case height
         if (x < game_width(env->g) && y < game_height(env->g)) {
           color c = game_cell_current_color(env->g, x, y);
           game_play_one_move(env->g, c);
         }
       }
+    }// click to restart or quit
       if ((mouse.x <= 120)&&(mouse.x >60) &&(mouse.y <BANDEAU) ){
         game_restart(env->g);
-      } if ((mouse.x <=60)&&(mouse.x>=5) &&(mouse.y <BANDEAU)){
+      } if ((mouse.x <=35)&&(mouse.x>=5) &&(mouse.y <BANDEAU)){
+        if (env->argc == 2) {
+          game_save(env->g, env->argv[1]);  // save the game
+        }
+        if (env->argc == 6 || env->argc == 5 || env->argc == 4) {
+          game_save(env->g, "recolor_v2.rec");  // save game with v2
+        }
+        if (env->argc != 2 && env->argc != 6 && env->argc != 5 &&
+            env->argc != 4) {
+          game_save(env->g, "recolor_v1.rec");  // save game with v1
+        }
         return true;
       }
-    }
+      if ((mouse.y<BANDEAU)&&(mouse.x<=176)&&(mouse.x>=145)){
+        env->g =game_random_ext(env->width,env->height,env->wrapping,env->nb_col,env->nb_mov_max);
+      }
+    
 
     // event with key
   } else if (e->type == SDL_KEYDOWN) {
     switch (e->key.keysym.sym) {
       case SDLK_r:
         game_restart(env->g);
+        break;
+      case SDLK_n:
+        env->g =game_random_ext(env->width,env->height,env->wrapping,env->nb_col,env->nb_mov_max);
         break;
       case SDLK_q:
         // save the game
@@ -318,6 +363,7 @@ void clean(SDL_Window *win, SDL_Renderer *ren, Env *env) {
   SDL_DestroyTexture(env->text);
   SDL_DestroyTexture(env->Button_Quit);
   SDL_DestroyTexture(env->Button_Restart);
+  SDL_DestroyTexture(env->Button_new);
   free(env);
 }
 /* **************************************************************** */
