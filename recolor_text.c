@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
   }
 
   else {
-    int w;       // width
-    int h;       // height
-    bool state;  // wrapping
-    int nb_max; //nb_max_move    
-    int nb;      // nb_colors
+    int w=0;       // width
+    int h=0;       // height
+    bool state=false;  // wrapping
+    int nb_max=0; //nb_max_move    
+    int nb=0;      // nb_colors
     
     if (atoi(argv[1]) == 0) {
       printf("Argument largeur invalide\n");

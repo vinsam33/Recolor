@@ -56,3 +56,4 @@ Sylvain LASCOSTES :
 Commun au groupe :
     recolor_text
     Makefile
+    recolor_sdl
