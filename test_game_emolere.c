@@ -20,7 +20,7 @@ bool test_game_set_max_moves(uint max) {
     return false;
   }
 
-  game_set_max_moves(g, max); // On appelle game_set_max_moves pour dÃ©finir un nb de mouvements maximum pour le jeu g et on vÃ©rifie que le nombre maximum de mouvements de g est bien max
+  game_set_max_moves(g, max); // We call game_set_max_moves to define a maximum number of movements for the game g and we verify that the maximum number of movements of g is indeed max
   if (game_nb_moves_max(g) != max) {
     fprintf(stderr, "Error : too much number of moves\n\n");
     game_delete(g);
@@ -34,7 +34,7 @@ bool test_game_set_max_moves(uint max) {
 
 bool test_game_play_one_move(color c) {
   
-  /** Verification play_one_move en wrapping = true **/
+  /** Verification play_one_move wrapping = true **/
 
   //Initialisation d'une grille de jeu spÃ©ciale test wrapping :
   color cells[144] = {
@@ -61,10 +61,10 @@ bool test_game_play_one_move(color c) {
   }
   game_delete(g);
 
-  /** Verification play_one_move en wrapping = false **/
+  /** Verification play_one_move wrapping = false **/
 
   game ga = game_new_empty_ext(12, 12, false);
-  game_play_one_move(ga, c); // Comme toutes les cases ont pour valeur 0 aprÃ¨s avoir jouÃ© un mouvement de la couleur c toutes les cases doivent avoir pour valeur la couleur c
+  game_play_one_move(ga, c); // As all the boxes have the value 0 after having played a movement of the color c all the boxes must have the value of the color c
   for (unsigned int y = 0; y < game_height(ga); y++) {
     for (unsigned int x = 0; x < game_width(ga); x++) {
       if (game_cell_current_color(ga, x, y) != c) {
@@ -98,7 +98,7 @@ bool test_game_restart() {
   }
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
-      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // AprÃ¨s un restart chaque case du jeu doit Ãªtre identique Ã  la case d'indice correspondant dans cells, car cells correpond au tableau de valeurs de dÃ©part
+      if (game_cell_current_color(g, x, y) != cells[y * game_width(g) +x]) { // After a restart each box in the game must be identical to the corresponding index box in cells, because cells correspond to the table of starting values
         fprintf(stderr, "Error : game_cell_current_color different from cells\n\n");
         game_delete(g);
         return false;
@@ -123,7 +123,7 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
     game_delete(g);
     return false;
   }
-  for (unsigned int x = 0; x < width; x++) { // La valeur de chaque case du tableau doit Ãªtre 0
+  for (unsigned int x = 0; x < width; x++) { // The value of each box in the array must be 0
     for (unsigned int y = 0; y < height; y++) {
       if (game_cell_current_color(g, x, y) != 0){
         game_delete(g);
@@ -138,7 +138,7 @@ bool test_game_new_empty_ext(uint width, uint height, bool wrapping){
 /// Test Game load : 
 
 bool test_game_load(){
-  game g = game_load("testemolere/default_game.rec.txt"); // Wrapping en true
+  game g = game_load("testemolere/default_game.rec.txt"); // Wrapping true
   FILE * f = fopen("testemolere/default_game.rec.txt","r");
   
   char *s = malloc(sizeof (char)*MAXLINELEN);
@@ -195,7 +195,7 @@ bool test_game_load(){
   free(cells);
   game_delete(g);
   fclose(f);
-  game g2 = game_load("testemolere/horizontal_game2N.rec.txt"); // Wrapping en false
+  game g2 = game_load("testemolere/horizontal_game2N.rec.txt"); // Wrapping false
   FILE * f2 = fopen("testemolere/horizontal_game2N.rec.txt","r");
   
   char *s2 = malloc(sizeof (char)*MAXLINELEN);
@@ -256,7 +256,7 @@ bool test_game_load(){
 }
 
 
-/// Test nb_colors et colors_present : 
+/// Test nb_colors and colors_present : 
 
 bool test_nb_colors(){
   color cells[10] = {
@@ -439,5 +439,6 @@ int main(void) {
   }
   printf(" -- 1000 tests succed \n");
   */
+ 
   return EXIT_SUCCESS;
 }
