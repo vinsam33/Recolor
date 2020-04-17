@@ -126,7 +126,7 @@ Env *init(SDL_Window *win, SDL_Renderer *ren, int argc, char *argv[]) {
     env->g = game_random_ext(w, h, state, nb, nb_max);
   }
 
-  TTF_Font *button = TTF_OpenFont(FONT, 2*FONTSIZE);
+  TTF_Font *button = TTF_OpenFont(FONT, FONTSIZE);
 
 env->Button_Quit    = SDL_CreateTextureFromSurface(ren, TTF_RenderUTF8_Blended(button, "QUIT", (SDL_Color){255, 255, 255, 0}));
 env->Button_Restart = SDL_CreateTextureFromSurface(ren, TTF_RenderUTF8_Blended(button, "RESTART", (SDL_Color){255, 255, 255, 0}));
