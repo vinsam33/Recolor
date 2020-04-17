@@ -36,7 +36,7 @@ bool test_game_play_one_move(color c) {
   
   /** Verification play_one_move wrapping = true **/
 
-  //Initialisation d'une grille de jeu spÃ©ciale test wrapping :
+  // Initialization of a special test wrapping grid:
   color cells[144] = {
       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -439,6 +439,6 @@ int main(void) {
   }
   printf(" -- 1000 tests succed \n");
   */
- 
+
   return EXIT_SUCCESS;
 }
