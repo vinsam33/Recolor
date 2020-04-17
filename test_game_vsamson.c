@@ -6,27 +6,27 @@
 #include "solve.h"
 
 /**
- *@brief : teste la fonction  game_new_empty.
- *@return false s'il y a une erreur ou si la couleur n'est pas 0 ,sinon true.
+ *@brief : test the game_new_empty function
+ *@return false if there is an error or if the color is not 0,else true.
  **/
 bool test_game_new_empty() {
   game g = game_new_empty();
-  if (g == NULL) {  // verif si le pointer n'est pas NULL.
+  if (g == NULL) {  // check if the pointer is not NULL.
     game_delete(g);
     return false;
-  }  // verif dimensions
+  }  // check dimensions
 
   if (!game_is_over(g)) {
     fprintf(stderr, "ERROR : GAME_IS_OVER\n\n");
     game_delete(g);
     return false;
-  }  // verif moves
+  }  // check moves
 
   if (game_nb_moves_cur(g) != 0 || game_nb_moves_max(g) != 0) {
     fprintf(stderr, "ERROR : MOVE\n\n");
     game_delete(g);
     return false;
-  }  // verif si on a dans une case ,une couleur differente de 0.
+  }  // check if we have in a box of a color different from 0.
 
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
@@ -42,8 +42,8 @@ bool test_game_new_empty() {
 }
 
 /**
- *@brief : teste la fonction  game_cell_current_color.
- *@return false s'il y a une erreur ou ce n'est pas la bonne couleur,sinon true.
+ *@brief : test the game_cell_current_color function.
+ *@return false if there is an error or it is the wrong color,sinon true.
  **/
 bool test_game_cell_current_color() {
   game g = game_new_empty_ext(5, 5, true);
@@ -51,8 +51,7 @@ bool test_game_cell_current_color() {
     fprintf(stderr, "ERROR POINTER\n\n");
     game_delete(g);
     return false;
-  }  // verif si on a les mêmes couleurs dans les deux fonctions et à la bonne
-     // case.
+  }  // check if we have the same colors in both functions and in the right box.
 
   for (uint y = 0; y < game_height(g); y++) {
     for (uint x = 0; x < game_width(g); x++) {
@@ -69,10 +68,10 @@ bool test_game_cell_current_color() {
 }
 
 /**
- * @brief teste la fonction game_delete.
+ * @brief test the game_delete function.
  *
- * @return true  si le jeu est detruit.
- * @return false s'il y a un probleme de memoire.
+ * @return true if the game is destroyed.
+ * @return false if there is a memory problem.
  **/
 bool test_game_delete() {
   color cells[144] = {
@@ -83,27 +82,27 @@ bool test_game_delete() {
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
   game g = game_new_ext(12, 12, cells, 10, true);
-  if (g == NULL) {  // verif si le pointer n'est pas NULL.
+  if (g == NULL) {  // check if the pointer is not NULL.
     fprintf(stderr, "ERROR POINTER\n");
     exit(EXIT_FAILURE);
-  }  // supprime le jeu.
+  }  // delete the game.
   game_delete(g);
   return true;
 }
 /**
- * @brief teste la fonction game_height.
+ * @brief test the game_height function.
  *
- * @return true si c'est la bonne dimension et aucun problème.
- * @return false si ce n'est pas la  bonne taille.
+ * @return true if it's the right size and no problem.
+ * @return false if it is not the right size.
  **/
 bool test_game_height() {
   game g = game_new_empty_ext(5, 5, true);
-  if (g == NULL) {  // verif si le pointer n'est pas NULL.
+  if (g == NULL) {  // check if the pointer is not NULL.
     fprintf(stderr, "ERROR POINTER\n");
     game_delete(g);
     return false;
   }
-  if (game_height(g) != 5) {  // verif si on a la bonne height.
+  if (game_height(g) != 5) {  // check if we have the right height.
     fprintf(stderr, "ERROR HEIGHT\n");
     game_delete(g);
     return false;
@@ -114,196 +113,10 @@ bool test_game_height() {
 }
 
 /**
- * @brief teste la fonction game_save dans le fichier game_io.c
- * @return false si la fonction a un problème
- * @return true sinon
+ * @brief test the game_save function in the game_io.c file.
+ * @return false if the function has a problem.
+ * @return true else.
  **/
-/*bool test_game_save() {
-  color cells[144] = {
-      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
-      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
-      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
-      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
-      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  // test avec version wrapping
-  game g = game_new_ext(12, 12, cells, 10, true);
-  if (g == NULL) {
-    game_delete(g);
-    return false;
-  }
-  game_save(g, "test.rec");  // sauvegarde la partie directement au debut
-  game g2 = game_load(
-      "test.rec");  // charge la partie et on verifie que l'on a bien sauvegardé
-  if (g2 == NULL) {
-    game_delete(g);
-    game_delete(g2);
-  }
-  if (game_is_wrapping(g) == true) {  // verif paramètre si wrapping
-    if (game_width(g) != game_width(g2) || game_height(g) != game_height(g2) ||
-        game_nb_moves_max(g) != game_nb_moves_max(g2) ||
-        game_is_wrapping(g) != game_is_wrapping(g2)) {
-      game_delete(g);
-      game_delete(g2);
-      return false;
-    }
-  }
-  // verif les positions des cellules
-  for (uint x = 0; x < game_width(g); x++) {
-    for (uint y = 0; y < game_height(g); y++) {
-      if (game_cell_current_color(g, x, y) !=
-          game_cell_current_color(g2, x, y)) {
-        game_delete(g);
-        game_delete(g2);
-        return false;
-      }
-    }
-  }
-  game_delete(g);
-  game_delete(g2);
-
-  // test avec sans wrapping
-  game g3 = game_new_ext(12, 12, cells, 10, false);
-  if (g3 == NULL) {
-    game_delete(g3);
-    return false;
-  }
-  game_save(g3, "test2.rec");  // sauvegarde la partie directement au debut
-  game g4 = game_load("test2.rec");  // charge la partie et on verifie que l'on
-                                     // a bien sauvegardé
-  if (g4 == NULL) {
-    game_delete(g3);
-    game_delete(g4);
-  }
-  if (game_width(g3) != game_width(g4) || game_height(g3) != game_height(g4) || game_nb_moves_max(g3) != game_nb_moves_max(g4)||game_is_wrapping(g3)!=game_is_wrapping(g4)){
-    game_delete(g3);
-    game_delete(g4);
-    return false;
-  }
-  // verif les positions des cellules
-  for (uint x = 0; x < game_width(g3); x++) {
-    for (uint y = 0; y < game_height(g3); y++) {
-      if (game_cell_current_color(g3, x, y) != game_cell_current_color(g3, x, y)) {
-        game_delete(g3);
-        game_delete(g4);
-        return false;
-      }
-    }
-  }
-  game_delete(g3);
-  game_delete(g4);
-  return true;
-}*/
-
-/*bool test_game_save(){
-  color cells[144] = {
-      0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
-      1, 0, 1, 2, 3, 2, 3, 2, 0, 3, 3, 2, 2, 3, 1, 0, 3, 2, 1, 1, 1, 2, 2, 0,
-      2, 1, 2, 3, 3, 3, 3, 2, 0, 1, 0, 0, 0, 3, 3, 0, 1, 1, 2, 3, 3, 2, 1, 3,
-      1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
-      0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
-      1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  // test avec version wrapping
-  game g = game_new_ext(12, 12, cells, 10, true);
-  if (g == NULL) {
-    game_delete(g);
-    return false;
-  }
-  game_save(g, "test.rec");  // sauvegarde la partie directement au debut
-  FILE *f = fopen("test.rec", "r");
-  if (f == NULL) {
-    fprintf(stderr, "NULL pointer");
-    exit(EXIT_FAILURE);
-  }char wrap[2];
-  fscanf(f,"%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),&wrap);
-  //printf("%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),wrap);
-  if (game_width(g)!= 12){
-    printf("erreur game_width is %u et non 12\n",game_width(g));
-    game_delete(g);
-    return false;
-  }
-  if(game_height(g)!=12){
-    printf("erreur game_height is %u et non 12\n",game_height(g));
-    game_delete(g);
-    return false;
-  }
-  if(game_nb_moves_max(g)!=10){
-    printf("erreur game_nb_max is %u et non 10\n",game_nb_moves_max(g));
-    game_delete(g);
-    return false;
-  }
-  if((game_is_wrapping(g)==true )&& (wrap == "N")){
-    printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g));
-    game_delete(g);
-    return false;
-  }
-
-for (uint x = 0; x < game_width(g); x++) {
-    for (uint y = 0; y < game_height(g); y++) {
-        if (game_cell_current_color(g,x,y)!= cells[y * game_width(g) + x]){
-          printf("erreur coordonée x = %u y = %u , %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
-          game_delete(g);
-          return false;
-        }
-        //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
-      }
-  }
-  game_delete(g);
-
-
-  game g2 = game_new_ext(12, 12, cells, 10, false);
-    if (g2 == NULL) {
-    game_delete(g2);
-    return false;
-  }
-  game_save(g2, "test2.rec");  // sauvegarde la partie directement au debut
-  FILE *f_2 = fopen("test2.rec", "r");
-  if (f_2 == NULL) {
-    fprintf(stderr, "NULL pointer");
-    exit(EXIT_FAILURE);
-  }char wrapi[2];
-  fscanf(f_2,"%u %u %u %s\n",game_width(g2), game_height(g2), game_nb_moves_max(g2),&wrapi);
-  //printf("%u %u %u %s\n",game_width(g), game_height(g), game_nb_moves_max(g),wrap);
-  if (game_width(g2)!= 12){
-    printf("erreur game_width is %u et non 12\n",game_width(g2));
-    game_delete(g2);
-    return false;
-  }
-  if(game_height(g2)!=12){
-    printf("erreur game_height is %u et non 12\n",game_height(g2));
-    game_delete(g2);
-    return false;
-  }
-  if(game_nb_moves_max(g2)!=10){
-    printf("erreur game_nb_max is %u et non 10\n",game_nb_moves_max(g2));
-    game_delete(g2);
-    return false;
-  }
-  if((game_is_wrapping(g2)==true )&& (wrapi == "N")){
-    printf("erreur game_width is %u et non 10\n",game_nb_moves_max(g2));
-    game_delete(g2);
-    return false;
-  }
-
-for (uint i = 0; i < game_width(g2); i++) {
-    for (uint j = 0; j < game_height(g2); j++) {
-        if (game_cell_current_color(g,i,j)!= cells[j * game_width(g2) + i]){
-          printf("erreur coordonée x = %u y = %u , %u et non %u\n",i,j,cells[j * game_width(g) + i],game_cell_current_color(g,i,j));
-          game_delete(g2);
-          return false;
-        }
-        //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
-      }
-  }
-  game_delete(g2);
-
-
-  return true;
-
-}*/
-
-
-
 bool test_game_save(){
   color cells[144] = {
       0, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 3, 3, 1, 1, 1, 1, 3, 2, 0, 1, 0,
@@ -312,13 +125,13 @@ bool test_game_save(){
       1, 1, 2, 2, 2, 0, 0, 1, 3, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 0, 1, 3, 3, 3,
       0, 3, 0, 1, 0, 0, 2, 1, 1, 1, 3, 0, 1, 3, 1, 0, 0, 0, 3, 2, 3, 1, 0, 0,
       1, 3, 3, 1, 1, 2, 2, 3, 2, 0, 0, 2, 2, 0, 2, 3, 0, 1, 1, 1, 2, 3, 0, 1};
-  // test avec version wrapping
+  // test with  wrapping version
   game g = game_new_ext(12, 12, cells, 10, true);
   if (g == NULL) {
     game_delete(g);
     return false;
   }
-  game_save(g, "test.rec");  // sauvegarde la partie directement au debut
+  game_save(g, "test.rec");  // save the game directly at the start
   FILE *f = fopen("test.rec", "r");
   if (!f) {
     fprintf(stderr, "NULL pointer");
@@ -329,8 +142,6 @@ bool test_game_save(){
   uint h1;
   uint nx1;
   fscanf(f,"%2u %2u %2u %1s\n",&h1,&w1,&nx1,wrap);
-  //printf("g:\n");
-  //printf("%u %u %u %s\n",h1,w1,nx1,wrap);
   if (h1!= 12){
     printf("erreur game_height is %u et non 12\n",game_width(g));
     fclose(f);
@@ -364,7 +175,6 @@ for (uint x = 0; x < game_width(g); x++) {
           game_delete(g);
           return false;
         }
-        //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
       }
   }
   fclose(f);
@@ -376,7 +186,7 @@ for (uint x = 0; x < game_width(g); x++) {
     game_delete(g2);
     return false;
   }
-  game_save(g2, "test2.rec");  // sauvegarde la partie directement au debut
+  game_save(g2, "test2.rec");  // save the game directly at the start
   FILE *f_2 = fopen("test2.rec", "r");
   if (!f_2) {
     fprintf(stderr, "NULL pointer");
@@ -387,8 +197,6 @@ for (uint x = 0; x < game_width(g); x++) {
   uint h;
   uint nx;
   fscanf(f_2,"%2u %2u %2u %1s\n",&h, &w, &nx,wrapi);
-  //printf("g2\n");
-  //printf("%u %u %u %s\n",h, w,nx,wrapi);
   if (h != 12){
     printf("erreur game_height is %u et non 12\n",h);
     fclose(f_2);
@@ -422,7 +230,6 @@ for (uint i = 0; i < game_width(g2); i++) {
           game_delete(g2);
           return false;
         }
-        //printf("coordonée x = %u y = %u , cell %u et non %u\n",x,y,cells[y * game_width(g) + x],game_cell_current_color(g,x,y));
       }
   }
   fclose(f_2);
@@ -449,15 +256,9 @@ bool test_nb_sol(){
   char str1[13];
   nb_sol(g,file,max(g));//function
   FILE *f = fopen(file,"r");
-  /*if(!f){
-    fclose(f);
-    game_delete(g);
-    return false;
-  }*/
   int sol;
   //rewind(f);
   fscanf(f,"%7s = %d",str1,&sol);//extract sentense and number.
-  //printf("%s = %u\n",str1,sol);
   fclose(f);
   if((strcmp(str1,"NB_SOL")<0)||(strcmp(str1,"NB_SOL")>0)){ //test is the file has written wel at th beginning  "NB_SOL" or not.
     printf("ce n'est pas NB_SOL\n");

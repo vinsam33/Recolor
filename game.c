@@ -5,13 +5,13 @@
 
 
 struct game_s {
-  color **tab; //grille de jeu
-  uint nb_max; //nombre de mouvements maximums autorisés pour gagner
-  uint nb_curr; //nombre de mouvements actuels
-  uint height; //hauteur du jeu
-  uint width; //largeur du jeu
-  bool wrapping; //est ou non wrapping
-  color **init_game; //jeu initial
+  color **tab; //game grid
+  uint nb_max; //maximum number of moves allowed to win
+  uint nb_curr; //number of current movements
+  uint height; //game height
+  uint width; //game width
+  bool wrapping; //is or not wrapping
+  color **init_game; // initial game
 };
 
 game game_new(color *cells, uint nb_moves_max) {
@@ -80,23 +80,23 @@ void remplissage(game g, color cible, color rep, uint x, uint y) {
   if (game_cell_current_color(g, x, y) == cible) {
     g->tab[x][y] = rep;
     if (y > 0) {
-      remplissage(g, cible, rep, x, y - 1);  // Remplissage au nord
+      remplissage(g, cible, rep, x, y - 1);  // North filling
     }
     if (y < game_height(g) - 1) {
-      remplissage(g, cible, rep, x, y + 1);  // Remplissage au sud
+      remplissage(g, cible, rep, x, y + 1);  // south filling
     }
     if (x < game_width(g) - 1) {
-      remplissage(g, cible, rep, x + 1, y);  // Remplissage à l'est
+      remplissage(g, cible, rep, x + 1, y);  // Filling in the east
     }
     if (x > 0) {
-      remplissage(g, cible, rep, x - 1, y);  // Remplissage à l'ouest
+      remplissage(g, cible, rep, x - 1, y);  // filling in the west
     }
     if (g->wrapping == true ){
       if (y == 0){
-        remplissage(g, cible, rep, x, game_height(g) -1);     // Remplissage en Wrapping bas/haut
+        remplissage(g, cible, rep, x, game_height(g) -1);     // Wrapping filling low / high
       }
       if (x == 0){
-        remplissage(g, cible, rep, game_width(g) - 1, y);     // Remplissage en Wrapping droite/gauche
+        remplissage(g, cible, rep, game_width(g) - 1, y);     // Wrapping filling right / left
       }
     }
   }
@@ -123,7 +123,7 @@ game game_copy(cgame g) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
-  game g2 = malloc(sizeof(struct game_s)); // On alloue une nouvelle structure et les deux nouveaux tableaux
+  game g2 = malloc(sizeof(struct game_s)); // We allocate a new structure and the two new arrays
   if (g2 == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
@@ -168,13 +168,13 @@ game game_copy(cgame g) {
       exit(EXIT_FAILURE);
     }
   }
-  for (uint i = 0; i < game_width(g); i++) { // On copie les anciens tableaux dans la nouvelle structure
+  for (uint i = 0; i < game_width(g); i++) { // We copy the old tables in the new structure
       for (uint j = 0; j < game_height(g); j++) {
       g2->tab[i][j] = g->tab[i][j];
       g2->init_game[i][j] = g->init_game[i][j];
     }
   }
-  g2->nb_max = g->nb_max; // On copie l'ancienne structure champ à champ
+  g2->nb_max = g->nb_max; // We copy the old structure field to field
   g2->nb_curr = g->nb_curr;
   g2->height = g->height;
   g2->width = g->width;
@@ -224,7 +224,7 @@ void game_restart(game g) {
     exit(EXIT_FAILURE);
   }
   g->nb_curr = 0;
-  for (unsigned int i = 0; i < game_width(g); i++) { // On réinitialise chaque valeur de la grille de jeu tab par sa valeur de départ contenue dans init_game
+  for (unsigned int i = 0; i < game_width(g); i++) { // We reset each value of the game grid tab by its starting value contained in init_game
     for (unsigned int j = 0; j < game_height(g); j++) {
       g->tab[i][j] = g->init_game[i][j];
     }
@@ -243,37 +243,37 @@ bool game_is_wrapping(cgame g){
 
 game game_new_empty_ext(uint width, uint height, bool wrapping){
   uint size_of_tab = height*width;
-  color *cells = calloc(size_of_tab,sizeof(color)); // initialisation de toutes les valeurs de *cells à 0.
+  color *cells = calloc(size_of_tab,sizeof(color)); // initialization of all values of * cells to 0.
   if(cells==NULL){
     fprintf(stderr,"ERROR : memory\n");
     exit(EXIT_FAILURE);
   }
-  game g =game_new_ext(width,height,cells,0,wrapping); // reutilisation de la fonction game_new_ext avec le calloc 
+  game g =game_new_ext(width,height,cells,0,wrapping); // reuse of the game_new_ext function with the calloc
   free(cells);
   return g;
 }
 
 game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  bool wrapping){
 
-  game g = malloc(sizeof(struct game_s)); // On alloue une nouvelle structure
+  game g = malloc(sizeof(struct game_s)); // We allocate a new structure
   if (g == NULL) {
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
 
-  g->wrapping = wrapping; // On remplit cette structure champ par champ
+  g->wrapping = wrapping; // We fill this structure field by field
   g->nb_max = nb_moves_max;
   g->nb_curr = 0;
   g->width = width;
   g->height = height;
-  g->tab = (color **)malloc(width * sizeof(color *)); // On alloue le tableau ** tab
+  g->tab = (color **)malloc(width * sizeof(color *)); // We allocate the table ** tab
   if (g->tab == NULL) {
     free(g);
     fprintf(stderr, "Problem allocation memory\n");
     exit(EXIT_FAILURE);
   }
 
-  g->init_game = (color **)malloc(width * sizeof(color *)); // On alloue le tableau ** init_game
+  g->init_game = (color **)malloc(width * sizeof(color *)); // We allocate the table ** init_game
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
@@ -282,7 +282,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
 
   for (uint i = 0; i < width; i++) {
-    g->tab[i] = (color *)malloc(height * sizeof(color));  // On alloue le tableau * tab[i]
+    g->tab[i] = (color *)malloc(height * sizeof(color));  //We allocate the table * tab[i]
     if (g->tab[i] == NULL) {
       for (uint x=0; x<i; x++){
         free(g->tab[x]);
@@ -296,7 +296,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
 
   for (uint i = 0; i < width; i++) {
-    g->init_game[i] = (color *)malloc(height * sizeof(color)); // On alloue le tableau * init_game[i]
+    g->init_game[i] = (color *)malloc(height * sizeof(color)); // We allocate the table * init_game[i]
     if (g->init_game[i] == NULL){
       for (uint x = 0; x < width; x++) {
         free(g->tab[x]);
@@ -313,8 +313,8 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   }
   for (uint x = 0; x < width; x++) {
     for (uint y = 0; y < height; y++) {
-      g->tab[x][y] = cells[y * width + x]; // Remplissage de tab pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
-      g->init_game[x][y] = cells[y * width + x]; // Remplissage d'init_game pour chacun de ses indices avec l'indice corespondant dans cells (tableau des couleurs)
+      g->tab[x][y] = cells[y * width + x]; // Filling of tab for each of its indices with the corresponding index in cells (color table)
+      g->init_game[x][y] = cells[y * width + x]; // Filling init_game for each of its indices with the corresponding index in cells (color table)
     }
   }
   return g;

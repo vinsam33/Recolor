@@ -11,13 +11,12 @@ void affichage_grille(game g) {
   for (unsigned int y = 0; y < game_height(g); y++) {
     for (unsigned int x = 0; x < game_width(g); x++) {
       c = game_cell_current_color(g, x,
-                                  y);  // On regarde chaque couleur de la grille
-      if (c >= 10) {  // Si elles sont >= à 10 on les remplace par leur valeur
-                      // alphabétique
+                                  y);  // We look at each color of the grid
+      if (c >= 10) {  // If they are> = to 10 we replace them with their alphabetical value
         c = 'A' + (c - 10);
-        printf("%c", c);  // On affiche la valeur alphabétique
+        printf("%c", c);  // We display the alphabetical value
       } else {
-        printf("%u", c);  // Sinon on affiche le chiffre
+        printf("%u", c);  // Otherwise we display the figure
       }
     }
     printf("\n");
@@ -64,8 +63,8 @@ int main(int argc, char *argv[]) {
     }
     if (argc== 5 || argc ==6){
       if (atoi(argv[4]) == 0 || atoi(argv[4]) > 16) {
-        printf("Argument nombre de couleurs invalide\n");
-        printf("Nous passons donc a nb_colors = 4\n");
+        printf("Invalid number of colors argument\n");
+        printf("So we go to nb_colors = 4\n");
         nb= 4;
     } else {
         nb = atoi(argv[4]);
@@ -111,19 +110,19 @@ int main(int argc, char *argv[]) {
     if (c == EOF) {
       exit(EXIT_SUCCESS);
     }
-    if (c == 'q') {  // quitte le jeu
+    if (c == 'q') {  // leave the game
       if (argc == 2) {
-        game_save(g, argv[1]);  // sauvegarde du jeu quand on quitte la partie
+        game_save(g, argv[1]);  // save the game when you leave the game
       }
       if (argc == 6||argc ==5 || argc == 4) {
-        game_save(g, "recolor_v2.rec");  // sauvegarde jeu a v2
+        game_save(g, "recolor_v2.rec");  // save game a v2
       }
       if (argc != 6 && argc != 2 && argc != 5) {
-        game_save(g, "recolor_v1.rec");  // sauvegarde jeu a v1
+        game_save(g, "recolor_v1.rec");  // save game a v1 
       }
       break;
     }
-    if (c == 'r') {  // redémarre le jeu
+    if (c == 'r') {  // restart the game
       game_restart(g);
       printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g),
              game_nb_moves_max(g));
@@ -132,7 +131,7 @@ int main(int argc, char *argv[]) {
       printf("0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F");
       printf(" ou r ou q ; r pour redémarrer ou q pour quitter)\n");
     }
-    if (c >= '0' && c <= '9') {  // Jeu avec une couleur numérique
+    if (c >= '0' && c <= '9') {  // Game with digital color
       game_play_one_move(g, c - 48);
       printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g), game_nb_moves_max(g));
       affichage_grille(g);
@@ -140,7 +139,7 @@ int main(int argc, char *argv[]) {
           "Jouer un coup: (num couleur ou r pour redemarrer ou q pour "
           "quitter)\n");
     }
-    if (c >= 'A' && c <= 'F') {  // Jeu avec une couleur alphabétique
+    if (c >= 'A' && c <= 'F') {  // Game with an alphabetical color
       game_play_one_move(g, c - 55);
       printf("nb coups joués : %u ; nb coups max : %u\n", game_nb_moves_cur(g),game_nb_moves_max(g));
       affichage_grille(g);
@@ -152,7 +151,7 @@ int main(int argc, char *argv[]) {
 
   if (game_is_over(g) &&
       game_nb_moves_cur(g) <=
-          game_nb_moves_max(g)) {  // Affiche si le jeu est gagné ou non
+          game_nb_moves_max(g)) {  // Displays whether the game is won or not
     printf("BRAVO\n");
   } else {
     printf("DOMMAGE\n");
