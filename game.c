@@ -231,7 +231,7 @@ void game_restart(game g) {
   }
 }
 
-///V2//
+//**************************************************V2*************************************************************//
 
 bool game_is_wrapping(cgame g){
   if(g == NULL){
@@ -257,7 +257,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
 
   game g = malloc(sizeof(struct game_s)); // We allocate a new structure
   if (g == NULL) {
-    fprintf(stderr, "Problem allocation memory\n");
+    fprintf(stderr, "Memory allocation problem\n");
     exit(EXIT_FAILURE);
   }
 
@@ -269,7 +269,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   g->tab = (color **)malloc(width * sizeof(color *)); // We allocate the table ** tab
   if (g->tab == NULL) {
     free(g);
-    fprintf(stderr, "Problem allocation memory\n");
+    fprintf(stderr, "Memory allocation problem\n");
     exit(EXIT_FAILURE);
   }
 
@@ -277,7 +277,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
   if (g->init_game == NULL) {
     free(g->tab);
     free(g);
-    fprintf(stderr, "Problem allocation memory\n");
+    fprintf(stderr, "Memory allocation problem\n");
     exit(EXIT_FAILURE);
   }
 
@@ -290,7 +290,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
       free(g->tab);
       free(g->init_game);
       free(g);
-      fprintf(stderr, "Problem allocation memory\n");
+      fprintf(stderr, "Memory allocation problem\n");
       exit(EXIT_FAILURE);
     }
   }
@@ -307,7 +307,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
       free(g->tab);
       free(g->init_game);
       free(g);
-      fprintf(stderr, "Problem allocation memory\n");
+      fprintf(stderr, "Memory allocation problem\n");
       exit(EXIT_FAILURE);
     }
   }
@@ -323,7 +323,7 @@ game game_new_ext(uint width, uint height, color *cells, uint nb_moves_max,  boo
 
 uint game_height(cgame game){
   if(game == NULL){
-    fprintf(stderr,"Problem allocation memory\n");
+    fprintf(stderr,"Memory allocation problem\n");
     exit(EXIT_FAILURE);
   }
   return game->height;
