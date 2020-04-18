@@ -30,7 +30,10 @@ bool test_nb_moves_cur() {
   game_delete(g);
   return true;
 }
-//Its tests game_set_cell_init() function
+/**
+ *@brief : test the  game_set_cell_init() function
+ *@return return false if there are an error,else true.
+ **/
 bool test_game_set_cell_init(game g, uint x, uint y) {
   // game g=game_new_empty();
   if (g == NULL) {
