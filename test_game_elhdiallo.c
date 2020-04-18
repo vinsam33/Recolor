@@ -49,7 +49,7 @@ bool test_game_set_cell_init(game g, uint x, uint y) {
   game_delete(g);
   return true;
 }
-// Elle verifie si la grille est uniforme
+//It checks if the grid is uniform
 bool is_grid_red(game g) {
   for (uint x = 0; x < game_width(g); x++) {
     for (uint y = 0; y < game_height(g); y++) {
