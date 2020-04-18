@@ -10,8 +10,7 @@ typedef unsigned int uint;
 /**
  * @brief : test the nb_moves_cur function()
  * @return : return false if there an error,else true.
- * */
-// its tests the nb_moves_cur() function 
+ **/
 bool test_nb_moves_cur() {
   game g = game_new_empty_ext(12, 12, false);
   if ( g==NULL){
