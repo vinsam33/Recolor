@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
   }else if (((strcmp("game_is_wrapping", argv[1]) == 0))) {
    ok = test_game_is_wrapping();
   }
-  // print test result
+  // print the test result
   if (ok) {
     fprintf(stderr, "Test \"%s\" finished: SUCCESS\n", argv[1]);
     return EXIT_SUCCESS;
