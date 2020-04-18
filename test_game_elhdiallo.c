@@ -5,10 +5,10 @@
 #include <string.h>
 #include "game.h"
 typedef unsigned int uint;
-//Fonctions testées: 
+//Functions tested: 
 //game_set_cell_init, game_nb_moves_cur, game_is_over, game_is_wrapping, game_width
 
-// Elle teste la fonction nb_moves_cur() 
+// its tests the nb_moves_cur() function 
 bool test_nb_moves_cur() {
   game g = game_new_empty_ext(12, 12, false);
   if ( g==NULL){
