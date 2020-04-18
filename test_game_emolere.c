@@ -61,7 +61,7 @@ bool test_game_play_one_move(color c) {
   }
   game_delete(g);
 
-  /** Verification play_one_move wrapping = false **/
+  /** Verification play_one_move wrapping == false **/
 
   game ga = game_new_empty_ext(12, 12, false);
   game_play_one_move(ga, c); // As all the boxes have the value 0 after having played a movement of the color c all the boxes must have the value of the color c
