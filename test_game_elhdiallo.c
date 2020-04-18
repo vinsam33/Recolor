@@ -62,9 +62,10 @@ bool is_grid_red(game g) {
   
   return true;
 }
-// Elle teste la fonction game_is_over()
+// Its tests game_is_over() function
 bool test_game_is_over() {
-  // premier test , cas toutes les cellules de même coul et nbCoupJoué < nbMax
+
+  // All cells of the same color and nbCoupJoué < nbMax
   game t1 = game_new_empty_ext(12, 12, false);
   if (t1 == NULL){
       fprintf(stderr,"Error: Null pointer \n");
@@ -92,7 +93,7 @@ bool test_game_is_over() {
     fprintf(stderr, "echec test de game_is_over: grille non uniforment rouge");
     game_delete(t1);
   }
-  //liberer la mémoire
+  // free the memory
   game_delete(t1);
   return true;
 }
