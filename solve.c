@@ -265,7 +265,7 @@ void find_one(game g, char* sol, uint nb_color) {
   fclose(f);
 }
 
-//---------------------------------------------------------------------------------------------find_min----------------------------------------------------------------
+//-------------------------------------------------------find_min----------------------------------------------------------------
 
 void find_min_aux(game g, uint nbcolors,  color color_possible[], uint *nb_max , uint *tab, uint *tabn, uint cpt) {
   if (game_is_over(g)) {//if I win at the first movement.
