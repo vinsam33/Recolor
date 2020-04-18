@@ -62,7 +62,10 @@ bool is_grid_red(game g) {
   
   return true;
 }
-// Its tests game_is_over() function
+/**
+ *@brief : test the  game_is_over() function
+ *@return return false if there are an error,else true.
+ **/
 bool test_game_is_over() {
 
   // All cells of the same color and nbCoupJoué < nbMax
@@ -97,7 +100,10 @@ bool test_game_is_over() {
   game_delete(t1);
   return true;
 }
-//Elle teste la fonction game_is_wrapping()
+/**
+ *@brief : test the game_is_wrapping() function
+ *@return return false if there are an error, else it return true,else true.
+ **/
 bool test_game_is_wrapping(){
     game g = game_new_empty_ext(2, 5, true);
     if (g==NULL){
@@ -113,7 +119,10 @@ bool test_game_is_wrapping(){
     game_delete(g);
     return true;
 }
-//Elle teste la fonction game_width()
+/**
+ *@brief : test the  game_width() function
+ *@return return false if there are an error,else true.
+ **/
 bool test_game_width(){
     game g = game_new_empty_ext(2, 5, true);
     if (g==NULL){
