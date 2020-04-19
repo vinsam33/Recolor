@@ -201,7 +201,7 @@ void render(SDL_Window *win, SDL_Renderer *ren, Env *env) { /* HERE CODE  TO REN
 
   // print nb_move with diferent conditions
   if (game_nb_moves_cur(env->g) > game_nb_moves_max(env->g)) {
-    sprintf(move, "DOMAGE => Nb moves curr : %u / Nb moves max : %u",
+    sprintf(move, "DOMAGE => %u / %u",
             game_nb_moves_cur(env->g), game_nb_moves_max(env->g));
     TTF_SetFontStyle(font, TTF_STYLE_ITALIC | TTF_STYLE_UNDERLINE);
     col = env->colors[4];
